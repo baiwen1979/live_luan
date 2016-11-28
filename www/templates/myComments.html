@@ -1,0 +1,20 @@
+<ion-view id="myComments">
+  <ion-header-bar align-title="center">
+    <div class="buttons">
+      <button class="button button-clear button-assertive icon ion-ios-arrow-left" ng-click="goBack()"></button>
+    </div>
+    <h1 class="title">我的评论</h1>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+      <ion-item ng-repeat="item in getMyCommits()" ng-href="#/tab/myDetail/{{item.id}}" class="item item-icon-right">
+        <p>
+          <i class="ion-chatbox"></i>&nbsp;&nbsp;&nbsp;&nbsp;{{item.text}}
+        </p>
+        <p>
+          {{item.title}}<i class="icon ion-ios-arrow-right"></i>
+        </p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,12 @@
+<ion-content id="image-list">
+  <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh($index)">
+  </ion-refresher>
+  <ion-list>
+    <ion-item class="card item-image" ng-repeat="item in category.vm.items" type="item-text-wrap" href="#/tab/detail/{{item.id}}">
+      <img ng-src="{{item.firstImage}}">
+      <p><i class="icon ion-images"></i>&nbsp;{{item.imageCount}}</p>
+      <h2>{{item.title}}</h2>
+    </ion-item>
+  </ion-list>
+  <ng-include src="'templates/partial-infinite.html'"></ng-include>
+</ion-content>

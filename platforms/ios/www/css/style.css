@@ -1,0 +1,542 @@
+#main-tabs .tab-item-active {
+    border-color: transparent;
+}
+
+.item-thumbnail-left img {
+    min-width: 100px;
+    height: auto;
+}
+.banner a {
+    padding: 0 0 10px 0 !important;
+    height: auto;
+}
+.banner img {
+    width: 100%;
+    position: static !important;
+    height: 240px !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+.banner .title {
+    float: left;
+    margin-left: 10px;
+}
+
+.duration {
+    float: right;
+    margin-right: 10px;
+}
+
+.hide {
+    display: none;
+}
+
+.article-list .item a {
+    padding-left: 120px;
+    padding-right: 10px;
+}
+
+#news-detail img{
+    width: 100%;
+}
+
+.news-header {
+    border-bottom: 1px solid red;
+    margin-bottom: 10px;
+}
+
+.news-header h1 {
+    font-size: 1.4em;
+    text-align: center;
+    color: red;
+}
+
+.news-header p {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.news-header p span {
+    margin-right: 5px;
+}
+
+#btn-say {
+    padding-left: 10px;
+    margin-left: 5px;
+    border-radius: 20px;
+    width: 60%;
+    color: #888;
+    text-align: left;
+}
+
+#btn-say:before {
+    padding-right: 10px;
+}
+
+#btn-say:hover {
+    color: #444;
+}
+
+#btn-favor {
+    margin-left: 10px;
+}
+
+#btn-share {
+    margin-left: 10px;
+    position: static;
+}
+
+#btn-share:after {
+    position: relative;
+}
+
+#inner-slider .box {
+    width: 100%;
+}
+
+#inner-slider img {
+    display: block;
+    width: 100%;
+    max-height: 100%;
+}
+
+#inner-slider .title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 0;
+    padding: 5px;
+    color: #FFF;
+}
+
+#inner-slider .slider-pager {
+    text-align: right;
+    bottom: 10px;
+    z-index: 10;
+    right: 5px;
+}
+
+#inner-slider .slider-pager .slider-pager-page {
+    transform: scale(0.5, 0.5);
+    color: #FFF;
+    margin: 0;
+    width: 13px;
+}
+
+#tab-home .bar {
+    height: 32px;
+    padding: 0;
+}
+
+.platform-ios #tab-home .bar {
+    height: 52px;
+}
+
+#tab-home .bar-header {
+    border-bottom: none;
+}
+
+#tab-home .has-header {
+    top: 0px;
+}
+
+#tab-home .row {
+    padding: 0;
+}
+
+#tab-home .tabs-container {
+    overflow-x: hidden;
+}
+
+#btn-addCategory {
+    font-size: 10px;
+    width: 40px;
+}
+
+
+.slide-tabs {
+    margin: 0;
+    width: auto;
+    white-space: nowrap;
+    height: 32px;
+}
+
+.slide-tabs li {
+    padding: 0 3px;
+    font-size: 16px;
+    display: inline-block;
+}
+
+.slide-tabs a {
+    border-top:3px solid transparent;
+    line-height: 28px;
+    border-bottom: 2px solid transparent;
+    color: #888;
+    font-weight: 500;
+    display: block;
+    padding: 0 8px;
+    text-decoration: none;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.slide-tabs li.current a {
+    color: #f00;
+    border-bottom-color: #F00;
+}
+
+#outer-slider {
+    position: absolute;
+    top: 32px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.platform-ios #outer-slider {
+    top: 52px;
+}
+
+#paper-detail img{
+    width: 100%;
+}
+
+#paper-list.paper .page {
+    padding: 0;
+    position: relative;
+    width: 378px;
+    height: 597px;
+    margin: 0 auto;
+}
+
+#paper-list.paper .page img {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#paper-list.paper .page a {
+    position: absolute; 
+    display: block;
+}
+
+#paper-list.paper .page a:hover,
+#paper-list.paper .page a.active {
+    background-color: rgba(0,0,0,0.4);
+}
+
+.time, .comments, .duration{
+    position: absolute;
+    bottom: 15px;
+}
+
+.comments, .duration {
+    right: 15px;
+}
+
+.comments i, .duration i {
+    margin-right: 5px;
+}
+
+h2.title {
+    margin-top: 5px;
+    overflow: visible;
+    white-space: normal;
+}
+
+.loading {
+   width: 100%;
+   text-align: center;
+   display: block;
+   position: fixed;
+   margin-top: 50%;
+}
+
+#detail {
+    background-color: #F6F6F6;
+}
+
+.platform-ios .ios-top-20 {
+    top: 20px;
+}
+
+.error h1 {
+    color: darkred;
+    font-size: 1.5em;
+    border-bottom: 1px solid red;
+}
+
+.error ul {
+    list-style: disc;
+    padding-left: 2em;
+}
+
+#audio-list img.audio {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+}
+
+#audio-list a, #audio-list ion-item {
+    min-height: 85px;
+}
+
+#audio-list .item-thumbnail-left a {
+    padding-left: 80px;
+    padding-right: 15px;
+}
+
+#audio-list .item-thumbnail-right a {
+    padding-right: 80px;
+    padding-left: 15px;
+}
+
+#audio-player {
+    position: fixed;
+}
+
+#audio-player audio {
+    width: 100%;
+}
+
+#video-player video {
+    background-color: #666;
+    width: 100%;
+}
+
+#image-list .card a {
+    padding: 0;
+}
+
+#image-list .card {
+    margin:5px 10px;
+    text-align: left;
+}
+
+#image-list .card img {
+    height: 220px;
+}
+
+#image-list .card h2 {
+    margin: 10px;
+}
+
+#image-list .card p {
+    float: right;
+    font-size: 1em;
+    margin:10px;
+}
+
+#image-detail img {
+    margin-top: 45%;
+    width: 100%;
+}
+
+#image-detail {
+    background-color: #000;
+}
+
+#image-detail + .sub-title {
+    background-color: rgba(0,0,0, 0.6);
+    color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 44px;
+    min-height: 30%; 
+    height:30%;   
+    padding:10px;
+}
+
+#image-detail + .sub-title h3 {
+    color: white;
+    font-size: 1.1em;
+}
+
+#image-detail + .sub-title i {
+    color: red;
+}
+
+#image-detail + .sub-title .desc {
+    text-indent: 2em;
+}
+
+.animate {
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+}
+
+.animate-hide , .full-sub-title.animate-hide {
+    height: 0 !important;
+    border: 0 !important;
+    bottom: -10px !important;
+    overflow: hidden;
+    min-height: 0 !important;
+    top: initial !important;
+}
+
+.full-sub-title {
+    height: auto !important;
+}
+
+#comments {
+    margin-top: 20px;
+}
+
+#comments .time {
+    right: 10px;
+    top: 15px;
+}
+
+#comment.popover {
+    width: 96%;
+    padding: 10px;
+    height: auto;
+}
+
+#comment textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+#comment button {
+    float: right;
+    width: 5em;
+}
+
+
+#tab-services li {
+    display: inline-block;
+    width: 48%;
+    border-bottom: 1px solid #EEE;
+}
+
+#tab-services li:nth-child(2n) {
+    border-left: 1px solid #EEE;
+}
+
+#tab-services li a {
+    display: block;
+    padding: 10px;
+    line-height: 48px;
+    text-decoration: none;
+    color: #666;
+    vertical-align: top;
+}
+
+#tab-services li a img {
+    float: left;
+    margin-right: 10px;
+}
+
+#tab-account {
+    background-color: #eee;
+}
+
+#tab-account a{
+    text-decoration: none;
+    color: #000;
+}
+
+#tab-account .bar.bar-header {
+    height: 120px;
+}
+
+.platform-ios #tab-account .bar.bar-header {
+    padding-top: 20px;
+    height: 140px;
+}
+
+#tab-account .bar.bar-header .user-avatar {
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+
+#tab-account .bar.bar-header img {
+    height: 80px;
+    width: 80px;
+    display: block;
+    margin: 5px auto;
+}
+
+#tab-account .bar.bar-subheader {
+    height: 80px;
+    top: 120px;
+}
+
+.platform-ios #tab-account .bar.bar-subheader {
+    top: 140px;
+}
+
+#tab-account .bar.bar-subheader .user-tool {
+    display: inline-block;
+    width:33%;
+    text-align: center;
+    font-size: 1.1em;
+    padding:10px 0;
+
+    border-left:1px solid #EEE;
+}
+
+#tab-account .bar.bar-subheader .user-tool:first-child {
+    border-left: none;
+}
+
+#tab-account .bar.bar-subheader .user-tool i{
+    font-size: 2em;
+    margin-bottom: 5px;
+    display: inline-block;
+    color: #387ef5;
+}
+
+#tab-account .has-header {
+    top: 210px;
+}
+
+.platform-ios #tab-account .has-header {
+    top: 230px;
+}
+
+iframe.full {
+    width: 100%;
+    min-height: 100%;
+}
+
+#tab-login #userpng{
+    text-align: center;
+    height: 60px;
+}
+
+#tab-login div{
+    text-align: center;
+}
+
+#tab-login #userpng img{
+    width: 60px;
+    height: 60px;
+}
+
+#tab-login #loginType div{
+    display: inline-block;
+    width: 33%;
+}
+
+#tab-login p{
+    line-height: 40px;
+}
+
+#tab-login .border1px{
+    border: 1px solid #ccc;
+}
+
+#tab-login .forgetPassword{
+    font-size: 14px;
+    margin: 0 10px;
+    text-align: right;
+}

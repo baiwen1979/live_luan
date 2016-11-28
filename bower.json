@@ -1,0 +1,9 @@
+{
+  "name": "luan_news",
+  "private": true,
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.3.1",
+    "underscore": "^1.8.3",
+    "angular-underscore-module": "^1.0.3"
+  }
+}

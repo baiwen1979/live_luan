@@ -1,0 +1,25 @@
+<ion-view id="myComments">
+  <ion-header-bar align-title="center">
+    <div class="buttons">
+      <button class="button button-clear button-assertive icon ion-ios-arrow-left" ng-click="goBack()"></button>
+    </div>
+    <h1 class="title">文章</h1>
+  </ion-header-bar>
+  <ion-content>
+    <div class="card">
+      <div class="bar item item-divider">
+        <h1 class="title"> {{article.title}} </h1>
+      </div>
+      <div class="item item-text-wrap">
+        {{article.content}}
+      </div>
+    </div>
+    <div class="card">
+      <h4 class="title"> 附件: </h4>
+      <p ng-repeat="f in article.file"> {{f}} </p>
+    </div>
+    <div class="padding">
+      <button class="button button-block button-assertive" ng-click="MyArticleShare()">点击分享</button>
+    </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,41 @@
+<ion-view id="publish">
+	<ion-header-bar align-title="center">
+		<div class="buttons">
+			<button class="button button-clear button-assertive icon ion-ios-arrow-left" ng-click="goBack()"></button>
+		</div>
+		<h1 class="title">发表文章</h1>
+	</ion-header-bar>
+	<ion-content>
+		<div class="list list-inset">
+			<label class="item item-input">
+				<input type="text" placeholder="文章标题" required ng-model="publish.title" maxlength="20">
+			</label>
+			<label class="item item-input item-select">
+				<div class="input-label">
+					文章类型
+				</div>
+				<select ng-options="type.id as type.label for type in types" ng-model="publish.type">
+				</select>
+			</label>
+			<label class="item">
+				<form id="uploadForm">
+					<input type="button" value="选择文件" class="button button-block button-assertive" ng-click="changeFile()">
+					<p ng-repeat="f in fileName">{{f}}</p>
+					<!-- <input type="file" name="file" style="display: none;" value="" id="uploadInput"> -->
+				</form>
+			</label>
+			<label class="item">
+				<input type="button" value="点击开始上传文件" class="button button-block button-assertive"  ng-click="uploadFile()" ng-disabled="fileName.length==0 ? true : false">
+			</label>
+			<label class="item item-input">
+				<textarea rows="20" ng-model="publish.content" required placeholder="在此处输入内容" maxlength="2000"></textarea>
+			</label>
+			<label class="item item-input">
+				{{publish.content.length}}/2000
+			</label>
+			<div class="padding">
+				<button class="button button-block button-assertive" ng-click="article()" ng-disabled="(publish.title+publish.content) != '' ? false : true">发表</button>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>

@@ -1,0 +1,47 @@
+<ion-view id="tab-account" view-title="我的账户">
+  <div class="bar bar-header bar-assertive">
+    <div class="user-avatar">
+      <a ng-href="#/tab/login">
+        <img src="{{avatar}}" />
+      </a>
+      <p>{{sessionId}}</p>
+    </div>
+  </div>
+  <div class="bar bar-subheader">
+    <div class="user-tool" ng-click="luminance()">
+      <i class="icon ion-ios-lightbulb"></i>
+      <p>夜间模式</p>
+    </div>
+    <div class="user-tool">
+      <a href="#/tab/setting">
+        <i class="icon ion-ios-gear"></i>
+        <p>我的设置</p>
+      </a>
+    </div>
+    <div class="user-tool">
+      <a href="#/tab/feedback">
+        <i class="icon ion-clipboard"></i>
+        <p>意见反馈</p>
+      </a>
+    </div>
+  </div>
+  <ion-content class="has-header">
+    <ion-list>
+      <ion-item class="item item-icon-left item-icon-right" ng-href="#/tab/myComments">
+        <i class="icon ion-chatboxes"></i>
+        我的评论
+        <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+      <ion-item class="item item-icon-left item-icon-right" ng-href="#/tab/myArticles">
+        <i class="icon ion-document-text"></i>
+        我的文章
+        <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+      <ion-item class="item item-icon-left item-icon-right" ng-href="#/tab/myCollects">
+        <i class="icon ion-ios-star"></i>
+        我的收藏
+        <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,51 @@
+<ion-view id="setting">
+	<ion-header-bar align-title="center">
+		<div class="buttons">
+			<button class="button button-clear button-assertive icon ion-ios-arrow-left"ng-click="goBack()"></button>
+		</div>
+		<h1 class="title">我的设置</h1>
+	</ion-header-bar>
+	<ion-content>
+		<div class="list">
+			<div class="item item-icon-right" ng-click="changeFontSize()">
+				正文字号
+				<span class="item-note">
+					{{fontSize}}
+				</span>
+				<i class="icon ion-ios-arrow-right"></i>
+			</div>
+			<div class="item item-toggle">
+				接收推送
+				<label class="toggle toggle-assertive">
+					<input type="checkbox">
+					<div class="track">
+						<div class="handle"></div>
+					</div>
+				</label>
+			</div>
+			<div class="item item-toggle" href="#">
+				仅wi-fi加载图片
+				<label class="toggle toggle-assertive">
+					<input type="checkbox">
+					<div class="track">
+						<div class="handle"></div>
+					</div>
+				</label>
+			</div>
+			<div class="item item-icon-right" ng-click="clearCache()">
+				清理缓存
+				<span class="item-note"> {{cache | number:2}}MB </span>
+				<i class="icon ion-ios-arrow-right"></i>
+			</div>
+			<div class="item item-icon-right" ng-click="version()">
+				检查新版本
+				<span class="item-note"> {{'1.0.0'}} </span>
+				<i class="icon ion-ios-arrow-right"></i>
+			</div>
+			<a class="item item-icon-right" ng-href="#/tab/about">
+				关于
+				<i class="icon ion-ios-arrow-right"></i>
+			</a>
+		</div>
+	</ion-content>
+</ion-view>

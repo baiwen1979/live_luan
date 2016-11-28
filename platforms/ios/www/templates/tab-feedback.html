@@ -1,0 +1,27 @@
+<ion-view id="feedback">
+	<ion-header-bar align-title="center">
+		<div class="buttons">
+			<button class="button button-clear button-assertive icon ion-ios-arrow-left"ng-click="goBack()"></button>
+		</div>
+		<h1 class="title">意见反馈</h1>
+	</ion-header-bar>
+	<ion-content>
+		<div class="list list-inset">
+			<label class="item item-input">
+				<textarea rows="10" ng-model="feedback.content" required placeholder="您的宝贵意见是我们前进的动力！" maxlength="500"></textarea>
+			</label>
+			<label class="item item-input">
+				{{feedback.content.length}}/500
+			</label>
+			<label class="item item-input">
+				期待您留下联系方式我们将提供更好的服务。
+			</label>
+			<label class="item item-input">
+				<input type="text" required ng-model="feedback.call" maxlength="30" placeholder="QQ号码/邮箱地址/手机号码">
+			</label>
+			<div class="padding">
+				<button class="button button-block button-assertive" ng-click="publishSuggestion()" ng-disabled="feedback.content != '' ? false : true">提交</button>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>

@@ -1,0 +1,20 @@
+<ion-view id="myCollects">
+  <ion-header-bar align-title="center">
+    <div class="buttons">
+      <button class="button button-clear button-assertive icon ion-ios-arrow-left" ng-click="goBack()"></button>
+    </div>
+    <h1 class="title">我的收藏</h1>
+    <div class="buttons">
+      <button class="button button-icon icon" ng-click="data.showDelete = !data.showDelete">编辑</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list show-delete="data.showDelete">
+      <ion-item ng-repeat="item in favorites" item="item" class="item-remove-animate item item-icon-right" ng-href="#/tab/myDetail/{{item.id}}">
+        {{item.title}}
+        <ion-delete-button class="ion-trash-a" ng-click="onItemDelete(item)"></ion-delete-button>
+        <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

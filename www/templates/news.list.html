@@ -1,0 +1,21 @@
+<ion-content id="news-list" class="article-list">
+  <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh($index)">
+  </ion-refresher>
+  <ion-slide-box on-touch="enableOuterSlider(false)" on-release="enableOuterSlider(true)" delegate-handle="inner-slider" id="inner-slider" does-continue="true" auto-play="false">
+    <ion-slide ng-repeat="item in category.vm.items | limitTo: 5" ng-if="item.large_image">
+      <div class="box blue">
+        <a ng-href="#/tab/detail/{{item.id}}"><img ng-src="{{item.large_image}}"></a>
+        <p class="title">{{item.title}}</p>
+      </div>
+    </ion-slide>
+  </ion-slide-box>
+  <ion-list>
+    <ion-item class="item item-thumbnail-left" ng-repeat="item in category.vm.items" ng-if="!item.large_image" type="item-text-wrap" href="#/tab/detail/{{item.id}}">
+      <img class="thumbnail" ng-src="{{item.thumbnail}}">
+      <h2 class="title">{{item.title}}</h2>
+      <p class="time">{{item.publishTime | date:'yyyy-MM-dd' | timeHommization}}</p>
+      <p class="comments"><i class="icon ion-ios-chatboxes-outline"></i>{{item.commentsCount}}</p>
+    </ion-item>
+  </ion-list>
+  <ng-include src="'templates/partial-infinite.html'"></ng-include>
+</ion-content>
