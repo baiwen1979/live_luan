@@ -3,15 +3,15 @@
     <div class="row header-row">
       <ion-scroll delegate-handle="tabs-scroll" zooming="false" class="tabs-container" direction="x" scrollbar-y="false" scrollbar-x="false">
         <ul class="slide-tabs">
-          <li ng-class="slideIndex == $index ? 'current':''" ng-repeat="category in categories">
-            <a href="#" ng-click="activeSlide($index)">{{category.label}}</a>
+          <li ng-class="slideIndex == $index ? 'current-active'+$index : 'current'+$index" ng-repeat="category in categories">
+            <a href="#" ng-click="activeSlide($index)"></a>
           </li>
         </ul>
       </ion-scroll>
-      <!--
-      <button id="btn-addCategory" class="button button-clear button-stable icon ion-ios-plus-empty" ng-click="addCategory()">
+      
+      <button id="btn-addCategory" class="button button-stable icon ion-ios-plus-empty" ng-click="addCategory()">
       </button>
-      -->
+      
     </div>
   </ion-header-bar>
   <ion-slide-box delegate-handle="outer-slider" id="outer-slider" show-pager="false" on-slide-changed="outerSlideChanged(index)" active-slide="slideIndex">

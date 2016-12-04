@@ -2,6 +2,35 @@
     border-color: transparent;
 }
 
+#main-tabs .nav-off{
+    font-size: 20px;
+    line-height: 49px;
+    background: #ddd
+}
+#main-tabs .nav-on{
+    font-size: 20px;
+    background: #fff;
+    box-shadow: 3px 0px #f00 inset;
+    line-height: 49px;
+}
+#main-tabs .tab-title{
+    display: inline-block;
+    margin-top: -30px;
+    margin-left: -20px;
+    position: absolute;
+    font-size: 20px;
+}
+#main-tabs .nav-off{
+    height: 100%;
+}
+#main-tabs .nav-on{
+    height: 100%;
+}
+
+.tabdark{
+    background: #ddd;
+}
+
 .item-thumbnail-left img {
     min-width: 100px;
     height: auto;
@@ -128,12 +157,12 @@
 }
 
 #tab-home .bar {
-    height: 32px;
+    height: 48px;
     padding: 0;
 }
 
 .platform-ios #tab-home .bar {
-    height: 52px;
+    height: 68px;
 }
 
 #tab-home .bar-header {
@@ -155,51 +184,104 @@
 #btn-addCategory {
     font-size: 10px;
     width: 40px;
+    height: 48px;
+    color: #f00;
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    border-radius: 0px;
+    box-shadow: -1px -1px 3px #aaa;
+    background-color: #fff;
+    /*position: relative;*/
+}
+#btn-addCategory:after{
+    content: '';
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    position: absolute;
+    left: -5px;
+    top: 18px;
+    background-color: #fff;
+    box-shadow: -1px 1px #aaa;
 }
 
 
 .slide-tabs {
     margin: 0;
     width: auto;
-    white-space: nowrap;
-    height: 32px;
+    /*white-space: nowrap;*/
+    height: 48px;
+    /*padding: 3px 0;*/
 }
 
 .slide-tabs li {
-    padding: 0 3px;
-    font-size: 16px;
+    /*padding: 10px 3px;*/
+    margin-left: 10px;
+    height: 48px;
+    line-height: 48px;
     display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .slide-tabs a {
-    border-top:3px solid transparent;
-    line-height: 28px;
-    border-bottom: 2px solid transparent;
-    color: #888;
-    font-weight: 500;
+    /*border-top:3px solid transparent;*/
+    /*line-height: 42px;*/
+    /*border-bottom: 2px solid transparent;*/
+    /*color: #888;*/
+    /*font-weight: 500;*/
     display: block;
-    padding: 0 8px;
+    padding: 24px;
     text-decoration: none;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
 }
 
-.slide-tabs li.current a {
-    color: #f00;
-    border-bottom-color: #F00;
+.slide-tabs li.current0{
+	background-image: url('../img/00.png');
+}
+.slide-tabs li.current1{
+	background-image: url('../img/10.png');
+}
+.slide-tabs li.current2{
+	background-image: url('../img/20.png');
+}
+.slide-tabs li.current3{
+	background-image: url('../img/30.png');
+}
+.slide-tabs li.current4{
+	background-image: url('../img/40.png');
+}
+
+.slide-tabs li.current-active0{
+	background-image: url('../img/0.png');
+}
+.slide-tabs li.current-active1{
+	background-image: url('../img/1.png');
+}
+.slide-tabs li.current-active2{
+	background-image: url('../img/2.png');
+}
+.slide-tabs li.current-active3{
+	background-image: url('../img/3.png');
+}
+.slide-tabs li.current-active4{
+	background-image: url('../img/4.png');
 }
 
 #outer-slider {
     position: absolute;
-    top: 32px;
+    top: 48px;
     bottom: 0;
     left: 0;
     right: 0;
 }
 
 .platform-ios #outer-slider {
-    top: 52px;
+    top: 68px;
 }
 
 #paper-detail img{
@@ -409,33 +491,57 @@ h2.title {
     width: 5em;
 }
 
+#tab-services{
+    background: linear-gradient(#D8D8D8, #F7F7F7, #D8D8D8);
+}
+
+#tab-services .bar-header {
+    height: 160px;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    background-color: #FF9899;
+    position: relative;
+}
+
+.platform-ios #tab-services .bar-header {
+    padding-top: 20px;
+    height: 180px;
+}
+
+#tab-services .bar-header img {
+    height: 120px;
+    width: 130px;
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
 
 #tab-services li {
     display: inline-block;
-    width: 48%;
-    border-bottom: 1px solid #EEE;
-}
-
-#tab-services li:nth-child(2n) {
-    border-left: 1px solid #EEE;
+    width: 25%;
+    text-align: center;
+    box-shadow: 1px 1px #ddd;
 }
 
 #tab-services li a {
     display: block;
     padding: 10px;
-    line-height: 48px;
     text-decoration: none;
-    color: #666;
-    vertical-align: top;
+    color: #333;
 }
 
 #tab-services li a img {
-    float: left;
-    margin-right: 10px;
+    display: inline-block;
+    margin: auto;
 }
 
 #tab-account {
-    background-color: #eee;
+    background-color: #fff;
 }
 
 #tab-account a{
@@ -444,12 +550,12 @@ h2.title {
 }
 
 #tab-account .bar.bar-header {
-    height: 120px;
+    height: 140px;
 }
 
 .platform-ios #tab-account .bar.bar-header {
     padding-top: 20px;
-    height: 140px;
+    height: 160px;
 }
 
 #tab-account .bar.bar-header .user-avatar {
@@ -467,11 +573,12 @@ h2.title {
 
 #tab-account .bar.bar-subheader {
     height: 80px;
-    top: 120px;
+    top: 140px;
 }
 
 .platform-ios #tab-account .bar.bar-subheader {
-    top: 140px;
+    top: 160px;
+    border-bottom: 1px dotted #999;
 }
 
 #tab-account .bar.bar-subheader .user-tool {
@@ -479,9 +586,8 @@ h2.title {
     width:33%;
     text-align: center;
     font-size: 1.1em;
-    padding:10px 0;
-
-    border-left:1px solid #EEE;
+    padding:10px 5px;
+    border-left:1px solid #aaa;
 }
 
 #tab-account .bar.bar-subheader .user-tool:first-child {
@@ -496,12 +602,51 @@ h2.title {
 }
 
 #tab-account .has-header {
-    top: 210px;
+    top: 220px;
+    overflow: hidden;
 }
 
 .platform-ios #tab-account .has-header {
-    top: 230px;
+    top: 240px;
+    overflow: hidden;
 }
+
+
+#tab-account .icon-lightbulb{
+    background: url(../img/luminance.png);
+}
+#tab-account .icon-gear{
+    background: url(../img/setting.png);
+}
+#tab-account .icon-clipboard{
+    background: url(../img/feedbook.png);
+}
+#tab-account .icon-chatboxes{
+    background: url(../img/mycomment.png);
+}
+#tab-account .icon-document-text{
+    background: url(../img/myarticles.png);
+}
+#tab-account .icon-star{
+    background: url(../img/mycollecyion.png);
+}
+
+#tab-account .self-icon{
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 10px;
+}
+
+#tab-account .self-icon1{
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 10px;
+    vertical-align: top;
+    position: absolute;
+    left: 15px;
+}
+
+#tab-account 
 
 iframe.full {
     width: 100%;
