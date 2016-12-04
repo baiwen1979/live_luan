@@ -1,0 +1,18 @@
+<ion-content id="news-detail" class="ios-top-20 padding has-footer">
+  <div class="news-header">
+    <h1>{{detail.title}}</h1>
+    <p>
+      <span>{{detail.publishTime| date:'yyyy-MM-dd'}}</span>
+      <span>{{detail.source}}</span>
+      <span>{{detail.author}}</span>
+    </p>
+  </div>
+  
+  <ng-include ng-if="detail.type=='audio'" src="'templates/partial-'+ detail.type + '.html'"></ng-include>
+  <ng-include ng-if="detail.type=='video'" src="'templates/partial-'+ detail.type + '.html'"></ng-include>
+  <ng-include ng-if="detail.type=='frame'" src="'templates/partial-'+ detail.type + '.html'"></ng-include>
+
+  <div ng-bind-html="detail.content" class="$root.changeFontSize">
+  </div>
+  <ng-include src="'templates/partial-comments.html'" ></ng-include>
+</ion-content>

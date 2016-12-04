@@ -40,5 +40,13 @@
     -->
     <ion-nav-view>
     </ion-nav-view>
+    
+    <script>  
+        document.addEventListener("deviceready", onDeviceReady, false);  
+        function onDeviceReady(){
+           var so = cordova.plugins.screenorientation;  
+           so.setOrientation(so.Orientation.LANDSCAPE);  
+        }  
+    </script>  
   </body>
 </html>

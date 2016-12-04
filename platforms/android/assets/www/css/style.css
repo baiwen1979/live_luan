@@ -188,9 +188,10 @@
     color: #f00;
     position: absolute;
     top: 0px;
-    right: 5px;
+    right: 0px;
     border-radius: 0px;
     box-shadow: -1px -1px 3px #aaa;
+    background-color: #fff;
     /*position: relative;*/
 }
 #btn-addCategory:after{
@@ -645,10 +646,9 @@ h2.title {
     left: 15px;
 }
 
-#tab-account 
-
 iframe.full {
     width: 100%;
+    min-width: 100%;
     min-height: 100%;
 }
 
@@ -683,4 +683,28 @@ iframe.full {
     font-size: 14px;
     margin: 0 10px;
     text-align: right;
+}
+
+/*专题字样*/
+ion-item:first-child .comments:before{
+    content: '';
+    padding: 15px;
+    background-image: url(../img/special.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin-right: 10px;
+}
+
+/*player-icon*/
+.player-icon{
+    padding: 25px;
+    display: block;
+    background-image: url(../img/player.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    position: absolute;
+    left: 35px;
+    top: 25px;
 }

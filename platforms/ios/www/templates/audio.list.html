@@ -1,6 +1,7 @@
 <ion-content id="audio-list">
   <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh($index)">
   </ion-refresher>
+
   <ion-list>
     <ion-item class="item" ng-repeat="item in category.vm.items" type="item-text-wrap" ng-class-even="'item-thumbnail-right'" ng-class-odd="'item-thumbnail-left'" href="#/tab/detail/{{item.id}}">
       <img class="audio" src="img/audio-icon2.png">
@@ -8,5 +9,6 @@
       <p class="time">{{item.publishTime | date:'yyyy-MM-dd' | timeHommization}}</p>
     </ion-item>
   </ion-list>
+  
   <ng-include src="'templates/partial-infinite.html'"></ng-include>
 </ion-content>

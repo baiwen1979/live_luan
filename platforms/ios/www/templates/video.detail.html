@@ -6,7 +6,7 @@
       <span>{{detail.source}}</span>
     </p>
   </div>
-  <ng-include ng-if="detail.srcUrl" src="'templates/partial-'+ template + '.html'"></ng-include>
+  <ng-include ng-if="detail.srcUrl" src="'templates/partial-'+ detail.type + '.html'"></ng-include>
   <div ng-bind-html="detail.content"  class="$root.changeFontSize">
   </div>
   <ng-include src="'templates/partial-comments.html'" ></ng-include>

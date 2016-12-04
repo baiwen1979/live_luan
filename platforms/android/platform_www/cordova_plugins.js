@@ -261,6 +261,22 @@ module.exports = [
         "clobbers": [
             "window.FileTransfer"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.js",
+        "id": "cordova-plugin-screen-orientation.screenorientation",
+        "pluginId": "cordova-plugin-screen-orientation",
+        "clobbers": [
+            "cordova.plugins.screenorientation"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-screen-orientation/www/screenorientation.android.js",
+        "id": "cordova-plugin-screen-orientation.screenorientation.android",
+        "pluginId": "cordova-plugin-screen-orientation",
+        "merges": [
+            "cordova.plugins.screenorientation"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -276,7 +292,8 @@ module.exports.metadata =
     "cordova-plugin-compat": "1.0.0",
     "cordova-plugin-camera": "2.3.0",
     "cordova-plugin-file": "4.3.0",
-    "cordova-plugin-file-transfer": "1.6.0"
+    "cordova-plugin-file-transfer": "1.6.0",
+    "cordova-plugin-screen-orientation": "1.4.2"
 }
 // BOTTOM OF METADATA
 });

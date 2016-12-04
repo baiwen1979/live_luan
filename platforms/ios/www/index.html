@@ -30,7 +30,7 @@
     <script src="js/services.js"></script>
     <script src="js/directives.js"></script>
   </head>
-  <body ng-app="app" class="platform-ios platform-cordova platform-webview">
+  <body ng-app="app">
     <!-- 顶部导航条-->
     <!--
     <ion-nav-bar class="bar-assertive">
@@ -40,5 +40,13 @@
     -->
     <ion-nav-view>
     </ion-nav-view>
+    
+    <script>  
+        document.addEventListener("deviceready", onDeviceReady, false);  
+        function onDeviceReady(){
+           var so = cordova.plugins.screenorientation;  
+           so.setOrientation(so.Orientation.LANDSCAPE);  
+        }  
+    </script>  
   </body>
 </html>

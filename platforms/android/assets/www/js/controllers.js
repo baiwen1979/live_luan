@@ -754,12 +754,12 @@ angular.module('app.controllers', [])
 		var t = formatDate(new Date(),"yyyy-MM-dd");
 		if(t == e){
 			return '今天';
-		}else if( new Date(t).getTime() - new Date(e).getTime() < 2*24*60*60*1000){
+		}/*else if( new Date(t).getTime() - new Date(e).getTime() < 2*24*60*60*1000){
 			return '昨天';
 		}else if( new Date(t).getTime() - new Date(e).getTime() < 3*24*60*60*1000){
 			return '前天';
-		}else{
-			return e;
+		}*/else{
+			return e.substring(5);
 		}
 		function formatDate(date,format){
 			var paddNum = function(num){

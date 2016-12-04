@@ -63,6 +63,9 @@
         },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.chinaluan.news"
         }
     },
     "dependent_plugins": {
