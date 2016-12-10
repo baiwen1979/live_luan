@@ -66,6 +66,9 @@
         },
         "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.chinaluan.news"
         }
     },
     "dependent_plugins": {

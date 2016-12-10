@@ -226,6 +226,10 @@
     background-position: center;
 }
 
+.slide-tabs:nth-child(1){
+    margin-left: 15px;
+}
+
 .slide-tabs a {
     /*border-top:3px solid transparent;*/
     /*line-height: 42px;*/
@@ -646,10 +650,9 @@ h2.title {
     left: 15px;
 }
 
-#tab-account 
-
 iframe.full {
     width: 100%;
+    min-width: 100%;
     min-height: 100%;
 }
 
@@ -687,7 +690,7 @@ iframe.full {
 }
 
 /*专题字样*/
-ion-item:first-child .comments:before{
+/*ion-item:first-child .comments:before{
     content: '';
     padding: 15px;
     background-image: url(../img/special.png);
@@ -695,12 +698,16 @@ ion-item:first-child .comments:before{
     background-size: contain;
     background-position: center;
     margin-right: 10px;
-}
+}*/
 
 /*player-icon*/
 .player-icon{
-    width: 50px;
-    height: 50px;
+    padding: 25px;
+    display: block;
+    background-image: url(../img/player.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
     position: absolute;
     left: 35px;
     top: 25px;

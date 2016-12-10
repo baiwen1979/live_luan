@@ -91,7 +91,7 @@ angular.module('app.controllers', [])
 
 .controller('DetailCtrl', function($scope, $stateParams, $ionicHistory,
 	$ionicActionSheet, $ionicPopup, $ionicPopover, $timeout, $sce, $state,
-	Storage, Model, Util, share, goBack) {
+	Storage, Model, Util, share, goBack, showAlert) {
 
 	$scope.stateCurrentName = ($state.current.name === 'tab.myDetail') ? false : true;
 	$scope.template = 'default';
@@ -167,6 +167,10 @@ angular.module('app.controllers', [])
 	};
 
 	$scope.comment = function(id, event) {
+		if(!localStorage.getItem('userInfo')){
+			showAlert('未登录', '请登陆后再发表文章！');
+			return;
+		}
 		$scope.popover.show(event);
 	};
 
@@ -291,6 +295,9 @@ angular.module('app.controllers', [])
 	$scope.$on('$ionicView.enter', function() {
 		$rootScope.hideTabs = false;
 		$scope.sessionId = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).username  : '登录 | 注册';
+		$scope.commentLen = Storage.getItems('myComments').length;
+		$scope.articalLen = Storage.getItems('myArticles').length;
+		$scope.collectLen = Storage.getItems('favorites').length;
 	});
 
 	$scope.settings = {
@@ -305,9 +312,6 @@ angular.module('app.controllers', [])
 		});
 	};
 
-	$scope.commentLen = Storage.getItems('myComments').length;
-	$scope.articalLen = Storage.getItems('myArticles').length;
-	$scope.collectLen = Storage.getItems('favorites').length;
 })
 
 .controller('myArticlesCtrl', function($rootScope, $scope, $ionicHistory, Storage, $location, goBack){
@@ -665,13 +669,29 @@ angular.module('app.controllers', [])
 .controller('settingCtrl', function($rootScope, $scope, $timeout, $ionicPopup, $ionicActionSheet, goBack){
 	$scope.goBack = goBack;
 
-	$scope.fontSize = '中';
+	var s = parseInt(localStorage.getItem('fontSize') ? angular.fromJson(localStorage.getItem('fontSize')).fz : '13');
+	if(s === 10) $scope.fontSize = '超小';
+	if(s === 12) $scope.fontSize = '小';
+	if(s === 14) $scope.fontSize = '中';
+	if(s === 16) $scope.fontSize = '大';
+	if(s === 18) $scope.fontSize = '超大';
 
 	$scope.cache = parseInt(Math.random()*10000+100)/1024;
 
 	$scope.$on('$ionicView.enter', function() {
 		$rootScope.hideTabs = false;
 	});
+
+	$scope.pushNews = localStorage.getItem('pushNews') ? (localStorage.getItem('pushNews')=='true'?true : false) : true;
+	$scope.changePush = function (){
+		$scope.pushNews = !$scope.pushNews;
+		localStorage.setItem('pushNews', $scope.pushNews ? 'true' : 'false');
+	};
+	$scope.wifiImg = localStorage.getItem('wifiImg') ? (localStorage.getItem('wifiImg')=='true'?true : false) : true;
+	$scope.changeWifi = function (){
+		$scope.wifiImg = !$scope.wifiImg;
+		localStorage.setItem('wifiImg', $scope.wifiImg ? 'true' : 'false');
+	};
 
 	$scope.changeFontSize = function(){
 		$ionicActionSheet.show({

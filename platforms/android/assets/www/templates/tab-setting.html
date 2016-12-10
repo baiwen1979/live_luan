@@ -1,8 +1,12 @@
 <ion-view id="setting">
 	<ion-header-bar align-title="center">
 		<div class="buttons">
-			<button class="button button-clear button-assertive icon ion-ios-arrow-left"ng-click="goBack()"></button>
+			<button class="button button-clear button-assertive icon ion-ios-arrow-left" ng-click="goBack()"></button>
 		</div>
+		<!-- <ion-nav-bar class="bar-assertive">
+		  <ion-nav-back-button>
+		  </ion-nav-back-button>
+		</ion-nav-bar> -->
 		<h1 class="title">我的设置</h1>
 	</ion-header-bar>
 	<ion-content>
@@ -16,17 +20,17 @@
 			</div>
 			<div class="item item-toggle">
 				接收推送
-				<label class="toggle toggle-assertive">
-					<input type="checkbox">
+				<label class="toggle toggle-assertive" ng-click="changePush()">
+					<input type="checkbox" ng-checked="pushNews">
 					<div class="track">
 						<div class="handle"></div>
 					</div>
 				</label>
 			</div>
-			<div class="item item-toggle" href="#">
+			<div class="item item-toggle">
 				仅wi-fi加载图片
-				<label class="toggle toggle-assertive">
-					<input type="checkbox">
+				<label class="toggle toggle-assertive" ng-click="changeWifi()">
+					<input type="checkbox" ng-checked="wifiImg">
 					<div class="track">
 						<div class="handle"></div>
 					</div>

@@ -14,7 +14,7 @@
   <ion-list>
     <ion-item class="item item-thumbnail-left" ng-repeat="item in category.vm.items" ng-if="!item.large_image" type="item-text-wrap" href="#/tab/detail/{{item.id}}">
       <img class="thumbnail" ng-src="{{item.thumbnail}}">
-      <img ng-if="item.type='video'" src="../img/player.png" alt="player" class="player-icon">
+      <span ng-if="item.type=='video'" class="player-icon"></span>
       <!--音频图标-->
       <span class="{{item.type}}"></span>
       <h2 class="title">{{item.title}}</h2>

@@ -51,6 +51,10 @@
                         {
                             "xml": "<feature name=\"YoikScreenOrientation\"><param name=\"android-package\" value=\"net.yoik.cordova.plugins.screenorientation.YoikScreenOrientation\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Toast\"><param name=\"android-package\" value=\"nl.xservices.plugins.Toast\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -114,6 +118,9 @@
             "PACKAGE_NAME": "com.chinaluan.news"
         },
         "cordova-plugin-screen-orientation": {
+            "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-x-toast": {
             "PACKAGE_NAME": "com.chinaluan.news"
         }
     },
@@ -396,6 +403,19 @@
             "merges": [
                 "cordova.plugins.screenorientation"
             ]
+        },
+        {
+            "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+            "id": "cordova-plugin-x-toast.Toast",
+            "pluginId": "cordova-plugin-x-toast",
+            "clobbers": [
+                "window.plugins.toast"
+            ]
+        },
+        {
+            "file": "plugins/cordova-plugin-x-toast/test/tests.js",
+            "id": "cordova-plugin-x-toast.tests",
+            "pluginId": "cordova-plugin-x-toast"
         }
     ],
     "plugin_metadata": {
@@ -410,6 +430,7 @@
         "cordova-plugin-camera": "2.3.0",
         "cordova-plugin-file": "4.3.0",
         "cordova-plugin-file-transfer": "1.6.0",
-        "cordova-plugin-screen-orientation": "1.4.2"
+        "cordova-plugin-screen-orientation": "1.4.2",
+        "cordova-plugin-x-toast": "2.5.2"
     }
 }

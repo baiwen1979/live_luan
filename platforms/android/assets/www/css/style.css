@@ -226,6 +226,10 @@
     background-position: center;
 }
 
+.slide-tabs:nth-child(1){
+    margin-left: 15px;
+}
+
 .slide-tabs a {
     /*border-top:3px solid transparent;*/
     /*line-height: 42px;*/
@@ -686,7 +690,7 @@ iframe.full {
 }
 
 /*专题字样*/
-ion-item:first-child .comments:before{
+/*ion-item:first-child .comments:before{
     content: '';
     padding: 15px;
     background-image: url(../img/special.png);
@@ -694,7 +698,7 @@ ion-item:first-child .comments:before{
     background-size: contain;
     background-position: center;
     margin-right: 10px;
-}
+}*/
 
 /*player-icon*/
 .player-icon{
@@ -707,4 +711,16 @@ ion-item:first-child .comments:before{
     position: absolute;
     left: 35px;
     top: 25px;
+}
+
+/*重新加载按钮*/
+#offlineBtn{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100px;
+    height: 50px;
 }

@@ -36,6 +36,9 @@
     <feature name="YoikScreenOrientation">
         <param name="android-package" value="net.yoik.cordova.plugins.screenorientation.YoikScreenOrientation" />
     </feature>
+    <feature name="Toast">
+        <param name="android-package" value="nl.xservices.plugins.Toast" />
+    </feature>
     <name>直播潞安</name>
     <description>
         潞安新闻中心客户端APP.
@@ -71,10 +74,13 @@
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />
-    <preference name="SplashScreenDelay" value="2000" />
-    <preference name="FadeSplashScreenDuration" value="2000" />
+    <preference name="SplashScreenDelay" value="3000" />
+    <preference name="FadeSplashScreenDuration" value="1000" />
     <preference name="android-minSdkVersion" value="16" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashScreen" value="screen" />
     <preference name="orientation" value="portrait" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
+    <preference name="SplashShowOnlyFirstTime" value="false" />
+    <preference name="Fullscreen" value="false" />
 </widget>

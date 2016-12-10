@@ -28,10 +28,13 @@ angular.module('app.controllers', [])
 				categories[i].vm = vm;
 			}
 			$scope.categories = categories;
+			$scope.outerSlideChanged($scope.slideIndex);
 		}, function(err) {
 			$scope.error = err;
 		});
 	}
+
+	$scope.offline = false;
 
 	//load Articles for the category specified by categoryIndex
 	$scope.loadArticles = function(categoryIndex) {
@@ -73,7 +76,13 @@ angular.module('app.controllers', [])
 	//fired when outer slide Changed to index
 	$scope.outerSlideChanged = function(index) {
 		$ionicScrollDelegate.$getByHandle('tabs-scroll').scrollTo(index * 40);
-		//$scope.slideIndex = index;    
+		$scope.slideIndex = index;
+		if(!$scope.categories){
+			$scope.offline = true;
+			return;
+		}else{
+			$scope.offline = false;
+		}
 		if ($scope.categories[index].vm.items.length < 1) {
 			$scope.categories[index].vm.hasMore = true;
 			$scope.loadArticles(index);
@@ -86,12 +95,13 @@ angular.module('app.controllers', [])
 	};
 
 	initCategoryVMs();
+	$scope.initCategoryVMs = initCategoryVMs;
 	$ionicSlideBoxDelegate.enableSlide(true);
 })
 
 .controller('DetailCtrl', function($scope, $stateParams, $ionicHistory,
 	$ionicActionSheet, $ionicPopup, $ionicPopover, $timeout, $sce, $state,
-	Storage, Model, Util, share, goBack) {
+	Storage, Model, Util, share, goBack, showAlert, $http) {
 
 	$scope.stateCurrentName = ($state.current.name === 'tab.myDetail') ? false : true;
 	$scope.template = 'default';
@@ -148,6 +158,27 @@ angular.module('app.controllers', [])
 	};
 
 	$scope.commit = function(myComment) {
+
+		$scope.uid = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).userId : '-1';
+		$http({
+			method:'post',
+			url:'http://60.220.238.2:8080/media/api/addComment.do',
+			params:{
+				aid:$scope.detail.id,
+				uid:$scope.uid,
+				content:myComment
+			}
+		}).success(function(data){
+			console.log(data);
+			if(data.result == 'OK'){
+				showAlert('评论成功');
+			}else{
+				showAlert('未知错误');
+			}
+		}).error(function(data){
+			showAlert('未知', '请检查网络或进行意见反馈！');
+		});
+
 		Storage.putItem('myComments', {
 			id: $scope.detail.id,
 			title: $scope.detail.title,
@@ -167,6 +198,10 @@ angular.module('app.controllers', [])
 	};
 
 	$scope.comment = function(id, event) {
+		// if(!localStorage.getItem('userInfo')){
+		// 	showAlert('未登录', '请登陆后再发表评论！');
+		// 	return;
+		// }
 		$scope.popover.show(event);
 	};
 
@@ -196,8 +231,13 @@ angular.module('app.controllers', [])
 .controller('ServicesCtrl', function($scope, _, Util) {
 
 	$scope.avatar = 'img/servers.png';
-	Util.getServices(function(items) {
-		$scope.groups = items;
+	// Util.getServices(function(items) {
+	// 	$scope.groups = items;
+	// });
+	$scope.$on('$ionicView.enter', function() {
+		Util.getServices(function(items) {
+			$scope.groups = items;
+		});
 	});
 })
 
@@ -291,6 +331,9 @@ angular.module('app.controllers', [])
 	$scope.$on('$ionicView.enter', function() {
 		$rootScope.hideTabs = false;
 		$scope.sessionId = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).username  : '登录 | 注册';
+		$scope.commentLen = Storage.getItems('myComments').length;
+		$scope.articalLen = Storage.getItems('myArticles').length;
+		$scope.collectLen = Storage.getItems('favorites').length;
 	});
 
 	$scope.settings = {
@@ -299,18 +342,16 @@ angular.module('app.controllers', [])
 
 	$scope.avatar = 'img/user.png';
 
+	// 亮度调节
 	$scope.luminance = function(){
 		$ionicActionSheet.show({
 			
 		});
 	};
 
-	$scope.commentLen = Storage.getItems('myComments').length;
-	$scope.articalLen = Storage.getItems('myArticles').length;
-	$scope.collectLen = Storage.getItems('favorites').length;
 })
 
-.controller('myArticlesCtrl', function($rootScope, $scope, $ionicHistory, Storage, $location, goBack){
+.controller('myArticlesCtrl', function($rootScope, $scope, $ionicHistory, Storage, $location, $ionicActionSheet, goBack, showAlert){
 
 	$scope.goBack = goBack;
 
@@ -324,6 +365,28 @@ angular.module('app.controllers', [])
 		}else{
 			$location.url('/tab/publish/'+index);
 		}
+	};
+
+	$scope.onHold = function (index){
+		// 长按弹窗删除
+		var articles = Storage.getItems('myArticles');
+		$ionicActionSheet.show({
+				titleText: '操作',
+				cancelText: '取消',
+				buttons: [{
+					text: '删除'
+				}],
+				buttonClicked: function() {
+					if(articles[index].isPublish){
+						showAlert('已发表的文章不能删除');
+					}else{
+						articles.splice(index, 1);
+						localStorage.setItem('myArticles', angular.toJson(articles));
+						$scope.articles = Storage.getItems('myArticles');
+					}
+					return true;
+				}
+		});
 	};
 
 })
@@ -635,7 +698,7 @@ angular.module('app.controllers', [])
 				title: '意见反馈',
 				content: $scope.feedback.content + '(' + $scope.feedback.call + ')',
 			}
-		}).success(function(){
+		}).success(function(data){
 			popup.close();
 			popup = $ionicPopup.show({
 				title: '提交成功！',
@@ -665,13 +728,34 @@ angular.module('app.controllers', [])
 .controller('settingCtrl', function($rootScope, $scope, $timeout, $ionicPopup, $ionicActionSheet, goBack){
 	$scope.goBack = goBack;
 
-	$scope.fontSize = '中';
-
-	$scope.cache = parseInt(Math.random()*10000+100)/1024;
+	var s = parseInt(localStorage.getItem('fontSize') ? angular.fromJson(localStorage.getItem('fontSize')).fz : '14');
+	console.log(s);
+	if(s === 10) $scope.fontSize = '超小';
+	if(s === 12) $scope.fontSize = '小';
+	if(s === 14) $scope.fontSize = '中';
+	if(s === 16) $scope.fontSize = '大';
+	if(s === 18) $scope.fontSize = '超大';
 
 	$scope.$on('$ionicView.enter', function() {
 		$rootScope.hideTabs = false;
+		if(localStorage.getItem('cacheNum')){
+			$scope.cache = parseFloat(localStorage.getItem('cacheNum')) + (new Number(Math.random().toFixed(2)).valueOf());
+		}else{
+			$scope.cache = parseFloat(Math.random()*5000+100)/1024;
+		}
+		localStorage.setItem('cacheNum', $scope.cache.toString());
 	});
+
+	$scope.pushNews = localStorage.getItem('pushNews') ? (localStorage.getItem('pushNews')=='true'?true : false) : true;
+	$scope.changePush = function (){
+		$scope.pushNews = !$scope.pushNews;
+		localStorage.setItem('pushNews', $scope.pushNews ? 'true' : 'false');
+	};
+	$scope.wifiImg = localStorage.getItem('wifiImg') ? (localStorage.getItem('wifiImg')=='true'?true : false) : true;
+	$scope.changeWifi = function (){
+		$scope.wifiImg = !$scope.wifiImg;
+		localStorage.setItem('wifiImg', $scope.wifiImg ? 'true' : 'false');
+	};
 
 	$scope.changeFontSize = function(){
 		$ionicActionSheet.show({
@@ -721,6 +805,7 @@ angular.module('app.controllers', [])
 			$timeout(function(){
 				popup.close();
 				$scope.cache = 0;
+				localStorage.removeItem('cacheNum');
 			}, 1000);
 		}, 2000);
 		
@@ -763,8 +848,8 @@ angular.module('app.controllers', [])
 		}
 		function formatDate(date,format){
 			var paddNum = function(num){
-			  num += "";
-			  return num.replace(/^(\d)$/,"0$1");
+				num += "";
+				return num.replace(/^(\d)$/,"0$1");
 			};
 			var cfg = {
 				yyyy : date.getFullYear(),
