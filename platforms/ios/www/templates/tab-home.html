@@ -14,9 +14,16 @@
       
     </div>
   </ion-header-bar>
-  <ion-slide-box delegate-handle="outer-slider" id="outer-slider" show-pager="false" on-slide-changed="outerSlideChanged(index)" active-slide="slideIndex">
+  
+  <div ng-if="offline" id="offlineBtn">
+    <p>网络连接失败!</p>
+    <button class="button button-assertive" ng-click="initCategoryVMs()">重新加载</button>
+  </div>
+
+  <ion-slide-box  ng-if="!offline" delegate-handle="outer-slider" id="outer-slider" show-pager="false" on-slide-changed="outerSlideChanged(index)" active-slide="slideIndex">
     <ion-slide ng-repeat="category in categories"> 
       <ng-include src="'templates/' + category.listTemplate + '.list.html'"></ng-include>
     </ion-slide>
   </ion-slide-box>
+
 </ion-view>

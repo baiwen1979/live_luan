@@ -712,3 +712,15 @@ iframe.full {
     left: 35px;
     top: 25px;
 }
+
+/*重新加载按钮*/
+#offlineBtn{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100px;
+    height: 50px;
+}

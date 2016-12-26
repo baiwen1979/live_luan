@@ -2,5 +2,5 @@
     "ImageIO.framework": 2,
     "CoreLocation.framework": 2,
     "AVFoundation.framework": 2,
-    "QuartzCore.framework": 1
+    "QuartzCore.framework": 2
 }

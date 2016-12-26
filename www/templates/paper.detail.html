@@ -1,13 +1,13 @@
 <ion-content id="paper-detail" class="ios-top-20 padding has-footer">
   <div id="news-detail" class="news-header">
-    <h1>{{title}}</h1>
+    <h1>{{detail.title}}</h1>
     <p>
-      <span>{{publishTime| date:'yyyy-MM-dd'}}</span>
-      <span>{{source}}</span>
-      <span>{{author}}</span>
+      <span>{{detail.publishTime| date:'yyyy-MM-dd'}}</span>
+      <span>{{detail.source}}</span>
+      <span>{{detail.author}}</span>
     </p>
   </div>
-  <div ng-bind-html="content"  class="$root.changeFontSize">
+  <div ng-bind-html="detail.content"  class="$root.changeFontSize">
   </div>
   <ng-include src="'templates/partial-comments.html'" ></ng-include>
 </ion-content>

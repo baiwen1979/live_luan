@@ -1,4 +1,4 @@
-angular.module('app.services', ['ngResource'])
+angular.module('app.services', ['ngResource', 'app.constants'])
 
 .factory('Storage', function() {
 
@@ -28,21 +28,7 @@ angular.module('app.services', ['ngResource'])
     };
 })
 
-.factory('Model', ['$resource', function($resource) {
-    
-    var resoureUrls = {
-        apiBaseUrl: 'http://60.220.238.2:8080/media/api',
-        category: {
-            listAction: 'categories.do'
-        },
-        article: {
-            listAction: 'newsJsonList.do',
-            detailAction: 'newsJsonDetailView.do'
-        },
-        service: {
-            listAction: 'services.do'
-        }
-    };
+.factory('Model', ['$resource', 'ResourceUrls', function($resource, ResourceUrls) {
 
     var paramConfig = {
         reqChar: '?',
@@ -78,19 +64,19 @@ angular.module('app.services', ['ngResource'])
     return {
         list: function(clazz, params, onOK, onErr) {
             var qs = paramsToQueryStr(params);
-            var listUrl = resoureUrls.apiBaseUrl + '/' + resoureUrls[clazz].listAction;
+            var listUrl = ResourceUrls.ApiBaseUrl + '/' + ResourceUrls[clazz + 'List'];
             getData(listUrl + qs + paramConfig.suffix, onOK, onErr);
         },
 
         detail: function(clazz, params, onOK, onErr) {
             var qs = paramsToQueryStr(params);
-            var detailUrl = resoureUrls.apiBaseUrl + '/' + resoureUrls[clazz].detailAction;
+            var detailUrl = ResourceUrls.ApiBaseUrl + '/' + ResourceUrls[clazz + 'Detail'];
             getData(detailUrl + qs + paramConfig.suffix, onOK, onErr);
         }
     };
 }])
 
-.factory('Util', function(Model) {
+.factory('Util', function($ionicPopup, $ionicActionSheet, $ionicHistory, $timeout, Model, MimeTypes) {
 
     var categories;
     var templates;
@@ -101,12 +87,13 @@ angular.module('app.services', ['ngResource'])
             if (categories) {
                 onLoad(categories);
             } else {
-                Model.list('category', {}, function(list) {
+                Model.list('Category', {}, function(list) {
                     categories = list;
                     onLoad(categories);
                 }, onErr);
             }
         },
+
         getDetailTemplate: function(categoryId, callback) {
             if (templates) {
                 callback(templates[categoryId]);
@@ -123,58 +110,65 @@ angular.module('app.services', ['ngResource'])
                 });
             }
         },
+
         getServices : function(onLoad, onErr) {
             if (services) {
                 onLoad(services);
             }
             else {
-                Model.list('service', {}, function(list) {
+                Model.list('Service', {}, function(list) {
                     services = list;
                     onLoad(services);
                 }, onErr);
             }
+        },
+
+        showAlert: function(title, tmp){
+            var alertPopup = $ionicPopup.alert({
+                title: title,
+                template: tmp,
+                okType:'button-assertive'
+            });
+
+            alertPopup.then(function(res) {
+                console.log('showAlert');
+            });
+        },
+
+        share: function(id, title) {
+            var sheet = $ionicActionSheet.show({
+                titleText: '分享',
+                cancelText: '取消',
+                buttons: [{
+                    text: '分享到微信朋友圈'
+                }, {
+                    text: '发送给微信好友'
+                }],
+                buttonClicked: function(index) {
+                    var popup = $ionicPopup.show({
+                        title: '分享',
+                        template: '对不起，次版本尚未提供分享功能'
+                    });
+                    $timeout(function() {
+                        popup.close();
+                    }, 3000);
+                }
+            });
+        },
+
+        goBack: function(){
+            $ionicHistory.goBack();
+        },
+
+        setStatusBarHexColor: function(hexColorString) {
+            if (window.StatusBar) {
+                window.StatusBar.backgroundColorByHexString(hexColorString);
+            }
+        },
+
+        getMimeTypeOfFile: function (filename) {
+            var suffix = filename.substring(filename.lastIndexOf('.') + 1);
+            return MimeTypes[suffix]? MimeTypes[suffix]:'application/octet-stream';
         }
     };
 })
-
-.factory('showAlert', function($ionicPopup){
-    return function(title, tmp){
-        var alertPopup = $ionicPopup.alert({
-            title: title,
-            template: tmp,
-            okType:'button-assertive'
-        });
-        alertPopup.then(function(res) {
-            console.log('Thank you for not eating my delicious ice cream cone');
-        });
-    };
-})
-
-.factory('share', function($ionicPopup, $ionicActionSheet, $timeout){
-    return function(id, title) {
-        var sheet = $ionicActionSheet.show({
-            titleText: '分享',
-            cancelText: '取消',
-            buttons: [{
-                text: '分享到微信朋友圈'
-            }, {
-                text: '发送给微信好友'
-            }],
-            buttonClicked: function(index) {
-                var popup = $ionicPopup.show({
-                    title: '分享',
-                    template: '测试版尚未提供分享功能'
-                });
-                $timeout(function() {
-                    popup.close();
-                }, 3000);
-            }
-        });
-    };
-})
-
-.factory('goBack', function($ionicHistory){
-    return function(){
-        $ionicHistory.goBack();
-    };
-});

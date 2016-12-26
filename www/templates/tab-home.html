@@ -1,16 +1,17 @@
 <ion-view id="tab-home" view-title="首页">
-  <ion-header-bar class="bar-light sub-header">
+  <ion-header-bar  ng-if="!offline" class="bar-light sub-header">
     <div class="row header-row">
       <ion-scroll delegate-handle="tabs-scroll" zooming="false" class="tabs-container" direction="x" scrollbar-y="false" scrollbar-x="false">
         <ul class="slide-tabs">
-          <li ng-class="slideIndex == $index ? 'current-active'+$index : 'current'+$index" ng-repeat="category in categories">
+          <li ng-repeat="category in categorySort" ng-class="slideIndex == $index ? 'current-active'+ category.id : 'current'+ category.id">
             <a href="#" ng-click="activeSlide($index)"></a>
           </li>
         </ul>
       </ion-scroll>
       
-      <button id="btn-addCategory" class="button button-stable icon ion-ios-plus-empty" ng-click="addCategory()">
-      </button>
+      <!-- <button id="btn-addCategory" class="button button-stable icon ion-ios-plus-empty" ng-click="openModal()">
+      </button> -->
+      <a id="btn-addCategory" href="#" ng-click="openModal()"></a>
       
     </div>
   </ion-header-bar>

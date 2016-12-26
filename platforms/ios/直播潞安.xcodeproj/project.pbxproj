@@ -43,10 +43,10 @@
 		6C6DB5DF58C14A3AAB829827 /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = F6DB245E061F4A41A4E1120A /* CDVSplashScreen.m */; };
 		E176F320F573491E9D46B76F /* CDVViewController+SplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = F325DC8EC32C4CCDBF098F62 /* CDVViewController+SplashScreen.m */; };
 		84B1F2F0EF6849AC8A568795 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5459A64185C8433884DEB108 /* CDVStatusBar.m */; };
-		B1305F7D53EB4F7B98D73A8F /* IonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 790811F8A7114FCBA9FAA035 /* IonicKeyboard.m */; };
-		203B30FF1FCE4F4589C74F67 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C5B522ADFB04BFCA6FDFEA3 /* Toast+UIView.m */; };
-		4EFFD30F5A474006B396B4F9 /* Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = A1EA3A5151BD458A83A2B3D9 /* Toast.m */; };
 		333756DFE2BF43CF906E9796 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2A277E684584B01A8232AF8 /* QuartzCore.framework */; };
+		B2052478D2A84155BAE6850B /* IonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A60BD239CD460FB86EC800 /* IonicKeyboard.m */; };
+		C3EED7FAB21C41519A096115 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA6157BE9924E3CBF2F8BFE /* Toast+UIView.m */; };
+		A153567AC21B4F4BAAC4E2FF /* Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 845BB4D32F014AC9A260B277 /* Toast.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,13 +137,13 @@
 		7C6C980382FF42B0810AF086 /* CDVViewController+SplashScreen.h */ = {isa = PBXFileReference; name = "CDVViewController+SplashScreen.h"; path = "cordova-plugin-splashscreen/CDVViewController+SplashScreen.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		5459A64185C8433884DEB108 /* CDVStatusBar.m */ = {isa = PBXFileReference; name = "CDVStatusBar.m"; path = "cordova-plugin-statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		C45507098FFC42B8A1D9BD46 /* CDVStatusBar.h */ = {isa = PBXFileReference; name = "CDVStatusBar.h"; path = "cordova-plugin-statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
-		790811F8A7114FCBA9FAA035 /* IonicKeyboard.m */ = {isa = PBXFileReference; name = "IonicKeyboard.m"; path = "ionic-plugin-keyboard/IonicKeyboard.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		E7316926BDBE4EB1A04D99AD /* IonicKeyboard.h */ = {isa = PBXFileReference; name = "IonicKeyboard.h"; path = "ionic-plugin-keyboard/IonicKeyboard.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
-		2C5B522ADFB04BFCA6FDFEA3 /* Toast+UIView.m */ = {isa = PBXFileReference; name = "Toast+UIView.m"; path = "cordova-plugin-x-toast/Toast+UIView.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		A1EA3A5151BD458A83A2B3D9 /* Toast.m */ = {isa = PBXFileReference; name = "Toast.m"; path = "cordova-plugin-x-toast/Toast.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		3404F4D6E4894304A27FD282 /* Toast+UIView.h */ = {isa = PBXFileReference; name = "Toast+UIView.h"; path = "cordova-plugin-x-toast/Toast+UIView.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
-		A19A7C98E5B5452F908B95D0 /* Toast.h */ = {isa = PBXFileReference; name = "Toast.h"; path = "cordova-plugin-x-toast/Toast.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		B2A277E684584B01A8232AF8 /* QuartzCore.framework */ = {isa = PBXFileReference; name = "QuartzCore.framework"; path = "System/Library/Frameworks/QuartzCore.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		D8A60BD239CD460FB86EC800 /* IonicKeyboard.m */ = {isa = PBXFileReference; name = "IonicKeyboard.m"; path = "ionic-plugin-keyboard/IonicKeyboard.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		95B198108A4F47BCAAB8FD83 /* IonicKeyboard.h */ = {isa = PBXFileReference; name = "IonicKeyboard.h"; path = "ionic-plugin-keyboard/IonicKeyboard.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		8DA6157BE9924E3CBF2F8BFE /* Toast+UIView.m */ = {isa = PBXFileReference; name = "Toast+UIView.m"; path = "cordova-plugin-x-toast/Toast+UIView.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		845BB4D32F014AC9A260B277 /* Toast.m */ = {isa = PBXFileReference; name = "Toast.m"; path = "cordova-plugin-x-toast/Toast.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		86A442EC373142378BB3B92F /* Toast+UIView.h */ = {isa = PBXFileReference; name = "Toast+UIView.h"; path = "cordova-plugin-x-toast/Toast+UIView.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		97B03F94D1514F9681A84802 /* Toast.h */ = {isa = PBXFileReference; name = "Toast.h"; path = "cordova-plugin-x-toast/Toast.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,12 +302,12 @@
 				7C6C980382FF42B0810AF086 /* CDVViewController+SplashScreen.h */,
 				5459A64185C8433884DEB108 /* CDVStatusBar.m */,
 				C45507098FFC42B8A1D9BD46 /* CDVStatusBar.h */,
-				790811F8A7114FCBA9FAA035 /* IonicKeyboard.m */,
-				E7316926BDBE4EB1A04D99AD /* IonicKeyboard.h */,
-				2C5B522ADFB04BFCA6FDFEA3 /* Toast+UIView.m */,
-				A1EA3A5151BD458A83A2B3D9 /* Toast.m */,
-				3404F4D6E4894304A27FD282 /* Toast+UIView.h */,
-				A19A7C98E5B5452F908B95D0 /* Toast.h */,
+				D8A60BD239CD460FB86EC800 /* IonicKeyboard.m */,
+				95B198108A4F47BCAAB8FD83 /* IonicKeyboard.h */,
+				8DA6157BE9924E3CBF2F8BFE /* Toast+UIView.m */,
+				845BB4D32F014AC9A260B277 /* Toast.m */,
+				86A442EC373142378BB3B92F /* Toast+UIView.h */,
+				97B03F94D1514F9681A84802 /* Toast.h */,
 			);
 			name = Plugins;
 			path = "直播潞安/Plugins";
@@ -444,9 +444,9 @@
 				6C6DB5DF58C14A3AAB829827 /* CDVSplashScreen.m in Sources */,
 				E176F320F573491E9D46B76F /* CDVViewController+SplashScreen.m in Sources */,
 				84B1F2F0EF6849AC8A568795 /* CDVStatusBar.m in Sources */,
-				B1305F7D53EB4F7B98D73A8F /* IonicKeyboard.m in Sources */,
-				203B30FF1FCE4F4589C74F67 /* Toast+UIView.m in Sources */,
-				4EFFD30F5A474006B396B4F9 /* Toast.m in Sources */,
+				B2052478D2A84155BAE6850B /* IonicKeyboard.m in Sources */,
+				C3EED7FAB21C41519A096115 /* Toast+UIView.m in Sources */,
+				A153567AC21B4F4BAAC4E2FF /* Toast.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

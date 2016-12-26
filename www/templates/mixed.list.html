@@ -2,8 +2,8 @@
   <ion-refresher pulling-text="下拉刷新..." on-refresh="doRefresh($index)">
   </ion-refresher>
 
-  <ion-slide-box on-touch="enableOuterSlider(false)" on-release="enableOuterSlider(true)" delegate-handle="inner-slider" id="inner-slider" does-continue="true" auto-play="false">
-    <ion-slide ng-repeat="item in category.vm.items | limitTo: 5" ng-if="item.large_image && item.type!='video'">
+  <ion-slide-box on-touch="enableOuterSlider(false)" on-release="enableOuterSlider(true)" delegate-handle="inner-slider" id="inner-slider" does-continue="true" auto-play="true">
+    <ion-slide ng-repeat="item in category.vm.items | limitTo: 5" ng-if="item.as=='slider' && item.type!='video'">
       <div class="box blue">
         <a ng-href="#/tab/detail/{{item.id}}"><img ng-src="{{item.large_image}}"></a>
         <p class="title">{{item.title}}</p>
@@ -12,8 +12,8 @@
   </ion-slide-box>
 
   <ion-list>
-    <ion-item class="item item-thumbnail-left" ng-repeat="item in category.vm.items" ng-if="!item.large_image" type="item-text-wrap" href="#/tab/detail/{{item.id}}">
-      <img class="thumbnail" ng-src="{{item.thumbnail}}">
+    <ion-item class="item item-thumbnail-left" ng-repeat="item in category.vm.items" ng-if="item.as!='slider'" type="item-text-wrap" href="#/tab/detail/{{item.id}}">
+      <img class="thumbnail round-rect" ng-src="{{item.thumbnail}}">
       <span ng-if="item.type=='video'" class="player-icon"></span>
       <!--音频图标-->
       <span class="{{item.type}}"></span>

@@ -1,0 +1,7 @@
+ @font-face {
+	font-family: 'stt';
+	src: url('../font/stt.ttf') format('truetype');
+}
+.shuTongTi {
+	font-family: 'stt';
+}

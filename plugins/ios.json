@@ -36,10 +36,10 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.chinaluan.news"
         },
-        "ionic-plugin-keyboard": {
+        "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.chinaluan.news"
         },
-        "cordova-plugin-screen-orientation": {
+        "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.chinaluan.news"
         },
         "cordova-plugin-x-toast": {

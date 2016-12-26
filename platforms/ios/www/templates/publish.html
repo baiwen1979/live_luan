@@ -3,11 +3,7 @@
 		<div class="buttons">
 			<button class="button button-clear button-assertive icon ion-ios-arrow-left" ng-click="goBack()"></button>
 		</div>
-		<!-- <ion-nav-bar class="bar-assertive">
-		  <ion-nav-back-button>
-		  </ion-nav-back-button>
-		</ion-nav-bar> -->
-		<h1 class="title">发表文章</h1>
+		<h1 class="title">发表爆料</h1>
 	</ion-header-bar>
 	<ion-content>
 		<div class="list list-inset">
@@ -16,7 +12,7 @@
 			</label>
 			<label class="item item-input item-select">
 				<div class="input-label">
-					文章类型
+					选择栏目
 				</div>
 				<select ng-options="type.id as type.label for type in types" ng-model="publish.type">
 				</select>

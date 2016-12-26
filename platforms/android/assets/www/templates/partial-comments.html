@@ -1,5 +1,6 @@
 <div id="comments">
-  <ion-list>
+  <p ng-if="detail.comments.length == 0"> 暂无评论， 快点抢个沙发吧！</p>
+  <ion-list ng-if="detail.comments && detail.comments.length > 0">
     <ion-item class="item item-divider">热门评论</ion-item>
     <ion-item class="item item-avatar" ng-repeat="item in detail.comments"> 
       <img ng-src="{{item.portrait_url}}">
