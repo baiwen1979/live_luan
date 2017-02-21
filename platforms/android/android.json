@@ -55,6 +55,18 @@
                         {
                             "xml": "<feature name=\"Toast\"><param name=\"android-package\" value=\"nl.xservices.plugins.Toast\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Wechat\"><param name=\"android-package\" value=\"xu.li.cordova.wechat.Wechat\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"WECHATAPPID\" value=\"wx77a7c47a36036e8d\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Canvas2ImagePlugin\"><param name=\"android-package\" value=\"org.devgeeks.Canvas2ImagePlugin.Canvas2ImagePlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -64,6 +76,14 @@
                     "/manifest/application": [
                         {
                             "xml": "<activity android:label=\"@string/multi_app_name\" android:name=\"com.synconset.MultiImageChooserActivity\" android:theme=\"@android:style/Theme.Holo.Light\"></activity>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<activity android:exported=\"true\" android:label=\"@string/launcher_name\" android:name=\".wxapi.WXEntryActivity\"><intent-filter><action android:name=\"android.intent.action.VIEW\" /><category android:name=\"android.intent.category.DEFAULT\" /><data android:scheme=\"wx77a7c47a36036e8d\" /></intent-filter></activity>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<activity android:exported=\"true\" android:label=\"@string/launcher_name\" android:launchMode=\"singleTop\" android:name=\".wxapi.WXPayEntryActivity\"><intent-filter><action android:name=\"android.intent.action.VIEW\" /><category android:name=\"android.intent.category.DEFAULT\" /><data android:scheme=\"wx77a7c47a36036e8d\" /></intent-filter></activity>",
                             "count": 1
                         }
                     ],
@@ -76,7 +96,23 @@
                     "/*": [
                         {
                             "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-                            "count": 3
+                            "count": 5
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -121,6 +157,13 @@
             "PACKAGE_NAME": "com.chinaluan.news"
         },
         "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-wechat": {
+            "WECHATAPPID": "wx77a7c47a36036e8d",
+            "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "org.devgeeks.Canvas2ImagePlugin": {
             "PACKAGE_NAME": "com.chinaluan.news"
         }
     },
@@ -415,6 +458,22 @@
             "file": "plugins/cordova-plugin-x-toast/test/tests.js",
             "id": "cordova-plugin-x-toast.tests",
             "pluginId": "cordova-plugin-x-toast"
+        },
+        {
+            "file": "plugins/cordova-plugin-wechat/www/wechat.js",
+            "id": "cordova-plugin-wechat.Wechat",
+            "pluginId": "cordova-plugin-wechat",
+            "clobbers": [
+                "Wechat"
+            ]
+        },
+        {
+            "file": "plugins/org.devgeeks.Canvas2ImagePlugin/www/Canvas2ImagePlugin.js",
+            "id": "org.devgeeks.Canvas2ImagePlugin.Canvas2ImagePlugin",
+            "pluginId": "org.devgeeks.Canvas2ImagePlugin",
+            "clobbers": [
+                "window.canvas2ImagePlugin"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -430,6 +489,8 @@
         "cordova-plugin-file-transfer": "1.6.0",
         "cordova-plugin-screen-orientation": "1.4.2",
         "ionic-plugin-keyboard": "2.2.1",
-        "cordova-plugin-x-toast": "2.5.2"
+        "cordova-plugin-x-toast": "2.5.2",
+        "cordova-plugin-wechat": "1.4.0",
+        "org.devgeeks.Canvas2ImagePlugin": "0.6.0"
     }
 }

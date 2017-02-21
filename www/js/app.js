@@ -163,6 +163,16 @@ angular.module('app', ['ionic', 'ngCordova', 'app.sortable', 'app.controllers', 
         }
     })
 
+    .state('tab.myContact', {
+        url:'/myContact',
+        views:{
+            'tab-account':{
+                templateUrl: 'templates/myContact.html',
+                controller: 'myContactCtrl'
+            }
+        }
+    })
+
     .state('tab.publish', {
         url:'/publish/:id',
         views:{

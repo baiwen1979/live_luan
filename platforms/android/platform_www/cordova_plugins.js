@@ -289,6 +289,22 @@ module.exports = [
         "file": "plugins/cordova-plugin-x-toast/test/tests.js",
         "id": "cordova-plugin-x-toast.tests",
         "pluginId": "cordova-plugin-x-toast"
+    },
+    {
+        "file": "plugins/cordova-plugin-wechat/www/wechat.js",
+        "id": "cordova-plugin-wechat.Wechat",
+        "pluginId": "cordova-plugin-wechat",
+        "clobbers": [
+            "Wechat"
+        ]
+    },
+    {
+        "file": "plugins/org.devgeeks.Canvas2ImagePlugin/www/Canvas2ImagePlugin.js",
+        "id": "org.devgeeks.Canvas2ImagePlugin.Canvas2ImagePlugin",
+        "pluginId": "org.devgeeks.Canvas2ImagePlugin",
+        "clobbers": [
+            "window.canvas2ImagePlugin"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -306,7 +322,9 @@ module.exports.metadata =
     "cordova-plugin-file-transfer": "1.6.0",
     "cordova-plugin-screen-orientation": "1.4.2",
     "ionic-plugin-keyboard": "2.2.1",
-    "cordova-plugin-x-toast": "2.5.2"
+    "cordova-plugin-x-toast": "2.5.2",
+    "cordova-plugin-wechat": "1.4.0",
+    "org.devgeeks.Canvas2ImagePlugin": "0.6.0"
 }
 // BOTTOM OF METADATA
 });

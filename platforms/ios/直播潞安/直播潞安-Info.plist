@@ -21,11 +21,11 @@
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.0.1</string>
+    <string>1.0.0</string>
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleVersion</key>
-    <string>0.0.1</string>
+    <string>1.0.0</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSMainNibFile</key>
@@ -58,6 +58,22 @@
     <key>UIInterfaceOrientation</key>
     <array>
       <string>UIInterfaceOrientationPortrait</string>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>weixin</string>
+      <string>wechat</string>
+    </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLName</key>
+        <string>weixin</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>wx77a7c47a36036e8d</string>
+        </array>
+      </dict>
     </array>
   </dict>
 </plist>

@@ -12,6 +12,7 @@
       <!-- <button id="btn-addCategory" class="button button-stable icon ion-ios-plus-empty" ng-click="openModal()">
       </button> -->
       <a id="btn-addCategory" href="#" ng-click="openModal()"></a>
+      <!-- <a id="btn-addCategory" href="#"></a> -->
       
     </div>
   </ion-header-bar>
@@ -19,6 +20,17 @@
   <div ng-if="offline" id="offlineBtn">
     <p>网络连接失败!</p>
     <button class="button button-assertive" ng-click="initCategoryVMs()">重新加载</button>
+  </div>
+  
+  <!-- 首屏广告相关代码 -->
+  <div id="advertisements" ng-class="{'advHide':advHide}">
+    <div id="closeAdv" ng-click="hideAdv()">跳过({{advTime}})</div>
+    <ion-slide-box auto-play="true" does-continue="true" slide-interval="1400" on-slide-changed="ctrlTime()" id="advBox">
+      <ion-slide ng-repeat="item in advImage">
+        <div ng-class="item" class="box">
+        </div>
+      </ion-slide>
+    </ion-slide-box>
   </div>
 
   <ion-slide-box  ng-if="!offline" delegate-handle="outer-slider" id="outer-slider" show-pager="false" on-slide-changed="outerSlideChanged(index)" active-slide="slideIndex">

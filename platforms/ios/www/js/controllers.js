@@ -1,16 +1,26 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers', ['ngCordova', 'app.constants'])
 
-.controller('HomeCtrl', function($scope, $timeout, $ionicScrollDelegate, $ionicSlideBoxDelegate,
-	Model, Util) {
+.controller('HomeCtrl', function($rootScope, $scope, $timeout, $ionicPlatform, 
+	$ionicScrollDelegate, $ionicSlideBoxDelegate,
+	Model, Util, StatusBarColor, $ionicModal, $cordovaToast) {
 
 	//active slideIndex
 	$scope.slideIndex = 0;
 
 	//constructor CategoryVM
-	function CategoryVM() {
+	function CategoryVM(id) {
+		this.id = id;
 		this.hasMore = false;
 		this.items = [];
 		this.pageCount = 0;
+	}
+
+	function setItemsAs(items, fromIndex, toIndex, what, as) {
+		for (var i = fromIndex; i <= toIndex; i++) {
+			if (items[i] && items[i][what]) {
+				items[i].as = as;
+			}
+		}
 	}
 
 	//called when Articles have been loaded
@@ -23,12 +33,25 @@ angular.module('app.controllers', [])
 	//initialize every Category View Models
 	function initCategoryVMs() {
 		Util.getCategories(function(categories) {
+			// console.log('initCategoryVMs');
+			if(localStorage.getItem('categorySort')){
+				categories = angular.fromJson(localStorage.getItem('categorySort'));
+			}else{
+				localStorage.setItem('categorySort', angular.toJson(categories));
+			}
+			$scope.categorySort = categories;
+
 			for (var i in categories) {
 				var vm = new CategoryVM(categories[i].id);
 				categories[i].vm = vm;
 			}
+
 			$scope.categories = categories;
-			$scope.outerSlideChanged($scope.slideIndex);
+			if ($scope.categories) {
+				$timeout(function() {
+					$scope.outerSlideChanged($scope.slideIndex);
+				}, 100);
+			}
 		}, function(err) {
 			$scope.error = err;
 		});
@@ -41,9 +64,12 @@ angular.module('app.controllers', [])
 		var categoryId = $scope.categories[categoryIndex].id;
 		var pageCount = $scope.categories[categoryIndex].vm.pageCount;
 		var param = { c: categoryId, p: pageCount };
-		Model.list("article", param, function(items) {
+		Model.list("Article", param, function(items) {
 			for (var i in items) {
 				$scope.categories[categoryIndex].vm.items.push(items[i]);
+			}
+			if ($scope.categories[categoryIndex].vm.pageCount === 0) {
+				setItemsAs($scope.categories[categoryIndex].vm.items, 0, 4, 'large_image', 'slider');
 			}
 			$scope.categories[categoryIndex].vm.pageCount++;
 			onArticlesLoad();
@@ -60,12 +86,13 @@ angular.module('app.controllers', [])
 		$scope.loadArticles(categoryIndex);
 	};
 
-	$scope.$on('$stateChangeSuccess', function() {});
+	$scope.$on('$stateChangeSuccess', function() {
+		
+	});
 
 	$scope.$on('$ionicView.enter', function(e) {
-		$timeout(function() {
-			$scope.outerSlideChanged($scope.slideIndex);
-		}, 500);
+		Util.setStatusBarHexColor(StatusBarColor.ColorOfHome);
+		$scope.outerSlideChanged($scope.slideIndex);
 	});
 
 	//active the outer slide by index when click top tab
@@ -75,14 +102,32 @@ angular.module('app.controllers', [])
 
 	//fired when outer slide Changed to index
 	$scope.outerSlideChanged = function(index) {
-		$ionicScrollDelegate.$getByHandle('tabs-scroll').scrollTo(index * 40);
-		$scope.slideIndex = index;
+		
 		if(!$scope.categories){
 			$scope.offline = true;
 			return;
-		}else{
-			$scope.offline = false;
 		}
+
+		$scope.offline = false;
+
+		var tabScroll = $ionicScrollDelegate.$getByHandle('tabs-scroll');
+
+		if (tabScroll) {
+			$timeout (function(){
+				tabScroll.scrollTo(index * 40);
+				innerSlider.loop(true);
+			}, 100);
+		}
+
+		var innerSlider = $ionicSlideBoxDelegate.$getByHandle('inner-slider');
+		if (innerSlider) {
+			$timeout(function(){
+				innerSlider.loop(true);
+			}, 100);
+		}
+				
+		$scope.slideIndex = index;
+
 		if ($scope.categories[index].vm.items.length < 1) {
 			$scope.categories[index].vm.hasMore = true;
 			$scope.loadArticles(index);
@@ -95,13 +140,94 @@ angular.module('app.controllers', [])
 	};
 
 	initCategoryVMs();
+
 	$scope.initCategoryVMs = initCategoryVMs;
 	$ionicSlideBoxDelegate.enableSlide(true);
+
+
+	// 排序的modal相关
+	$ionicModal.fromTemplateUrl('templates/sortModal.html', {
+			scope: $scope,
+			animation: 'slide-in-right'
+		}).then(function(modal) {
+			$scope.modal = modal;
+		});
+	$scope.showModal = false;//用于控制关闭按钮的转动
+	$scope.openModal = function() {
+		$scope.categorySort = angular.fromJson(localStorage.getItem('categorySort'));
+		$scope.modal.show();
+		$scope.showModal = true;
+	};
+	$scope.closeModal = function() {
+		for(var i = 0; i < $scope.categorySort.length; i++){
+			if($scope.categorySort[i].id !== $scope.categories[i].id){
+				localStorage.setItem('categorySort', angular.toJson($scope.categorySort));
+				initCategoryVMs();
+				$cordovaToast.showShortBottom('栏目已重排!');
+				break;
+			}
+		}
+		$scope.modal.hide();
+		$scope.showModal = false;
+	};
+	$scope.$on('$destroy', function() {
+		$scope.showModal = false;
+		for(var i = 0; i < $scope.categorySort.length; i++){
+			if($scope.categorySort[i].id !== $scope.categories[i].id){
+				localStorage.setItem('categorySort', angular.toJson($scope.categorySort));
+				initCategoryVMs();
+				$cordovaToast.showShortBottom('栏目已重排!');
+				break;
+			}
+		}
+		$scope.modal.remove();
+	});
+	$scope.$on('modal.hide', function() {
+		// 执行动作
+		$scope.showModal = false;
+		for(var i = 0; i < $scope.categorySort.length; i++){
+			if($scope.categorySort[i].id !== $scope.categories[i].id){
+				localStorage.setItem('categorySort', angular.toJson($scope.categorySort));
+				initCategoryVMs();
+				$cordovaToast.showShortBottom('栏目已重排!');
+				break;
+			}
+		}
+	});
+	$scope.$on('modal.removed', function() {
+		// 执行动作
+		$scope.showModal = false;
+		for(var i = 0; i < $scope.categorySort.length; i++){
+			if($scope.categorySort[i].id !== $scope.categories[i].id){
+				localStorage.setItem('categorySort', angular.toJson($scope.categorySort));
+				initCategoryVMs();
+				$cordovaToast.showShortBottom('栏目已重排!');
+				break;
+			}
+		}
+	});
+
+	// 首屏广告相关
+	$scope.advImage = ['blue', 'red', 'green'];//这里需要从服务器获取图片地址
+	$scope.advHide = false;
+	$rootScope.hideTabs = true;
+	$scope.advTime = $scope.advImage.length;
+	$scope.hideAdv = function (){
+		$scope.advHide = true;
+		$rootScope.hideTabs = false;
+	};
+	$scope.ctrlTime = function (index){
+		$scope.advTime--;
+		if($scope.advTime < 0){
+			$scope.hideAdv();
+		}
+	};
+
 })
 
-.controller('DetailCtrl', function($scope, $stateParams, $ionicHistory,
+.controller('DetailCtrl', function($scope, $stateParams, $ionicHistory,$cordovaToast,$cordovaFile,
 	$ionicActionSheet, $ionicPopup, $ionicPopover, $timeout, $sce, $state,
-	Storage, Model, Util, share, goBack, showAlert, $http) {
+	Storage, Model, Util, $http, StatusBarColor, ResourceUrls, $ionicModal,$ionicSlideBoxDelegate,$cordovaFileTransfer) {
 
 	$scope.stateCurrentName = ($state.current.name === 'tab.myDetail') ? false : true;
 	$scope.template = 'default';
@@ -110,6 +236,7 @@ angular.module('app.controllers', [])
 	$scope.showFooterBar = true;
 	$scope.fullSubTitle = false;
 	$scope.myComment = "";
+	$scope.goBack = Util.goBack;
 
 	function createPopover() {
 		var popover = $ionicPopover.fromTemplateUrl('templates/popover-comment.html', {
@@ -122,7 +249,10 @@ angular.module('app.controllers', [])
 	}
 
 	$scope.$on('$ionicView.enter', function() {
-		Model.detail('article', { id: $stateParams.id }, function(detail) {
+
+		Util.setStatusBarHexColor(StatusBarColor.ColorOfHome);
+
+		Model.detail('Article', { id: $stateParams.id }, function(detail) {
 			//detail.content = $sce.trustAsHtml(detail.content);
 			$scope.detail = detail;
 			Util.getDetailTemplate(detail.categoryId, function(template) {
@@ -151,8 +281,6 @@ angular.module('app.controllers', [])
 		$scope.fullSubTitle = false;
 	};
 
-	$scope.goBack = goBack;
-
 	$scope.closePopover = function() {
 		$scope.popover.hide();
 	};
@@ -162,7 +290,7 @@ angular.module('app.controllers', [])
 		$scope.uid = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).userId : '-1';
 		$http({
 			method:'post',
-			url:'http://60.220.238.2:8080/media/api/addComment.do',
+			url: ResourceUrls.ApiBaseUrl + ResourceUrls.AddComment,
 			params:{
 				aid:$scope.detail.id,
 				uid:$scope.uid,
@@ -171,12 +299,12 @@ angular.module('app.controllers', [])
 		}).success(function(data){
 			console.log(data);
 			if(data.result == 'OK'){
-				showAlert('评论成功');
+				Util.showAlert('评论成功');
 			}else{
-				showAlert('未知错误');
+				Util.showAlert('未知错误');
 			}
 		}).error(function(data){
-			showAlert('未知', '请检查网络或进行意见反馈！');
+			Util.showAlert('未知', '请检查网络或进行意见反馈！');
 		});
 
 		Storage.putItem('myComments', {
@@ -198,10 +326,6 @@ angular.module('app.controllers', [])
 	};
 
 	$scope.comment = function(id, event) {
-		// if(!localStorage.getItem('userInfo')){
-		// 	showAlert('未登录', '请登陆后再发表评论！');
-		// 	return;
-		// }
 		$scope.popover.show(event);
 	};
 
@@ -222,27 +346,117 @@ angular.module('app.controllers', [])
 		return false;
 	};
 
-	$scope.ArticleShare = function (id, title){
-		share(id, title);
+	// 分享相关代码
+	$scope.ArticleShare = function (id, title, detail){
+		Util.share(detail);
+	};
+
+	$scope.shareTIMELINE = function (detail){
+		Util.WechatShare(1, detail);
+	};
+
+	$scope.shareSESSION = function (detail){
+		Util.WechatShare(0, detail);
+	};
+
+	// 点赞相关代码
+	$scope.hotCount = 5;//需要从服务器获取
+	$scope.hot = false;//先暂时这样，需要根据在本地取到用户的点赞数据设置
+	$scope.clickhot = function (){
+		if($scope.hot){
+			return;
+		}
+		$scope.hot = true;
+		$scope.hotCount++;
+		//这里需要上传用户点赞行为
+		//把用户对文章的点赞保存在本地
+	};
+
+	// 图片下载
+	$scope.imgArr = [];
+	$ionicModal.fromTemplateUrl('templates/imageModal.html', {
+			scope: $scope,
+			animation: 'slide-in-right'
+		}).then(function(modal) {
+			$scope.modal = modal;
+		});
+	$scope.openModal = function(content, e) {
+		if(e.target.tagName !== 'IMG'){
+			return;
+		}
+		var imgArr = content.match(/http[^\"'>]+.[jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG]/gi);
+		$scope.imgArr = imgArr;
+		$scope.modal.show();
+	};
+	$scope.closeModal = function() {
+		$scope.modal.hide();
+	};
+	$scope.download = function (){
+		var url = $scope.imgArr[$ionicSlideBoxDelegate.currentIndex()];
+		// $cordovaToast.showWithOptions({
+		// 	message: url,
+		// 	duration: "long", 
+		// 	position: "bottom",
+		// 	addPixelsY: -120
+		// });
+		var pictrueUrl = encodeURI(photoPath);
+		function saveImageToPhone(url, success, error) {
+			var canvas, context, imageDataUrl, imageData;
+			var img = new Image();
+			img.onload = function () {
+				canvas = document.createElement('canvas');
+				canvas.width = img.width;
+				canvas.height = img.height;
+				context = canvas.getContext('2d');
+				context.drawImage(img, 0, 0);
+				try {
+					imageDataUrl = canvas.toDataURL('image/jpeg', 1.0);
+					imageData = imageDataUrl.replace(/data:image\/jpeg;base64,/, '');
+					cordova.exec(
+						success,
+						error,
+						'Canvas2ImagePlugin',
+						'saveImageDataToLibrary',
+						[imageData]
+					);
+				}
+				catch (e) {
+					error(e.message);
+				}
+			};
+			try {
+				img.src = url;
+			}
+			catch (e) {
+				error(e.message);
+			}
+		}
+		var success = function (msg) {
+		};
+		var error = function (err) {
+		};
+		saveImageToPhone(photoPath, success, error);
 	};
 
 })
 
-.controller('ServicesCtrl', function($scope, _, Util) {
+//服务控制器
+.controller('ServicesCtrl', function($scope, Util, StatusBarColor) {
 
-	$scope.avatar = 'img/servers.png';
-	// Util.getServices(function(items) {
-	// 	$scope.groups = items;
-	// });
-	$scope.$on('$ionicView.enter', function() {
+	$scope.$on('$ionicView.enter', function(e) {
+		Util.setStatusBarHexColor(StatusBarColor.ColorOfServices);
+	});
+
+	$scope.loadServices = function() {
 		Util.getServices(function(items) {
 			$scope.groups = items;
 		});
-	});
+	};
+	$scope.$on('$ionicView.enter', $scope.loadServices);
 })
 
+//服务详情控制器
 .controller('ServiceCtrl', function($timeout, $scope, $sce, $stateParams, Util) {
-
 	Util.getServices(function(services) {
 		for (var i = 0; i < services.length; i++) {
 			if (services[i].id == $stateParams.id) {
@@ -255,10 +469,12 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('LoginCtrl', function($rootScope, $scope, $stateParams, $ionicHistory, $http, $location, $ionicPopup, $timeout, showAlert, Storage, goBack) {
+.controller('LoginCtrl', function($rootScope, $scope, $stateParams, $ionicHistory, $http, 
+	$location, $ionicPopup, $timeout, Util, Storage, ResourceUrls) {
+	
 	//$scope.userId = $stateParams.userId;
 
-	$scope.goBack = goBack;
+	$scope.goBack = Util.goBack;
 
 	$scope.user = {
 		username:localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).username : '',
@@ -269,14 +485,14 @@ angular.module('app.controllers', [])
 		if($scope.user.username && $scope.user.password){
 			$http({
 				method:'post',
-				url:'http://60.220.238.2:8080/media/api/login.do',
+				url:ResourceUrls.ApiBaseUrl + ResourceUrls.Login,
 				params:{
 					username:$scope.user.username,
 					password:$scope.user.password
 				}
 			}).success(function(data){
 				console.log(data);
-				if(data.result === 'OK'){
+				if (data.result === 'OK') {
 					localStorage.setItem('userInfo', angular.toJson({
 						sessionId:data.data.sessionId,
 						userId:data.data.userId,
@@ -293,42 +509,47 @@ angular.module('app.controllers', [])
 						popup.close();
 						$location.url('/tab/account');
 					}, 1200);
-				}else{
-					showAlert('登录失败', '用户名或密码不正确！');
+				}
+				else {
+					Util.showAlert('登录失败', '用户名或密码不正确！');
 				}
 			}).error(function(data){
 				console.log(data);
-				showAlert('未知错误', '请检查网络或进行意见反馈！');
+				Util.showAlert('未知错误', '请检查网络或进行意见反馈！');
 			});
-		}else{
-			showAlert('无法登录', '请填写完整的登录信息！');
+		}
+		else {
+			Util.showAlert('无法登录', '请填写完整的登录信息！');
 		}
 	};
 
 	$rootScope.hideTabs = true;
 })
 
-.controller('RegisterCtrl', function($scope, $ionicHistory, goBack) {
+.controller('RegisterCtrl', function($scope, $ionicHistory, Util) {
 
-	$scope.goBack = goBack;
-
-	$scope.submit = function(){
-		
-	};
-})
-
-.controller('ForgetPasswordCtrl', function($scope, $ionicHistory, goBack) {
-
-	$scope.goBack = goBack;
+	$scope.goBack = Util.goBack;
 
 	$scope.submit = function(){
 		
 	};
 })
 
-.controller('AccountCtrl', function($rootScope, $scope, $ionicActionSheet, Storage) {
+.controller('ForgetPasswordCtrl', function($scope, $ionicHistory, Util) {
+
+	$scope.goBack = Util.goBack;
+
+	$scope.submit = function(){
+		
+	};
+})
+
+.controller('AccountCtrl', function($rootScope, $scope, $ionicActionSheet, Storage, StatusBarColor, Util) {
 
 	$scope.$on('$ionicView.enter', function() {
+
+		Util.setStatusBarHexColor(StatusBarColor.ColorOfAccount);
+
 		$rootScope.hideTabs = false;
 		$scope.sessionId = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).username  : '登录 | 注册';
 		$scope.commentLen = Storage.getItems('myComments').length;
@@ -351,9 +572,9 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('myArticlesCtrl', function($rootScope, $scope, $ionicHistory, Storage, $location, $ionicActionSheet, goBack, showAlert){
+.controller('myArticlesCtrl', function($rootScope, $scope, $ionicHistory, Storage, $location, $ionicActionSheet, Util){
 
-	$scope.goBack = goBack;
+	$scope.goBack = Util.goBack;
 
 	$scope.$on('$ionicView.enter', function() {
 		$scope.articles = Storage.getItems('myArticles');
@@ -378,7 +599,7 @@ angular.module('app.controllers', [])
 				}],
 				buttonClicked: function() {
 					if(articles[index].isPublish){
-						showAlert('已发表的文章不能删除');
+						Util.showAlert('已发表的文章不能删除');
 					}else{
 						articles.splice(index, 1);
 						localStorage.setItem('myArticles', angular.toJson(articles));
@@ -391,9 +612,9 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('LookMyArticleCtrl', function($scope, $ionicHistory, $stateParams, Storage, share, goBack){
+.controller('LookMyArticleCtrl', function($scope, $ionicHistory, $stateParams, Storage, Util){
 
-	$scope.goBack = goBack;
+	$scope.goBack = Util.goBack;
 
 	$scope.article = {
 		id:Storage.getItems('myArticles')[$stateParams.id].uid,
@@ -403,14 +624,17 @@ angular.module('app.controllers', [])
 	};
 
 	$scope.MyArticleShare = function (){
-		share($scope.article.id, $scope.article.title);
+		Util.share($scope.article);
 	};
 })
 
-.controller('publishCtrl', function($scope, $ionicHistory, $ionicPopup, $stateParams, $http, $timeout, $cordovaCamera, $location,
-	$ionicActionSheet, $cordovaImagePicker, $cordovaFile, $cordovaFileTransfer, Storage, Util, showAlert, goBack){
+.controller('publishCtrl', function($scope, $ionicHistory, $ionicPopup, $stateParams, $http, 
+	$timeout, $cordovaCamera, $location,
+	$ionicActionSheet, $cordovaImagePicker, 
+	$cordovaFile, $cordovaFileTransfer, 
+	Storage, Util, ResourceUrls, CameraOptions){
 
-	$scope.goBack = goBack;
+	$scope.goBack = Util.goBack;
 
 	$scope.articles = {
 		isPublish:true
@@ -469,7 +693,7 @@ angular.module('app.controllers', [])
 	$scope.article = function(){
 		if($scope.publish.title!=='' && $scope.publish.content!==''){
 			if(!localStorage.getItem('userInfo')){
-				showAlert('未登录', '请登陆后再发表文章！');
+				Util.showAlert('未登录', '请登陆后再发表文章！');
 				return;
 			}
 			var popup = $ionicPopup.show({
@@ -477,7 +701,7 @@ angular.module('app.controllers', [])
 			});
 			$http({
 				method:'post',
-				url:'http://60.220.238.2:8080/media/api/addArticle.do',
+				url:ResourceUrls.ApiBaseUrl + ResourceUrls.AddArticle,
 				params:{
 					uid:Storage.getItems('userInfo').userId,
 					cid: $scope.publish.type,
@@ -507,35 +731,24 @@ angular.module('app.controllers', [])
 						localStorage.setItem('myArticles', angular.toJson($scope.myArticles));
 					}
 					popup.close();
-					showAlert('发布成功', '请等待审核！');
+					Util.showAlert('发布成功', '请等待审核！');
 					$scope.goBack();
 				}else if(data.result === 'ERR'){
 					popup.close();
-					showAlert('发布失败', '服务器错误！');
+					Util.showAlert('发布失败', '服务器错误！');
 				}
 			}).error(function(){
 				popup.close();
-				showAlert('发布出错', '未知错误！');
+				Util.showAlert('发布出错', '未知错误！');
 			});
 		}
 	};
 
-	var options = {
-		quality: 100,//相片质量0-100
-		destinationType: 1,//返回类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
-		sourceType: 2,//从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
-		allowEdit: true,//在选择之前允许修改截图
-		encodingType:1,//保存的图片格式： JPEG = 0, PNG = 1
-		targetWidth: 200,//照片宽度
-		targetHeight: 200,//照片高度
-		mediaType:2,//可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
-		cameraDirection:0,//枪后摄像头类型：Back= 0,Front-facing = 1
-		saveToPhotoAlbum: true//保存进手机相册
-	};
+	var options = CameraOptions;
 
 	$scope.changeFile = function(){
 		if(!localStorage.getItem('userInfo')){
-			showAlert('未登录', '请登录后再上传文件！');
+			Util.showAlert('未登录', '请登录后再上传文件！');
 			return;
 		}
 		$ionicActionSheet.show({
@@ -558,7 +771,7 @@ angular.module('app.controllers', [])
 							$scope.fileName_f.push(results[i].substring(results[i].lastIndexOf('/')+1));
 						}
 					}, function (error) {
-						showAlert('选取失败', '');
+						Util.showAlert('选取失败', '');
 					});
 				}else if(index === 1){
 					$cordovaCamera.getPicture(options)
@@ -567,7 +780,7 @@ angular.module('app.controllers', [])
 						$scope.fileName.push(imageURI.substring(imageURI.lastIndexOf('/')+1));
 						$scope.fileName_f.push(imageURI.substring(imageURI.lastIndexOf('/')+1));
 					}, function(err) {
-						showAlert('选取失败', err);
+						Util.showAlert('选取失败', err);
 					});
 				}
 			}
@@ -591,27 +804,9 @@ angular.module('app.controllers', [])
 		var options = new FileUploadOptions();
 		options.fileKey = "file";
 		options.fileName = $scope.fileUrl[$scope.uploadNumber].substring($scope.fileUrl[$scope.uploadNumber].lastIndexOf('/') + 1);
-		var houzhui = options.fileName.substring(options.fileName.lastIndexOf('.')+1);
-		if(houzhui == 'jpg'){
-			options.mimeType = "image/jpeg";
-		}else if(houzhui == 'wav'){
-			options.mimeType = 'audio/x-wav';
-		}else if(houzhui == 'mp3'){
-			options.mimeType = 'audio/mpeg';
-		}else if(houzhui == 'mp4'){
-			options.mimeType = 'video/mpeg';
-		}else{
-			options.mimeType = 'application/octet-stream';
-		}
-		var uri = encodeURI("http://60.220.238.2:8080/media/api/upload.do");
-		// options.chunkedMode = false;
-		// options.params = {
-		//     file:$scope.fileUrl[$scope.uploadNumber]
-		// };
-		// options.headers = {
-		//     'Content-Type': undefined
-		// };
-		// options.httpMethod = 'POST';
+		options.mimeType = Util.getMimeTypeOfFile(options.fileName);
+
+		var uri = encodeURI(ResourceUrls.ApiBaseUrl + ResourceUrls.Upload);
 		var ft = new FileTransfer();
 		ft.upload($scope.fileUrl[$scope.uploadNumber], uri, function(data){
 			var response = angular.fromJson(data.response);
@@ -636,7 +831,7 @@ angular.module('app.controllers', [])
 				$scope.failFile.push($scope.fileName[$scope.uploadNumber]);
 				if($scope.uploadNumber == $scope.fileUrl.length-1){
 					$scope.popup.close();
-					showAlert('失败', '上传失败！');
+					Util.showAlert('失败', '上传失败！');
 					$scope.uploadNumber = 0;
 					$scope.fileUrl = [];
 					$scope.fileName = [];
@@ -646,14 +841,14 @@ angular.module('app.controllers', [])
 				$scope.upload();
 			}
 		}, function(data){
-			showAlert('上传失败', '请检查网络或进行意见反馈！');
+			Util.showAlert('上传失败', '请检查网络或进行意见反馈！');
 		}, options);
 	};
 })
 
-.controller('myCommentsCtrl', function($rootScope, $scope, $ionicHistory, Storage, goBack){
+.controller('myCommentsCtrl', function($rootScope, $scope, $ionicHistory, Storage, Util){
 
-	$scope.goBack = goBack;
+	$scope.goBack = Util.goBack;
 
 	$scope.getMyCommits = function() {
 		return Storage.getItems('myComments');
@@ -661,9 +856,9 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('myCollectsCtrl', function($rootScope, $scope, $ionicHistory, Storage, goBack){
+.controller('myCollectsCtrl', function($rootScope, $scope, $ionicHistory, Storage, Util){
 
-	$scope.goBack = goBack;
+	$scope.goBack = Util.goBack;
 
 	$scope.favorites = Storage.getItems('favorites');
 
@@ -682,8 +877,12 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('feedbackCtrl', function($scope, $timeout, $ionicPopup, $http, goBack){
-	$scope.goBack = goBack;
+.controller('myContactCtrl', function($rootScope, $scope, $ionicHistory, Util){
+	$scope.goBack = Util.goBack;
+})
+
+.controller('feedbackCtrl', function($scope, $timeout, $ionicPopup, $http, Util, ResourceUrls){
+	$scope.goBack = Util.goBack;
 
 	$scope.publishSuggestion = function(){
 		var popup = $ionicPopup.show({
@@ -691,7 +890,7 @@ angular.module('app.controllers', [])
 		});
 		$http({
 			method:'post',
-			url:'http://60.220.238.2:8080/media/api/addArticle.do',
+			url: ResourceUrls.ApiBaseUrl + ResourceUrls.AddArticle,
 			params:{
 				uid:-1,
 				cid:-1,
@@ -725,16 +924,15 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('settingCtrl', function($rootScope, $scope, $timeout, $ionicPopup, $ionicActionSheet, goBack){
-	$scope.goBack = goBack;
+.controller('settingCtrl', function($rootScope, $scope, $timeout, $ionicPopup, $ionicActionSheet,Util){
+	$scope.goBack = Util.goBack;
 
-	var s = parseInt(localStorage.getItem('fontSize') ? angular.fromJson(localStorage.getItem('fontSize')).fz : '14');
-	console.log(s);
+	var s = parseInt(localStorage.getItem('fontSize') ? angular.fromJson(localStorage.getItem('fontSize')).fz : '16');
 	if(s === 10) $scope.fontSize = '超小';
-	if(s === 12) $scope.fontSize = '小';
-	if(s === 14) $scope.fontSize = '中';
-	if(s === 16) $scope.fontSize = '大';
-	if(s === 18) $scope.fontSize = '超大';
+	if(s === 13) $scope.fontSize = '小';
+	if(s === 16) $scope.fontSize = '中';
+	if(s === 19) $scope.fontSize = '大';
+	if(s === 22) $scope.fontSize = '超大';
 
 	$scope.$on('$ionicView.enter', function() {
 		$rootScope.hideTabs = false;
@@ -777,16 +975,16 @@ angular.module('app.controllers', [])
 					localStorage.setItem('fontSize', angular.toJson({'fz':'10px'}));
 				}else if(index === 1){
 					$scope.fontSize = '小';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'12px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'13px'}));
 				}else if(index === 2){
 					$scope.fontSize = '中';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'14px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'16px'}));
 				}else if(index === 3){
 					$scope.fontSize = '大';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'16px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'19px'}));
 				}else if(index === 4){
 					$scope.fontSize = '超大';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'18px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'22px'}));
 				}
 				return true;
 			}
@@ -827,43 +1025,9 @@ angular.module('app.controllers', [])
 	};
 })
 
-.controller('aboutCtrl', function($rootScope, $scope, goBack){
+.controller('aboutCtrl', function($rootScope, $scope, Util){
 
-	$scope.goBack = goBack;
+	$scope.goBack = Util.goBack;
 
 	$rootScope.hideTabs = true;
-})
-
-.filter('timeHommization', function(){
-	return function(e){
-		var t = formatDate(new Date(),"yyyy-MM-dd");
-		if(t == e){
-			return '今天';
-		}/*else if( new Date(t).getTime() - new Date(e).getTime() < 2*24*60*60*1000){
-			return '昨天';
-		}else if( new Date(t).getTime() - new Date(e).getTime() < 3*24*60*60*1000){
-			return '前天';
-		}*/else{
-			return e.substring(5);
-		}
-		function formatDate(date,format){
-			var paddNum = function(num){
-				num += "";
-				return num.replace(/^(\d)$/,"0$1");
-			};
-			var cfg = {
-				yyyy : date.getFullYear(),
-				yy : date.getFullYear().toString().substring(2),
-				M  : date.getMonth() + 1 ,
-				MM : paddNum(date.getMonth() + 1),
-				d  : date.getDate(),
-				dd : paddNum(date.getDate()),
-				hh : date.getHours(),
-				mm : date.getMinutes(),
-				ss : date.getSeconds()
-			};
-			// format || (format = "yyyy-MM-dd hh:mm:ss");
-			return format.replace(/([a-z])(\1)*/ig,function(m){return cfg[m];});
-		}
-	};
 });

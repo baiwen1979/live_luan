@@ -1,0 +1,17 @@
+<div class="modal" id="imageModal">
+
+	<ion-content id="imgBox">
+		<ion-slide-box does-continue="true">
+			<ion-slide ng-repeat="item in imgArr" on-slide-changed="changeDownload(i)">
+				<img src="{{item}}">
+			</ion-slide>
+		</ion-slide-box>
+	</ion-content>
+
+	<div class="bar bar-footer bar-dark">
+		<button class="button button-clear button-assertive icon ion-ios-arrow-left" ng-click="closeModal()"></button>
+		<div class="title">&nbsp;</div>
+		<button class="button button-clear button-assertive icon ion-ios-download-outline ion-android-download" ng-click="download()"></button>
+	</div>
+
+</div>

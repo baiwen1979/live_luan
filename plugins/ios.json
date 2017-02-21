@@ -44,6 +44,13 @@
         },
         "cordova-plugin-x-toast": {
             "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-wechat": {
+            "WECHATAPPID": "wx77a7c47a36036e8d",
+            "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "org.devgeeks.Canvas2ImagePlugin": {
+            "PACKAGE_NAME": "com.chinaluan.news"
         }
     },
     "dependent_plugins": {

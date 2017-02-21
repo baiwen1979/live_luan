@@ -1,0 +1,16 @@
+<div class="modal">
+	<ion-header-bar align-title="center">
+		<h1 class="title">栏目设置</h1>
+		<div ng-class="['buttons', {closeRotate:showModal}]" id="closeModal" ng-click="closeModal()">
+			＋
+		</div>
+	</ion-header-bar>
+	<ion-content>
+		<p class="item">拖动调整栏目顺序</p>
+		<ul sv-root sv-part="categorySort" class="sv-container item">
+			<li ng-repeat="item in categorySort" sv-element class="sv-cell">
+				<span sv-handle ng-class="'sv-handle sort'+item.id"></span>
+			</li>
+		</ul>
+	</ion-content>
+</div>

@@ -3,7 +3,7 @@ angular.module('app.directives', [])
     return {
         restrict: 'A',
         link: function(scope, element, attributes) {
-            console.log('hide-tabs');
+            // console.log('hide-tabs');
             scope.$on('$ionicView.beforeEnter', function() {
                 scope.$watch(attributes.hideTabs, function(value){
                     $rootScope.hideTabs = value;
@@ -39,7 +39,8 @@ angular.module('app.directives', [])
         restrict:'AC',
         link:function(scope, element, attributes){
             element.css({
-                fontSize:angular.fromJson(localStorage.getItem('fontSize')).fz
+                fontSize:angular.fromJson(localStorage.getItem('fontSize')).fz,
+                lineHeight:(parseInt(angular.fromJson(localStorage.getItem('fontSize')).fz)*1.6)+'px'
             });
         }
     };

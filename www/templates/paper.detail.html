@@ -7,7 +7,8 @@
       <span>{{detail.author}}</span>
     </p>
   </div>
-  <div ng-bind-html="detail.content"  class="$root.changeFontSize">
+  <div ng-bind-html="detail.content"  class="$root.changeFontSize" ng-click="openModal(detail.content, $event)">
   </div>
+  <ng-include src="'templates/partial-ShareAndHot.html'" ></ng-include>
   <ng-include src="'templates/partial-comments.html'" ></ng-include>
 </ion-content>

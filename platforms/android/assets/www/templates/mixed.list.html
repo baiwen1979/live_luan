@@ -3,7 +3,9 @@
   </ion-refresher>
 
   <ion-slide-box on-touch="enableOuterSlider(false)" on-release="enableOuterSlider(true)" delegate-handle="inner-slider" id="inner-slider" does-continue="true" auto-play="true">
-    <ion-slide ng-repeat="item in category.vm.items | limitTo: 5" ng-if="item.as=='slider' && item.type!='video'">
+    <!-- 使轮播图可以显示视频 -->
+    <!-- <ion-slide ng-repeat="item in category.vm.items | limitTo: 5" ng-if="item.as=='slider' && item.type!='video'"> -->
+    <ion-slide ng-repeat="item in category.vm.items | limitTo: 5" ng-if="item.as=='slider' ">
       <div class="box blue">
         <a ng-href="#/tab/detail/{{item.id}}"><img ng-src="{{item.large_image}}"></a>
         <p class="title">{{item.title}}</p>

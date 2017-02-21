@@ -2,5 +2,12 @@
     "ImageIO.framework": 2,
     "CoreLocation.framework": 2,
     "AVFoundation.framework": 2,
-    "QuartzCore.framework": 2
+    "QuartzCore.framework": 2,
+    "libz.tbd": 1,
+    "libsqlite3.0.tbd": 1,
+    "CoreTelephony.framework": 1,
+    "SystemConfiguration.framework": 1,
+    "Security.framework": 1,
+    "CFNetwork.framework": 1,
+    "libstdc++.6.tbd": 1
 }

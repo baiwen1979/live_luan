@@ -67,7 +67,7 @@
     "cordova-plugin-file": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-file"
+            "id": "cordova-plugin-file@~4.3.0"
         },
         "is_top_level": true,
         "variables": {}
@@ -75,7 +75,7 @@
     "cordova-plugin-file-transfer": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-file-transfer"
+            "id": "cordova-plugin-file-transfer@~1.6.0"
         },
         "is_top_level": true,
         "variables": {}
@@ -101,6 +101,25 @@
         "source": {
             "type": "git",
             "url": "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-wechat": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-wechat"
+        },
+        "is_top_level": true,
+        "variables": {
+            "WECHATAPPID": "wx77a7c47a36036e8d"
+        }
+    },
+    "org.devgeeks.Canvas2ImagePlugin": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/devgeeks/Canvas2ImagePlugin.git",
             "subdir": "."
         },
         "is_top_level": true,

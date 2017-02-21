@@ -1,6 +1,6 @@
 angular.module('app.controllers', ['ngCordova', 'app.constants'])
 
-.controller('HomeCtrl', function($scope, $timeout, $ionicPlatform, 
+.controller('HomeCtrl', function($rootScope, $scope, $timeout, $ionicPlatform, 
 	$ionicScrollDelegate, $ionicSlideBoxDelegate,
 	Model, Util, StatusBarColor, $ionicModal, $cordovaToast) {
 
@@ -144,6 +144,8 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 	$scope.initCategoryVMs = initCategoryVMs;
 	$ionicSlideBoxDelegate.enableSlide(true);
 
+
+	// 排序的modal相关
 	$ionicModal.fromTemplateUrl('templates/sortModal.html', {
 			scope: $scope,
 			animation: 'slide-in-right'
@@ -205,12 +207,27 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		}
 	});
 
+	// 首屏广告相关
+	$scope.advImage = ['blue', 'red', 'green'];//这里需要从服务器获取图片地址
+	$scope.advHide = false;
+	$rootScope.hideTabs = true;
+	$scope.advTime = $scope.advImage.length;
+	$scope.hideAdv = function (){
+		$scope.advHide = true;
+		$rootScope.hideTabs = false;
+	};
+	$scope.ctrlTime = function (index){
+		$scope.advTime--;
+		if($scope.advTime < 0){
+			$scope.hideAdv();
+		}
+	};
 
 })
 
-.controller('DetailCtrl', function($scope, $stateParams, $ionicHistory,
+.controller('DetailCtrl', function($scope, $stateParams, $ionicHistory,$cordovaToast,$cordovaFile,
 	$ionicActionSheet, $ionicPopup, $ionicPopover, $timeout, $sce, $state,
-	Storage, Model, Util, $http, StatusBarColor, ResourceUrls) {
+	Storage, Model, Util, $http, StatusBarColor, ResourceUrls, $ionicModal,$ionicSlideBoxDelegate,$cordovaFileTransfer) {
 
 	$scope.stateCurrentName = ($state.current.name === 'tab.myDetail') ? false : true;
 	$scope.template = 'default';
@@ -329,8 +346,101 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		return false;
 	};
 
-	$scope.ArticleShare = function (id, title){
-		Util.share(id, title);
+	// 分享相关代码
+	$scope.ArticleShare = function (id, title, detail){
+		Util.share(detail);
+	};
+
+	$scope.shareTIMELINE = function (detail){
+		Util.WechatShare(1, detail);
+	};
+
+	$scope.shareSESSION = function (detail){
+		Util.WechatShare(0, detail);
+	};
+
+	// 点赞相关代码
+	$scope.hotCount = 5;//需要从服务器获取
+	$scope.hot = false;//先暂时这样，需要根据在本地取到用户的点赞数据设置
+	$scope.clickhot = function (){
+		if($scope.hot){
+			return;
+		}
+		$scope.hot = true;
+		$scope.hotCount++;
+		//这里需要上传用户点赞行为
+		//把用户对文章的点赞保存在本地
+	};
+
+	// 文章内图片点击出现图片box并可下载的实现
+	$scope.imgArr = [];
+	$ionicModal.fromTemplateUrl('templates/imageModal.html', {
+			scope: $scope,
+			animation: 'slide-in-right'
+		}).then(function(modal) {
+			$scope.modal = modal;
+		});
+	$scope.openModal = function(content, e) {
+		if(e.target.tagName !== 'IMG'){
+			return;
+		}
+		var imgArr = content.match(/http[^\"'>]+.[jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG]/gi);
+		$scope.imgArr = imgArr;
+		$scope.modal.show();
+	};
+	$scope.closeModal = function() {
+		$scope.modal.hide();
+	};
+	$scope.download = function (){
+		var url = $scope.imgArr[$ionicSlideBoxDelegate.currentIndex()];
+		function saveImageToPhone(url, success, error) {
+			var canvas, context, imageDataUrl, imageData;
+			var img = new Image();
+			img.onload = function () {
+				canvas = document.createElement('canvas');
+				canvas.width = img.width;
+				canvas.height = img.height;
+				context = canvas.getContext('2d');
+				context.drawImage(img, 0, 0);
+				try {
+					imageDataUrl = canvas.toDataURL('image/png', 1.0);
+					imageData = imageDataUrl.replace(/data:image\/png;base64,/, '');
+					cordova.exec(
+						success,
+						error,
+						'Canvas2ImagePlugin',
+						'saveImageDataToLibrary',
+						[imageData]
+					);
+				}
+				catch (e) {
+					error(e.message);
+				}
+			};
+			try {
+				img.src = url;
+			}
+			catch (e) {
+				error(e.message);
+			}
+		}
+		var success = function (msg) {
+			$cordovaToast.showWithOptions({
+				message: '已保存至'+msg,
+				duration: "long", 
+				position: "bottom",
+				addPixelsY: -120
+			});
+		};
+		var error = function (err) {
+			$cordovaToast.showWithOptions({
+				message: err,
+				duration: "long", 
+				position: "bottom",
+				addPixelsY: -120
+			});
+		};
+		saveImageToPhone(url, success, error);
 	};
 
 })
@@ -519,7 +629,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 	};
 
 	$scope.MyArticleShare = function (){
-		Util.share($scope.article.id, $scope.article.title);
+		Util.share($scope.article);
 	};
 })
 
@@ -772,6 +882,10 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 
 })
 
+.controller('myContactCtrl', function($rootScope, $scope, $ionicHistory, Util){
+	$scope.goBack = Util.goBack;
+})
+
 .controller('feedbackCtrl', function($scope, $timeout, $ionicPopup, $http, Util, ResourceUrls){
 	$scope.goBack = Util.goBack;
 
@@ -818,13 +932,12 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 .controller('settingCtrl', function($rootScope, $scope, $timeout, $ionicPopup, $ionicActionSheet,Util){
 	$scope.goBack = Util.goBack;
 
-	var s = parseInt(localStorage.getItem('fontSize') ? angular.fromJson(localStorage.getItem('fontSize')).fz : '14');
-	console.log(s);
+	var s = parseInt(localStorage.getItem('fontSize') ? angular.fromJson(localStorage.getItem('fontSize')).fz : '16');
 	if(s === 10) $scope.fontSize = '超小';
-	if(s === 12) $scope.fontSize = '小';
-	if(s === 14) $scope.fontSize = '中';
-	if(s === 16) $scope.fontSize = '大';
-	if(s === 18) $scope.fontSize = '超大';
+	if(s === 13) $scope.fontSize = '小';
+	if(s === 16) $scope.fontSize = '中';
+	if(s === 19) $scope.fontSize = '大';
+	if(s === 22) $scope.fontSize = '超大';
 
 	$scope.$on('$ionicView.enter', function() {
 		$rootScope.hideTabs = false;
@@ -867,16 +980,16 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 					localStorage.setItem('fontSize', angular.toJson({'fz':'10px'}));
 				}else if(index === 1){
 					$scope.fontSize = '小';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'12px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'13px'}));
 				}else if(index === 2){
 					$scope.fontSize = '中';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'14px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'16px'}));
 				}else if(index === 3){
 					$scope.fontSize = '大';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'16px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'19px'}));
 				}else if(index === 4){
 					$scope.fontSize = '超大';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'18px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'22px'}));
 				}
 				return true;
 			}

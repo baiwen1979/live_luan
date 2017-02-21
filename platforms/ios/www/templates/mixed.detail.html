@@ -12,7 +12,10 @@
   <ng-include ng-if="detail.type=='video'" src="'templates/partial-'+ detail.type + '.html'"></ng-include>
   <ng-include ng-if="detail.type=='frame'" src="'templates/partial-'+ detail.type + '.html'"></ng-include>
 
-  <div ng-bind-html="detail.content" class="$root.changeFontSize">
+  <div ng-bind-html="detail.content" class="$root.changeFontSize" ng-click="openModal(detail.content, $event)">
   </div>
+
+  <ng-include src="'templates/partial-ShareAndHot.html'" ></ng-include>
+
   <ng-include src="'templates/partial-comments.html'" ></ng-include>
 </ion-content>

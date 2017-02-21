@@ -47,6 +47,16 @@
 		B2052478D2A84155BAE6850B /* IonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = D8A60BD239CD460FB86EC800 /* IonicKeyboard.m */; };
 		C3EED7FAB21C41519A096115 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA6157BE9924E3CBF2F8BFE /* Toast+UIView.m */; };
 		A153567AC21B4F4BAAC4E2FF /* Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 845BB4D32F014AC9A260B277 /* Toast.m */; };
+		6121515CCF634DC98A4D6A8F /* CDVWechat.m in Sources */ = {isa = PBXBuildFile; fileRef = E913E1CD67CD4D15B9D99906 /* CDVWechat.m */; };
+		C7964C3190FA4B7292265C1E /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C3A010F060492B82F8FB95 /* libWeChatSDK.a */; };
+		095B1DA863414D02A60CAB5A /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A180237B40524497B39DF9FC /* libz.tbd */; };
+		626541D6C5EF434D966AD3B2 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A272E75DC3A461B85A274C6 /* libsqlite3.0.tbd */; };
+		311CE97589B541BFBB5BAD27 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0669AC533C874950AF31A262 /* CoreTelephony.framework */; };
+		BC0F43C489D34C9497A7F8C4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CB974BA495D47C8995C8B11 /* SystemConfiguration.framework */; };
+		709A0A096DD94DDDA0283CA3 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20CD3462183A4EF0BD328205 /* Security.framework */; };
+		807B8419D8EA4E75B674A4F1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D7B000DA7047569CC2C6F2 /* CFNetwork.framework */; };
+		E730725F53BD4DC0B2957CBD /* libstdc++.6.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 209DB455CDE74B9DA1B2CBC2 /* libstdc++.6.tbd */; };
+		CB90AF22726B4D488E5A4988 /* Canvas2ImagePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 6614F8150150424A86578C7F /* Canvas2ImagePlugin.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +154,20 @@
 		845BB4D32F014AC9A260B277 /* Toast.m */ = {isa = PBXFileReference; name = "Toast.m"; path = "cordova-plugin-x-toast/Toast.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		86A442EC373142378BB3B92F /* Toast+UIView.h */ = {isa = PBXFileReference; name = "Toast+UIView.h"; path = "cordova-plugin-x-toast/Toast+UIView.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		97B03F94D1514F9681A84802 /* Toast.h */ = {isa = PBXFileReference; name = "Toast.h"; path = "cordova-plugin-x-toast/Toast.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		E913E1CD67CD4D15B9D99906 /* CDVWechat.m */ = {isa = PBXFileReference; name = "CDVWechat.m"; path = "cordova-plugin-wechat/CDVWechat.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		A6C3A010F060492B82F8FB95 /* libWeChatSDK.a */ = {isa = PBXFileReference; name = "libWeChatSDK.a"; path = "直播潞安/Plugins/cordova-plugin-wechat/libWeChatSDK.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		F2BEFD7AE75443CBAB0A9845 /* CDVWechat.h */ = {isa = PBXFileReference; name = "CDVWechat.h"; path = "cordova-plugin-wechat/CDVWechat.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		99ABABEAEDC342748AD8E862 /* WXApi.h */ = {isa = PBXFileReference; name = "WXApi.h"; path = "cordova-plugin-wechat/WXApi.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		A753944E1E7040809548C15F /* WXApiObject.h */ = {isa = PBXFileReference; name = "WXApiObject.h"; path = "cordova-plugin-wechat/WXApiObject.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		A180237B40524497B39DF9FC /* libz.tbd */ = {isa = PBXFileReference; name = "libz.tbd"; path = "usr/lib/libz.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
+		8A272E75DC3A461B85A274C6 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; name = "libsqlite3.0.tbd"; path = "usr/lib/libsqlite3.0.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
+		0669AC533C874950AF31A262 /* CoreTelephony.framework */ = {isa = PBXFileReference; name = "CoreTelephony.framework"; path = "System/Library/Frameworks/CoreTelephony.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		1CB974BA495D47C8995C8B11 /* SystemConfiguration.framework */ = {isa = PBXFileReference; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		20CD3462183A4EF0BD328205 /* Security.framework */ = {isa = PBXFileReference; name = "Security.framework"; path = "System/Library/Frameworks/Security.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		17D7B000DA7047569CC2C6F2 /* CFNetwork.framework */ = {isa = PBXFileReference; name = "CFNetwork.framework"; path = "System/Library/Frameworks/CFNetwork.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		209DB455CDE74B9DA1B2CBC2 /* libstdc++.6.tbd */ = {isa = PBXFileReference; name = "libstdc++.6.tbd"; path = "usr/lib/libstdc++.6.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
+		6614F8150150424A86578C7F /* Canvas2ImagePlugin.m */ = {isa = PBXFileReference; name = "Canvas2ImagePlugin.m"; path = "org.devgeeks.Canvas2ImagePlugin/Canvas2ImagePlugin.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		5F8328D7ACF14393B580E51B /* Canvas2ImagePlugin.h */ = {isa = PBXFileReference; name = "Canvas2ImagePlugin.h"; path = "org.devgeeks.Canvas2ImagePlugin/Canvas2ImagePlugin.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +180,14 @@
 				2D4ED975A8A54A0CB718B6E5 /* CoreLocation.framework in Frameworks */,
 				0246B88C970C4781947A2573 /* AVFoundation.framework in Frameworks */,
 				333756DFE2BF43CF906E9796 /* QuartzCore.framework in Frameworks */,
+				C7964C3190FA4B7292265C1E /* libWeChatSDK.a in Frameworks */,
+				095B1DA863414D02A60CAB5A /* libz.tbd in Frameworks */,
+				626541D6C5EF434D966AD3B2 /* libsqlite3.0.tbd in Frameworks */,
+				311CE97589B541BFBB5BAD27 /* CoreTelephony.framework in Frameworks */,
+				BC0F43C489D34C9497A7F8C4 /* SystemConfiguration.framework in Frameworks */,
+				709A0A096DD94DDDA0283CA3 /* Security.framework in Frameworks */,
+				807B8419D8EA4E75B674A4F1 /* CFNetwork.framework in Frameworks */,
+				E730725F53BD4DC0B2957CBD /* libstdc++.6.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +266,14 @@
 				32572B21059143FBAA312DDC /* CoreLocation.framework */,
 				08608B465768499BB738C655 /* AVFoundation.framework */,
 				B2A277E684584B01A8232AF8 /* QuartzCore.framework */,
+				A6C3A010F060492B82F8FB95 /* libWeChatSDK.a */,
+				A180237B40524497B39DF9FC /* libz.tbd */,
+				8A272E75DC3A461B85A274C6 /* libsqlite3.0.tbd */,
+				0669AC533C874950AF31A262 /* CoreTelephony.framework */,
+				1CB974BA495D47C8995C8B11 /* SystemConfiguration.framework */,
+				20CD3462183A4EF0BD328205 /* Security.framework */,
+				17D7B000DA7047569CC2C6F2 /* CFNetwork.framework */,
+				209DB455CDE74B9DA1B2CBC2 /* libstdc++.6.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -308,6 +348,12 @@
 				845BB4D32F014AC9A260B277 /* Toast.m */,
 				86A442EC373142378BB3B92F /* Toast+UIView.h */,
 				97B03F94D1514F9681A84802 /* Toast.h */,
+				E913E1CD67CD4D15B9D99906 /* CDVWechat.m */,
+				F2BEFD7AE75443CBAB0A9845 /* CDVWechat.h */,
+				99ABABEAEDC342748AD8E862 /* WXApi.h */,
+				A753944E1E7040809548C15F /* WXApiObject.h */,
+				6614F8150150424A86578C7F /* Canvas2ImagePlugin.m */,
+				5F8328D7ACF14393B580E51B /* Canvas2ImagePlugin.h */,
 			);
 			name = Plugins;
 			path = "直播潞安/Plugins";
@@ -447,6 +493,8 @@
 				B2052478D2A84155BAE6850B /* IonicKeyboard.m in Sources */,
 				C3EED7FAB21C41519A096115 /* Toast+UIView.m in Sources */,
 				A153567AC21B4F4BAAC4E2FF /* Toast.m in Sources */,
+				6121515CCF634DC98A4D6A8F /* CDVWechat.m in Sources */,
+				CB90AF22726B4D488E5A4988 /* Canvas2ImagePlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +528,10 @@
 				INFOPLIST_FILE = "直播潞安/直播潞安-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_NAME = "直播潞安";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/直播潞安/Plugins/cordova-plugin-wechat\"",
+				);
 			};
 			name = Debug;
 		};
@@ -499,6 +551,10 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "直播潞安/直播潞安-Info.plist";
 				PRODUCT_NAME = "直播潞安";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/直播潞安/Plugins/cordova-plugin-wechat\"",
+				);
 			};
 			name = Release;
 		};
@@ -526,6 +582,10 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				PRODUCT_NAME = "直播潞安";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/直播潞安/Plugins/cordova-plugin-wechat\"",
+				);
 			};
 			name = Debug;
 		};
@@ -552,6 +612,10 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				PRODUCT_NAME = "直播潞安";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/直播潞安/Plugins/cordova-plugin-wechat\"",
+				);
 			};
 			name = Release;
 		};

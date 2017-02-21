@@ -81,6 +81,52 @@ angular.module('app.services', ['ngResource', 'app.constants'])
     var categories;
     var templates;
     var services;
+    var WechatShare = function (scene, detail){
+        //取出第一张图片的URl
+        var thumbUrl = detail.content.match(/http[^\"'>]+.(jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG)/i);
+        Wechat.isInstalled(function (installed) {
+            if(!installed){
+                $ionicPopup.alert({
+                    title:'无法分享',
+                    template:'请先安装微信',
+                    okText:'我知道了'
+                });
+                return;
+            }
+            Wechat.share({
+                message:{
+                    title:detail.title,
+                    description:'分享自直播潞安',
+                    thumb:thumbUrl?thumbUrl[0]:'',
+                    media:{
+                        type:Wechat.Type.WEBPAGE,
+                        webpageUrl:'https://jyfiaueng.github.io/FindColor/'
+                    }
+                },
+                scene: scene
+            }, function () {
+                $ionicPopup.alert({
+                    title:'分享成功',
+                    template:'感谢您的支持',
+                    okText:'关闭'
+                });
+            }, function (reason) {
+                // $ionicPopup.alert({
+                //     title:'分享失败',
+                //     template:reason,
+                //     okText:'我知道了'
+                // });
+            });
+        }, function (reason) {
+            var popup = $ionicPopup.show({
+                title: '无法分享',
+                template: reason
+            });
+            $timeout(function() {
+                popup.close();
+            }, 3000);
+        });
+    };
 
     return {
         getCategories: function(onLoad, onErr) {
@@ -135,23 +181,25 @@ angular.module('app.services', ['ngResource', 'app.constants'])
             });
         },
 
-        share: function(id, title) {
+        WechatShare: WechatShare,
+
+        share: function(detail) {
+            var self = this;
             var sheet = $ionicActionSheet.show({
                 titleText: '分享',
                 cancelText: '取消',
                 buttons: [{
                     text: '分享到微信朋友圈'
-                }, {
-                    text: '发送给微信好友'
+                },{
+                    text: '分享到微信好友'
                 }],
                 buttonClicked: function(index) {
-                    var popup = $ionicPopup.show({
-                        title: '分享',
-                        template: '对不起，次版本尚未提供分享功能'
-                    });
-                    $timeout(function() {
-                        popup.close();
-                    }, 3000);
+                    if(index === 0){
+                        WechatShare(Wechat.Scene.TIMELINE, detail);
+                    }
+                    if(index === 1){
+                        WechatShare(Wechat.Scene.SESSION, detail);
+                    }
                 }
             });
         },
@@ -171,4 +219,4 @@ angular.module('app.services', ['ngResource', 'app.constants'])
             return MimeTypes[suffix]? MimeTypes[suffix]:'application/octet-stream';
         }
     };
-})
+});

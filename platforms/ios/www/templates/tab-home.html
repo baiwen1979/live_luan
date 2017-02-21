@@ -1,16 +1,18 @@
 <ion-view id="tab-home" view-title="首页">
-  <ion-header-bar class="bar-light sub-header">
+  <ion-header-bar  ng-if="!offline" class="bar-light sub-header">
     <div class="row header-row">
       <ion-scroll delegate-handle="tabs-scroll" zooming="false" class="tabs-container" direction="x" scrollbar-y="false" scrollbar-x="false">
         <ul class="slide-tabs">
-          <li ng-class="slideIndex == $index ? 'current-active'+$index : 'current'+$index" ng-repeat="category in categories">
+          <li ng-repeat="category in categorySort" ng-class="slideIndex == $index ? 'current-active'+ category.id : 'current'+ category.id">
             <a href="#" ng-click="activeSlide($index)"></a>
           </li>
         </ul>
       </ion-scroll>
       
-      <button id="btn-addCategory" class="button button-stable icon ion-ios-plus-empty" ng-click="addCategory()">
-      </button>
+      <!-- <button id="btn-addCategory" class="button button-stable icon ion-ios-plus-empty" ng-click="openModal()">
+      </button> -->
+      <a id="btn-addCategory" href="#" ng-click="openModal()"></a>
+      <!-- <a id="btn-addCategory" href="#"></a> -->
       
     </div>
   </ion-header-bar>
@@ -18,6 +20,17 @@
   <div ng-if="offline" id="offlineBtn">
     <p>网络连接失败!</p>
     <button class="button button-assertive" ng-click="initCategoryVMs()">重新加载</button>
+  </div>
+  
+  <!-- 首屏广告相关代码 -->
+  <div id="advertisements" ng-class="{'advHide':advHide}">
+    <div id="closeAdv" ng-click="hideAdv()">跳过({{advTime}})</div>
+    <ion-slide-box auto-play="true" does-continue="true" slide-interval="1400" on-slide-changed="ctrlTime()" id="advBox">
+      <ion-slide ng-repeat="item in advImage">
+        <div ng-class="item" class="box">
+        </div>
+      </ion-slide>
+    </ion-slide-box>
   </div>
 
   <ion-slide-box  ng-if="!offline" delegate-handle="outer-slider" id="outer-slider" show-pager="false" on-slide-changed="outerSlideChanged(index)" active-slide="slideIndex">

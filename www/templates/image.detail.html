@@ -6,7 +6,7 @@
   </ion-slide-box>
 </ion-content>
 <div class="sub-title animate" ng-class="{'animate-hide':!showSubTitle, 'full-sub-title':fullSubTitle}" on-swipe-up="swipeUp()" on-swipe-down="swipeDown()">
-    <h3 class="$root.changeFontSize"><i>{{slideIndex + 1}}</i>/{{detail.images.length}}&nbsp;{{detail.title}}</h3>
+    <h3><i>{{slideIndex + 1}}</i>/{{detail.images.length}}&nbsp;{{detail.title}}</h3>
     <div class="desc" ng-repeat="image in detail.images" ng-show="$index==slideIndex">
      {{image.desc}}
     </div>
