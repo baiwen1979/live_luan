@@ -297,7 +297,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 				content:myComment
 			}
 		}).success(function(data){
-			console.log(data);
+			// console.log(data);
 			if(data.result == 'OK'){
 				Util.showAlert('评论成功');
 			}else{
@@ -384,7 +384,14 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		if(e.target.tagName !== 'IMG'){
 			return;
 		}
+		var src = e.target.src;
 		var imgArr = content.match(/http[^\"'>]+.[jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG]/gi);
+		for(var i = 0; i < imgArr.length; i++){
+			if(imgArr[i] == src){
+				$ionicSlideBoxDelegate.slide(i, 0);
+				break;
+			}
+		}
 		$scope.imgArr = imgArr;
 		$scope.modal.show();
 	};
@@ -496,7 +503,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 					password:$scope.user.password
 				}
 			}).success(function(data){
-				console.log(data);
+				// console.log(data);
 				if (data.result === 'OK') {
 					localStorage.setItem('userInfo', angular.toJson({
 						sessionId:data.data.sessionId,
@@ -505,7 +512,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 						password:$scope.user.password
 						// avatar:data.data.avatar
 					}));
-					console.log(data.data.sessionId);
+					// console.log(data.data.sessionId);
 					var popup = $ionicPopup.show({
 						title: '登录成功',
 						template: ''
@@ -519,7 +526,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 					Util.showAlert('登录失败', '用户名或密码不正确！');
 				}
 			}).error(function(data){
-				console.log(data);
+				// console.log(data);
 				Util.showAlert('未知错误', '请检查网络或进行意见反馈！');
 			});
 		}
@@ -715,7 +722,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 				}
 			}).success(function(data){
 				if(data.result === 'OK'){
-					console.log(data);
+					// console.log(data);
 					$scope.isPublish = true;
 					if($scope.articles.isPublish){
 						Storage.putItem('myArticles', {
@@ -764,7 +771,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 			titleText: '选择添加的文件类型',
 			cancelText: '取消',
 			cancel: function(){
-				console.log('取消');
+				// console.log('取消');
 			},
 			buttonClicked: function(index) {
 				if(index === 0){
@@ -972,7 +979,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 			titleText: '请选择正文字号大小',
 			cancelText: '取消',
 			cancel: function(){
-				console.log('取消');
+				// console.log('取消');
 			},
 			buttonClicked: function(index) {
 				if(index === 0){

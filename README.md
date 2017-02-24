@@ -2,19 +2,21 @@
 =====================
 
 ### app描述
-		潞安集团的手机新闻客户端，后端数据由潞安集团提供，由两人组成，我负责用户模块。
+		潞安集团的手机新闻客户端，后端数据由潞安集团提供，由两人组成，我负责大量功能的编写和后期维护。
 
 ### 功能简介
 		新闻查看；
-		新增新闻类别；
-		服务类目的增删；
 		新闻评论；
 		新闻收藏；
 		用户发表文章；
 		用户进行文件上传；
+		栏目排序；
+		分享；
+		文章内图片查看下载；
+		字体修改；
 
 ### 实现方式
-		使用ionic实现。
+		使用 ionic1 实现。
 
 ### 结构
 ![文件结构](https://github.com/JYFiaueng/luan_news/blob/master/docs/文件结构.png)
@@ -24,8 +26,10 @@
 ![2](https://github.com/JYFiaueng/luan_news/blob/master/docs/9.jpg)
 ![3](https://github.com/JYFiaueng/luan_news/blob/master/docs/10.jpg)
 ![4](https://github.com/JYFiaueng/luan_news/blob/master/docs/11.jpg)
-![4](https://github.com/JYFiaueng/luan_news/blob/master/docs/12.jpg)
-![4](https://github.com/JYFiaueng/luan_news/blob/master/docs/13.jpg)
+![5](https://github.com/JYFiaueng/luan_news/blob/master/docs/12.jpg)
+![6](https://github.com/JYFiaueng/luan_news/blob/master/docs/13.jpg)
+![7](https://github.com/JYFiaueng/luan_news/blob/master/docs/14.jpg)
+![8](https://github.com/JYFiaueng/luan_news/blob/master/docs/15.jpg)
 
 ### 比较总结
 		最开始为了快速开发使用APICloud，发现效果不好，后来改为ionic。
