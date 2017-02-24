@@ -28,8 +28,8 @@
 ![4](https://github.com/JYFiaueng/luan_news/blob/master/docs/11.jpg)
 ![5](https://github.com/JYFiaueng/luan_news/blob/master/docs/12.jpg)
 ![6](https://github.com/JYFiaueng/luan_news/blob/master/docs/13.jpg)
-![7](https://github.com/JYFiaueng/luan_news/blob/master/docs/14.jpg)
-![8](https://github.com/JYFiaueng/luan_news/blob/master/docs/15.jpg)
+![7](https://github.com/JYFiaueng/luan_news/blob/master/docs/14.png)
+![8](https://github.com/JYFiaueng/luan_news/blob/master/docs/15.png)
 
 ### 比较总结
 		最开始为了快速开发使用APICloud，发现效果不好，后来改为ionic。
