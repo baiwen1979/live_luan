@@ -570,7 +570,13 @@ h2.title {
 #tab-account .bar.bar-header .user-avatar {
 	text-align: center;
 	display: block;
-	margin: 0 auto;
+	margin: 20px auto;
+}
+#tab-account .bar.bar-header .user-avatar a{
+	border-radius: 50%;
+}
+#tab-account .bar.bar-header .user-avatar img{
+	border-radius: 50%;
 }
 
 #tab-account .bar.bar-header img {
@@ -671,20 +677,28 @@ iframe.full {
 #tab-login #userpng{
 	text-align: center;
 	height: 60px;
+	border-radius: 50%;
+	margin-top: 60px;
+	margin-bottom: 40px;
 }
 
 #tab-login div{
 	text-align: center;
 }
 
+#tab-login .card:nth-child(1){
+	margin-top: 50px;
+}
+
 #tab-login #userpng img{
 	width: 60px;
 	height: 60px;
+	border-radius: 50%;
 }
 
 #tab-login #loginType div{
 	display: inline-block;
-	width: 33%;
+	margin: auto;
 }
 
 #tab-login p{

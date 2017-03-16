@@ -481,58 +481,105 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 
 })
 
-.controller('LoginCtrl', function($rootScope, $scope, $stateParams, $ionicHistory, $http, 
+.controller('LoginCtrl', function($rootScope, $scope, $ionicLoading, $stateParams, $ionicHistory, $http, 
 	$location, $ionicPopup, $timeout, Util, Storage, ResourceUrls) {
-	
-	//$scope.userId = $stateParams.userId;
 
 	$scope.goBack = Util.goBack;
+	$scope.$on('$ionicView.enter', function() {
+		if(localStorage.getItem('userInfo')){
+			if(angular.fromJson(localStorage.getItem('userInfo'))){
+				$scope.isLogin = true;
+				$scope.userinfo = angular.fromJson(localStorage.getItem('userInfo'));
+			}
+		}else{
+			$scope.isLogin = false;
+		}
+	});
 
-	$scope.user = {
-		username:localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).username : '',
-		password:localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).password : ''
+	$scope.userinfo = '';
+
+	$scope.logoff = function (){
+		$scope.isLogin = false;
+		localStorage.setItem('userInfo', '');
+	};
+
+	$scope.switchAccount = function (){
+		$scope.wechatLogin();
+	};
+
+	$scope.QQLogin = function (){
+		Util.showAlert('无法登录', '仅支持微信登录');
+	};
+	$scope.wechatLogin = function (){
+		Util.wechatLogin(function (userinfo){
+			localStorage.setItem('userInfo', JSON.stringify({
+				userId:userinfo.openid,
+				avatar:userinfo.headimgurl,
+				username:userinfo.nickname,
+				sex:userinfo.sex,
+				language:userinfo.language,
+				city:userinfo.city,
+				province:userinfo.province,
+				country:userinfo.country,
+				unionid:userinfo.unionid
+			}));
+			$location.url('/tab/account');
+			var popup = $ionicPopup.show({
+				title: '登录成功',
+				template: ''
+			});
+			$timeout(function() {
+				$scope.isLogin = true;
+				popup.close();
+			}, 1600);
+		});
+	};
+	$scope.sinaLogin = function (){
+		Util.showAlert('无法登录', '仅支持微信登录');
 	};
 
 	$scope.submit = function(){
-		if($scope.user.username && $scope.user.password){
-			$http({
-				method:'post',
-				url:ResourceUrls.ApiBaseUrl + ResourceUrls.Login,
-				params:{
-					username:$scope.user.username,
-					password:$scope.user.password
-				}
-			}).success(function(data){
-				// console.log(data);
-				if (data.result === 'OK') {
-					localStorage.setItem('userInfo', angular.toJson({
-						sessionId:data.data.sessionId,
-						userId:data.data.userId,
-						username:$scope.user.username,
-						password:$scope.user.password
-						// avatar:data.data.avatar
-					}));
-					// console.log(data.data.sessionId);
-					var popup = $ionicPopup.show({
-						title: '登录成功',
-						template: ''
-					});
-					$timeout(function() {
-						popup.close();
-						$location.url('/tab/account');
-					}, 1200);
-				}
-				else {
-					Util.showAlert('登录失败', '用户名或密码不正确！');
-				}
-			}).error(function(data){
-				// console.log(data);
-				Util.showAlert('未知错误', '请检查网络或进行意见反馈！');
-			});
-		}
-		else {
-			Util.showAlert('无法登录', '请填写完整的登录信息！');
-		}
+		$ionicPopup.alert({
+			title:'提示',
+			template:'请点击下方微信第三方登录',
+			okText:'ok'
+		});
+		// if($scope.user.username && $scope.user.password){
+		// 	$http({
+		// 		method:'post',
+		// 		url:ResourceUrls.ApiBaseUrl + ResourceUrls.Login,
+		// 		params:{
+		// 			username:$scope.user.username,
+		// 			password:$scope.user.password
+		// 		}
+		// 	}).success(function(data){
+		// 		if (data.result === 'OK') {
+		// 			localStorage.setItem('userInfo', angular.toJson({
+		// 				sessionId:data.data.sessionId,
+		// 				userId:data.data.userId,
+		// 				username:$scope.user.username,
+		// 				password:$scope.user.password
+		// 				// avatar:data.data.avatar
+		// 			}));
+		// 			var popup = $ionicPopup.show({
+		// 				title: '登录成功',
+		// 				template: ''
+		// 			});
+		// 			$timeout(function() {
+		// 				popup.close();
+		// 				$location.url('/tab/account');
+		// 			}, 1200);
+		// 		}
+		// 		else {
+		// 			Util.showAlert('登录失败', '用户名或密码不正确！');
+		// 		}
+		// 	}).error(function(data){
+		// 		Util.showAlert('未知错误', '请检查网络或进行意见反馈！');
+		// 	});
+		// }
+		// else {
+		// 	Util.showAlert('无法登录', '请填写完整的登录信息！');
+		// }
 	};
 
 	$rootScope.hideTabs = true;
@@ -561,9 +608,9 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 	$scope.$on('$ionicView.enter', function() {
 
 		Util.setStatusBarHexColor(StatusBarColor.ColorOfAccount);
-
 		$rootScope.hideTabs = false;
 		$scope.sessionId = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).username  : '登录 | 注册';
+		$scope.avatar = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).avatar  : 'img/user.png';
 		$scope.commentLen = Storage.getItems('myComments').length;
 		$scope.articalLen = Storage.getItems('myArticles').length;
 		$scope.collectLen = Storage.getItems('favorites').length;
@@ -573,7 +620,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		enableFriends: true
 	};
 
-	$scope.avatar = 'img/user.png';
+	$scope.avatar = '';
 
 	// 亮度调节
 	$scope.luminance = function(){
@@ -904,8 +951,8 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 			method:'post',
 			url: ResourceUrls.ApiBaseUrl + ResourceUrls.AddArticle,
 			params:{
-				uid:-1,
-				cid:-1,
+				uid:Storage.getItems('userInfo').userId?Storage.getItems('userInfo').userId:-1,
+				// cid:-1,
 				title: '意见反馈',
 				content: $scope.feedback.content + '(' + $scope.feedback.call + ')',
 			}
