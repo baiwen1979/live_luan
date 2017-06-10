@@ -2,7 +2,7 @@
   <div class="news-header">
     <h1>{{detail.title}}</h1>
     <p>
-      <span>{{detail.publishTime| date:'yyyy-MM-dd'}}</span>
+      <span>{{detail.publishTime | date:'yyyy-MM-dd'}}</span>
       <span>{{detail.source}}</span>
       <span>{{detail.author}}</span>
     </p>
@@ -12,10 +12,9 @@
   <ng-include ng-if="detail.type=='video'" src="'templates/partial-'+ detail.type + '.html'"></ng-include>
   <ng-include ng-if="detail.type=='frame'" src="'templates/partial-'+ detail.type + '.html'"></ng-include>
 
-  <div ng-bind-html="detail.content" class="$root.changeFontSize" ng-click="openModal(detail.content, $event)">
+  <div ng-bind-html="detail.content" class="cssFontSize" ng-click="openModal(detail.content, $event)">
   </div>
 
-  <ng-include src="'templates/partial-ShareAndHot.html'" ></ng-include>
-
-  <ng-include src="'templates/partial-comments.html'" ></ng-include>
+  <ng-include src="'templates/partial-ShareAndHot.html'"></ng-include>
+  <ng-include src="'templates/partial-comments.html'"></ng-include>
 </ion-content>

@@ -1,8 +1,8 @@
-潞安新闻中心客户端
+潞安新闻中心客户端:直播潞安
 =====================
 
 ### app描述
-		潞安集团的手机新闻客户端，后端数据由潞安集团提供，由两人组成，我负责大量功能的编写和后期维护。
+		直播潞安：潞安集团的手机新闻客户端
 
 ### 功能简介
 		新闻查看；
@@ -19,21 +19,21 @@
 		使用 ionic1 实现。
 
 ### 结构
-![文件结构](https://github.com/JYFiaueng/luan_news/blob/master/docs/文件结构.png)
+![文件结构](https://github.com/Baiwen1979/luan_news/blob/master/docs/文件结构.png)
 
 ### 最终效果
-![1](https://github.com/JYFiaueng/luan_news/blob/master/docs/8.jpg)
-![2](https://github.com/JYFiaueng/luan_news/blob/master/docs/9.jpg)
-![3](https://github.com/JYFiaueng/luan_news/blob/master/docs/10.jpg)
-![4](https://github.com/JYFiaueng/luan_news/blob/master/docs/11.jpg)
-![5](https://github.com/JYFiaueng/luan_news/blob/master/docs/12.jpg)
-![6](https://github.com/JYFiaueng/luan_news/blob/master/docs/13.jpg)
-![7](https://github.com/JYFiaueng/luan_news/blob/master/docs/14.png)
-![8](https://github.com/JYFiaueng/luan_news/blob/master/docs/15.png)
+![1](https://github.com/Baiwen1979/luan_news/blob/master/docs/8.jpg)
+![2](https://github.com/Baiwen1979/luan_news/blob/master/docs/9.jpg)
+![3](https://github.com/Baiwen1979/luan_news/blob/master/docs/10.jpg)
+![4](https://github.com/Baiwen1979/luan_news/blob/master/docs/11.jpg)
+![5](https://github.com/Baiwen1979/luan_news/blob/master/docs/12.jpg)
+![6](https://github.com/Baiwen1979/luan_news/blob/master/docs/13.jpg)
+![7](https://github.com/Baiwen1979/luan_news/blob/master/docs/14.png)
+![8](https://github.com/Baiwen1979/luan_news/blob/master/docs/15.png)
 
 ### 比较总结
 		最开始为了快速开发使用APICloud，发现效果不好，后来改为ionic。
-		我在做的过程中遇到最坑的是手机端文件上传的功能，由于其继承测试环境不是手机，
+		开发过程中遇到最棘手的问题是手机端文件上传的功能，由于其基础测试环境不是手机，
 		而ionic又没有像APICloud一样方便的连接手机的功能，只能在虚拟机上测试，仅仅生
 		成Android安装包就至少上百次，每一点小的改动都要进行apk安装、测试、调整。
 

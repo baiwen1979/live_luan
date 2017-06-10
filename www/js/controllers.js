@@ -1,8 +1,9 @@
-angular.module('app.controllers', ['ngCordova', 'app.constants'])
+angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 
-.controller('HomeCtrl', function($rootScope, $scope, $timeout, $ionicPlatform, 
-	$ionicScrollDelegate, $ionicSlideBoxDelegate,
-	Model, Util, StatusBarColor, $ionicModal, $cordovaToast) {
+.controller('HomeCtrl', function(
+	$rootScope, $scope, $timeout, $ionicPlatform, 
+	$ionicScrollDelegate, $ionicSlideBoxDelegate, $ionicModal, $cordovaToast, 
+	Model, Util, StatusBarColor) {
 
 	//active slideIndex
 	$scope.slideIndex = 0;
@@ -55,6 +56,20 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		}, function(err) {
 			$scope.error = err;
 		});
+	}
+
+	function checkUpdate () {
+		if (ionic.Platform.isAndroid()) {
+			Util.checkUpdate();
+		}
+	}
+
+	function registerApp() {
+		if (!localStorage.getItem('appId')) {
+			Util.getAppId().then(function(appId) {
+				localStorage.setItem('appId', appId);
+			});
+		}
 	}
 
 	$scope.offline = false;
@@ -140,6 +155,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 	};
 
 	initCategoryVMs();
+	registerApp();
 
 	$scope.initCategoryVMs = initCategoryVMs;
 	$ionicSlideBoxDelegate.enableSlide(true);
@@ -208,20 +224,31 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 	});
 
 	// 首屏广告相关
-	$scope.advImage = ['blue', 'red', 'green'];//这里需要从服务器获取图片地址
-	$scope.advHide = false;
-	$rootScope.hideTabs = true;
-	$scope.advTime = $scope.advImage.length;
-	$scope.hideAdv = function (){
-		$scope.advHide = true;
-		$rootScope.hideTabs = false;
-	};
-	$scope.ctrlTime = function (index){
-		$scope.advTime--;
-		if($scope.advTime < 0){
-			$scope.hideAdv();
+	Util.getAds().then(function(ads) {
+		$scope.ads = ads;
+		//console.log($scope.ads.length);
+		$scope.advHide = false;
+		$rootScope.hideTabs = true;
+		$scope.advTime = $scope.ads.length;
+
+		$scope.hideAdv = function (){
+			$scope.advHide = true;
+			$rootScope.hideTabs = false;
+		};
+
+		$scope.ctrlTime = function (index){
+			$scope.advTime--;
+			if($scope.advTime <= 1){
+				$timeout($scope.hideAdv, 2000);
+				$timeout(checkUpdate, 3000);
+			}
+		};
+
+		if (ads.length == 1) {
+			$timeout($scope.ctrlTime, 2000);
 		}
-	};
+	});
+
 
 })
 
@@ -248,6 +275,22 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		});
 	}
 
+	function isArticleVoted(id) {
+		var votes = localStorage.getItem('articleVotes');
+		var voted = false;
+		if (votes) {
+			votes = angular.fromJson(votes);
+			voted = votes.indexOf(id) != -1;
+		}
+		return voted;
+	}
+
+	function trustUrl(article, urlAttrName) {
+		if (article[urlAttrName]) {
+			article[urlAttrName] = $sce.trustAsResourceUrl(article[urlAttrName]);
+		}
+	}
+
 	$scope.$on('$ionicView.enter', function() {
 
 		Util.setStatusBarHexColor(StatusBarColor.ColorOfHome);
@@ -255,6 +298,8 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		Model.detail('Article', { id: $stateParams.id }, function(detail) {
 			//detail.content = $sce.trustAsHtml(detail.content);
 			$scope.detail = detail;
+			$scope.hot = isArticleVoted(detail.id);
+			trustUrl($scope.detail,"srcUrl");
 			Util.getDetailTemplate(detail.categoryId, function(template) {
 				$scope.template = template;
 			});
@@ -286,22 +331,30 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 	};
 
 	$scope.commit = function(myComment) {
+		var userInfo = localStorage.getItem('userInfo');
 
-		$scope.uid = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).userId : '-1';
+		if (userInfo && userInfo.trim()!=''){ 
+			userInfo = angular.fromJson(localStorage.getItem('userInfo'));
+		}
+
 		$http({
 			method:'post',
 			url: ResourceUrls.ApiBaseUrl + ResourceUrls.AddComment,
 			params:{
-				aid:$scope.detail.id,
-				uid:$scope.uid,
-				content:myComment
+				aid: $scope.detail.id,
+				uid: userInfo? userInfo.userId : '-1',
+				headimgurl: userInfo? userInfo.avatar : 'img/user.png',
+				username: userInfo? userInfo.username : '游客',
+				content: myComment
+
 			}
 		}).success(function(data){
 			// console.log(data);
 			if(data.result == 'OK'){
-				Util.showAlert('评论成功');
-			}else{
-				Util.showAlert('未知错误');
+				Util.showAlert('评论成功！');
+			}
+			else{
+				Util.showAlert('评论被服务器拒绝！');
 			}
 		}).error(function(data){
 			Util.showAlert('未知', '请检查网络或进行意见反馈！');
@@ -315,8 +368,8 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 
 		$scope.detail.comments.unshift({
 			// user:'我[匿名]',
-			user:localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).username : '我[匿名]', 
-			portrait_url: 'img/user.png',
+			user: userInfo? userInfo.username : '我[游客]',
+			portrait_url: userInfo? userInfo.avatar : 'img/user.png',
 			comment: myComment,
 			commentTime: (new Date()).getTime()
 		});
@@ -349,37 +402,38 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 	// 分享相关代码
 	$scope.ArticleShare = function (id, title, detail){
 		Util.share(detail);
+		Util.addShareTimes(id);
 	};
 
-	$scope.shareTIMELINE = function (detail){
+	//分享到微信朋友圈
+	$scope.shareTimeline = function (detail) {
 		Util.WechatShare(1, detail);
+		Util.addShareTimes(detail.id);
 	};
-
-	$scope.shareSESSION = function (detail){
+	//分享到微信好友
+	$scope.shareSession = function (detail) {
 		Util.WechatShare(0, detail);
+		Util.addShareTimes(detail.id);
 	};
 
-	// 点赞相关代码
-	$scope.hotCount = 5;//需要从服务器获取
-	$scope.hot = false;//先暂时这样，需要根据在本地取到用户的点赞数据设置
-	$scope.clickhot = function (){
+	$scope.likeArticle = function (detail) {
 		if($scope.hot){
 			return;
 		}
 		$scope.hot = true;
-		$scope.hotCount++;
-		//这里需要上传用户点赞行为
-		//把用户对文章的点赞保存在本地
+
+		$scope.detail.good++;
+		Util.voteArticle(detail.id);
 	};
 
 	// 文章内图片点击出现图片box并可下载的实现
 	$scope.imgArr = [];
 	$ionicModal.fromTemplateUrl('templates/imageModal.html', {
-			scope: $scope,
-			animation: 'slide-in-right'
-		}).then(function(modal) {
+		scope: $scope,
+		animation: 'slide-in-right'
+	}).then(function(modal) {
 			$scope.modal = modal;
-		});
+	});
 	$scope.openModal = function(content, e) {
 		if(e.target.tagName !== 'IMG'){
 			return;
@@ -433,7 +487,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		}
 		var success = function (msg) {
 			$cordovaToast.showWithOptions({
-				message: '已保存至'+msg,
+				message: '已保存至' + msg,
 				duration: "long", 
 				position: "bottom",
 				addPixelsY: -120
@@ -453,7 +507,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 })
 
 //服务控制器
-.controller('ServicesCtrl', function($scope, Util, StatusBarColor) {
+.controller('ServicesCtrl', function($scope, Util, StatusBarColor, _) {
 
 	$scope.$on('$ionicView.enter', function(e) {
 		Util.setStatusBarHexColor(StatusBarColor.ColorOfServices);
@@ -461,7 +515,8 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 
 	$scope.loadServices = function() {
 		Util.getServices(function(items) {
-			$scope.groups = items;
+			$scope.groups = _.groupBy(items, function(item){return 's' + item.serviceType.id});
+			//console.log($scope.groups);
 		});
 	};
 	$scope.$on('$ionicView.enter', $scope.loadServices);
@@ -508,81 +563,89 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 	};
 
 	$scope.QQLogin = function (){
-		Util.showAlert('无法登录', '仅支持微信登录');
+		Util.showAlert('无法登录', '目前版本仅支持微信登录');
 	};
 	$scope.wechatLogin = function (){
-		Util.wechatLogin(function (userinfo){
-			localStorage.setItem('userInfo', JSON.stringify({
-				userId:userinfo.openid,
-				avatar:userinfo.headimgurl,
-				username:userinfo.nickname,
-				sex:userinfo.sex,
-				language:userinfo.language,
-				city:userinfo.city,
-				province:userinfo.province,
-				country:userinfo.country,
-				unionid:userinfo.unionid
-			}));
+		Util.wechatLogin(function (userinfo) {
+
+			var userInfo = {
+				userId: userinfo.openid,
+				avatar: userinfo.headimgurl,
+				username: userinfo.nickname,
+				sex: userinfo.sex,
+				language: userinfo.language,
+				city: userinfo.city,
+				province: userinfo.province,
+				country: userinfo.country,
+				unionid: userinfo.unionid
+			};
+
+			userInfo = JSON.stringify(userInfo);
+			localStorage.setItem('userInfo', userInfo);
+
 			$location.url('/tab/account');
+
 			var popup = $ionicPopup.show({
 				title: '登录成功',
-				template: ''
+				template: '微信授权登录成功!'
 			});
+			
 			$timeout(function() {
 				$scope.isLogin = true;
 				popup.close();
 			}, 1600);
+			
 		});
 	};
 	$scope.sinaLogin = function (){
-		Util.showAlert('无法登录', '仅支持微信登录');
+		Util.showAlert('无法登录', '目前版本仅支持微信登录');
 	};
 
 	$scope.submit = function(){
 		$ionicPopup.alert({
 			title:'提示',
-			template:'请点击下方微信第三方登录',
+			template:'请点击微信授权登录',
 			okText:'ok'
 		});
-		// if($scope.user.username && $scope.user.password){
-		// 	$http({
-		// 		method:'post',
-		// 		url:ResourceUrls.ApiBaseUrl + ResourceUrls.Login,
-		// 		params:{
-		// 			username:$scope.user.username,
-		// 			password:$scope.user.password
-		// 		}
-		// 	}).success(function(data){
-		// 		if (data.result === 'OK') {
-		// 			localStorage.setItem('userInfo', angular.toJson({
-		// 				sessionId:data.data.sessionId,
-		// 				userId:data.data.userId,
-		// 				username:$scope.user.username,
-		// 				password:$scope.user.password
-		// 				// avatar:data.data.avatar
-		// 			}));
-		// 			var popup = $ionicPopup.show({
-		// 				title: '登录成功',
-		// 				template: ''
-		// 			});
-		// 			$timeout(function() {
-		// 				popup.close();
-		// 				$location.url('/tab/account');
-		// 			}, 1200);
-		// 		}
-		// 		else {
-		// 			Util.showAlert('登录失败', '用户名或密码不正确！');
-		// 		}
-		// 	}).error(function(data){
-		// 		Util.showAlert('未知错误', '请检查网络或进行意见反馈！');
-		// 	});
-		// }
-		// else {
-		// 	Util.showAlert('无法登录', '请填写完整的登录信息！');
-		// }
+		/*if($scope.user.username && $scope.user.password){
+			$http({
+				method:'post',
+				url:ResourceUrls.ApiBaseUrl + ResourceUrls.Login,
+				params:{
+					username:$scope.user.username,
+					password:$scope.user.password
+				}
+			}).success(function(data){
+				if (data.result === 'OK') {
+					localStorage.setItem('userInfo', angular.toJson({
+						sessionId:data.data.sessionId,
+						userId:data.data.userId,
+						username:$scope.user.username,
+						password:$scope.user.password
+						// avatar:data.data.avatar
+					}));
+					var popup = $ionicPopup.show({
+						title: '登录成功',
+						template: ''
+					});
+					$timeout(function() {
+						popup.close();
+						$location.url('/tab/account');
+					}, 1200);
+				}
+				else {
+					Util.showAlert('登录失败', '用户名或密码不正确！');
+				}
+			}).error(function(data){
+				Util.showAlert('未知错误', '请检查网络或进行意见反馈！');
+			});
+		}
+		else {
+			Util.showAlert('无法登录', '请填写完整的登录信息！');
+		}*/
 	};
 
-	$rootScope.hideTabs = true;
+	//$rootScope.hideTabs = true;
 })
 
 .controller('RegisterCtrl', function($scope, $ionicHistory, Util) {
@@ -609,7 +672,8 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 
 		Util.setStatusBarHexColor(StatusBarColor.ColorOfAccount);
 		$rootScope.hideTabs = false;
-		$scope.sessionId = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).username  : '登录 | 注册';
+		//console.log(localStorage);
+		$scope.username = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).username  : '点击登录';
 		$scope.avatar = localStorage.getItem('userInfo') ? angular.fromJson(localStorage.getItem('userInfo')).avatar  : 'img/user.png';
 		$scope.commentLen = Storage.getItems('myComments').length;
 		$scope.articalLen = Storage.getItems('myArticles').length;
@@ -620,7 +684,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		enableFriends: true
 	};
 
-	$scope.avatar = '';
+	$scope.avatar = 'img/user.png';
 
 	// 亮度调节
 	$scope.luminance = function(){
@@ -651,21 +715,21 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		// 长按弹窗删除
 		var articles = Storage.getItems('myArticles');
 		$ionicActionSheet.show({
-				titleText: '操作',
-				cancelText: '取消',
-				buttons: [{
+			titleText: '操作',
+			cancelText: '取消',
+			buttons: [{
 					text: '删除'
-				}],
-				buttonClicked: function() {
-					if(articles[index].isPublish){
-						Util.showAlert('已发表的文章不能删除');
-					}else{
-						articles.splice(index, 1);
-						localStorage.setItem('myArticles', angular.toJson(articles));
-						$scope.articles = Storage.getItems('myArticles');
-					}
-					return true;
+			}],
+			buttonClicked: function() {
+				if(articles[index].isPublish){
+					Util.showAlert('已发表的文章不能删除');
+				}else{
+					articles.splice(index, 1);
+					localStorage.setItem('myArticles', angular.toJson(articles));
+					$scope.articles = Storage.getItems('myArticles');
 				}
+				return true;
+			}
 		});
 	};
 
@@ -805,7 +869,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 
 	var options = CameraOptions;
 
-	$scope.changeFile = function(){
+	$scope.changeFile = function() {
 		if(!localStorage.getItem('userInfo')){
 			Util.showAlert('未登录', '请登录后再上传文件！');
 			return;
@@ -869,9 +933,9 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 		var ft = new FileTransfer();
 		ft.upload($scope.fileUrl[$scope.uploadNumber], uri, function(data){
 			var response = angular.fromJson(data.response);
-			if(response.result === 'OK'){
-				$scope.publish.content += '('+response.data.fileUrl+')';
-				if($scope.uploadNumber == $scope.fileUrl.length-1){
+			if (response.result === 'OK') {
+				$scope.publish.content += '(' + response.data.fileUrl + ')';
+				if ($scope.uploadNumber == $scope.fileUrl.length - 1) {
 					$scope.popup.close();
 					$scope.popup = $ionicPopup.show({
 						title: '上传完成！',
@@ -886,9 +950,10 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 				}
 				$scope.uploadNumber++;
 				$scope.upload();
-			}else{
+			}
+			else {
 				$scope.failFile.push($scope.fileName[$scope.uploadNumber]);
-				if($scope.uploadNumber == $scope.fileUrl.length-1){
+				if($scope.uploadNumber == $scope.fileUrl.length - 1){
 					$scope.popup.close();
 					Util.showAlert('失败', '上传失败！');
 					$scope.uploadNumber = 0;
@@ -951,7 +1016,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 			method:'post',
 			url: ResourceUrls.ApiBaseUrl + ResourceUrls.AddArticle,
 			params:{
-				uid:Storage.getItems('userInfo').userId?Storage.getItems('userInfo').userId:-1,
+				uid: Storage.getItems('userInfo').userId? Storage.getItems('userInfo').userId : -1,
 				// cid:-1,
 				title: '意见反馈',
 				content: $scope.feedback.content + '(' + $scope.feedback.call + ')',
@@ -986,19 +1051,20 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 .controller('settingCtrl', function($rootScope, $scope, $timeout, $ionicPopup, $ionicActionSheet,Util){
 	$scope.goBack = Util.goBack;
 
-	var s = parseInt(localStorage.getItem('fontSize') ? angular.fromJson(localStorage.getItem('fontSize')).fz : '16');
-	if(s === 10) $scope.fontSize = '超小';
-	if(s === 13) $scope.fontSize = '小';
-	if(s === 16) $scope.fontSize = '中';
-	if(s === 19) $scope.fontSize = '大';
-	if(s === 22) $scope.fontSize = '超大';
+	var s = parseInt(localStorage.getItem('fontSize') ? angular.fromJson(localStorage.getItem('fontSize')).fz : '20');
+	if(s === 14) $scope.fontSize = '超小';
+	if(s === 16) $scope.fontSize = '小';
+	if(s === 20) $scope.fontSize = '中';
+	if(s === 24) $scope.fontSize = '大';
+	if(s === 28) $scope.fontSize = '超大';
 
 	$scope.$on('$ionicView.enter', function() {
 		$rootScope.hideTabs = false;
-		if(localStorage.getItem('cacheNum')){
+		if (localStorage.getItem('cacheNum')) {
 			$scope.cache = parseFloat(localStorage.getItem('cacheNum')) + (new Number(Math.random().toFixed(2)).valueOf());
-		}else{
-			$scope.cache = parseFloat(Math.random()*5000+100)/1024;
+		}
+		else {
+			$scope.cache = parseFloat(Math.random() * 5000 + 100)/ 1024;
 		}
 		localStorage.setItem('cacheNum', $scope.cache.toString());
 	});
@@ -1031,19 +1097,19 @@ angular.module('app.controllers', ['ngCordova', 'app.constants'])
 			buttonClicked: function(index) {
 				if(index === 0){
 					$scope.fontSize = '超小';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'10px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'14px'}));
 				}else if(index === 1){
 					$scope.fontSize = '小';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'13px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'16px'}));
 				}else if(index === 2){
 					$scope.fontSize = '中';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'16px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'20px'}));
 				}else if(index === 3){
 					$scope.fontSize = '大';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'19px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'24px'}));
 				}else if(index === 4){
 					$scope.fontSize = '超大';
-					localStorage.setItem('fontSize', angular.toJson({'fz':'22px'}));
+					localStorage.setItem('fontSize', angular.toJson({'fz':'28px'}));
 				}
 				return true;
 			}

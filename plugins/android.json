@@ -76,6 +76,12 @@
         },
         "org.devgeeks.Canvas2ImagePlugin": {
             "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-app-version": {
+            "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-file-opener2": {
+            "PACKAGE_NAME": "com.chinaluan.news"
         }
     },
     "dependent_plugins": {

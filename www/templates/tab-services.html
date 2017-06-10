@@ -1,37 +1,34 @@
-<ion-view id="tab-services" view-title="服务">
+<ion-view id="tab-services" view-title="服务-直播潞安">
   <!-- 
   <ion-nav-bar class="bar-assertive">
     <ion-nav-back-button>
     </ion-nav-back-button>
   </ion-nav-bar> 
   -->
-  <div class="bar-header">
-    <img src="img/heart2.png" />
+  <div id="s1" class="bar-header">
+    <a href="#tab/service/{{groups.s1[0].id}}"><img src="img/live.png" /></a>
   </div>
-  <div ng-if="groups" class="services-list">
-    <!--  
-    <div class="item item-divider">
-      {{group}}
-    </div>
-    <div> 
-    -->
+
+  <ion-slide-box ng-if="groups.s2" id="s2" does-continue="true" auto-play="true">
+    <ion-slide ng-repeat="item in groups.s2">
+      <div class="box">
+        <a ng-href="#/tab/service/{{item.id}}">
+          <img ng-src="{{item.icon}}">
+        </a>
+        <!--<p class="title">{{item.label}}</p>-->
+      </div>
+    </ion-slide>
+  </ion-slide-box>
+
+  <div id="s3" ng-if="groups.s3" class="services-list">
     <ul>
-      <li ng-repeat="item in groups">
+      <li ng-repeat="item in groups.s3">
         <a ng-href="#/tab/service/{{item.id}}">
           <img ng-src="{{item.icon}}" />
           <p>{{item.label}}</p>
         </a>
       </li>
     </ul>
-    <!-- 
-    </div> 
-    -->
   </div>
-  <!--
-  <div ng-if="!groups" id="offlineBtn">
-    <p>网络连接失败!</p>
-    <button class="button button-assertive" ng-click="loadServices()">重新加载</button>
-  </div>
-  -->
   </div>
 </ion-view>

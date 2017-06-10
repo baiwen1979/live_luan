@@ -1,5 +1,17 @@
 angular.module('app.filters', [])
 
+.filter('percentage', function(){
+
+	return function (n, m) {
+		if (n.toString().length < 4) {
+			return n * 100.0 / m;
+		}
+		else {
+			return n;
+		}
+	}
+})
+
 .filter('timeHommization', function() {
 
 	function formatDate(date,format) {
@@ -25,18 +37,18 @@ angular.module('app.filters', [])
 
 	return function(e){
 		var t = formatDate(new Date(),"yyyy-MM-dd");
-		var twoDays = 2 * 24 * 60 * 60 * 1000;
+		var msOfDay = 24 * 60 * 60 * 1000;
 		if(t == e) {
 			return '今天';
 		}
-		else if (new Date(t).getTime() - new Date(e).getTime() < twoDays) {
+		else if (new Date(t).getTime() - new Date(e).getTime() < 2 * msOfDay) {
 			return '昨天';
 		}
-		/*
-		else if( new Date(t).getTime() - new Date(e).getTime() < 3*24*60*60*1000){
+		
+		else if( new Date(t).getTime() - new Date(e).getTime() < 3 * msOfDay){
 			return '前天';
 		}
-		*/
+		
 		else{
 			return e.substring(5);
 		}

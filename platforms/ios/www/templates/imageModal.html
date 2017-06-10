@@ -1,9 +1,8 @@
 <div class="modal" id="imageModal">
-
 	<ion-content id="imgBox">
 		<ion-slide-box does-continue="true">
 			<ion-slide ng-repeat="item in imgArr" on-slide-changed="changeDownload(i)">
-				<img src="{{item}}">
+				<img ng-src="{{item}}">
 			</ion-slide>
 		</ion-slide-box>
 	</ion-content>

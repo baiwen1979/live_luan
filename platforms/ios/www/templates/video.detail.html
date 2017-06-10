@@ -7,7 +7,7 @@
     </p>
   </div>
   <ng-include ng-if="detail.srcUrl" src="'templates/partial-'+ detail.type + '.html'"></ng-include>
-  <div ng-bind-html="detail.content">
+  <div ng-bind-html="detail.content" ng-click="openModal(detail.content, $event)">
   </div>
   <ng-include src="'templates/partial-ShareAndHot.html'" ></ng-include>
   <ng-include src="'templates/partial-comments.html'" ></ng-include>

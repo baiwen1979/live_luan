@@ -1,4 +1,4 @@
-<ion-view id="tab-home" view-title="首页">
+<ion-view id="tab-home" view-title="首页-直播潞安">
   <ion-header-bar  ng-if="!offline" class="bar-light sub-header">
     <div class="row header-row">
       <ion-scroll delegate-handle="tabs-scroll" zooming="false" class="tabs-container" direction="x" scrollbar-y="false" scrollbar-x="false">
@@ -11,7 +11,7 @@
       
       <!-- <button id="btn-addCategory" class="button button-stable icon ion-ios-plus-empty" ng-click="openModal()">
       </button> -->
-      <a id="btn-addCategory" href="#" ng-click="openModal()"></a>
+      <a id="btn-addCategory" class="ion-android-add" href="#" ng-click="openModal()"></a>
       <!-- <a id="btn-addCategory" href="#"></a> -->
       
     </div>
@@ -23,11 +23,12 @@
   </div>
   
   <!-- 首屏广告相关代码 -->
-  <div id="advertisements" ng-class="{'advHide':advHide}">
+  <div id="advertisements" ng-if="ads && ads.length > 0" ng-class="{'advHide':advHide}">
     <div id="closeAdv" ng-click="hideAdv()">跳过({{advTime}})</div>
-    <ion-slide-box auto-play="true" does-continue="true" slide-interval="1400" on-slide-changed="ctrlTime()" id="advBox">
-      <ion-slide ng-repeat="item in advImage">
-        <div ng-class="item" class="box">
+    <ion-slide-box  slide-interval="2000" id="advBox" on-slide-changed="ctrlTime()" auto-play="true">
+      <ion-slide ng-repeat="ad in ads">
+        <div class="ad box">
+          <img ng-src="{{ad.imgUrl}}"/>
         </div>
       </ion-slide>
     </ion-slide-box>

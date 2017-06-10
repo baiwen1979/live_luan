@@ -1,38 +1,60 @@
 angular.module('app.constants', [])
 //服务器资源地址
 .constant('ResourceUrls', {
-	ApiBaseUrl: 'http://60.220.238.2:8080/media/api/',
+	ApiBaseUrl: 'http://live.chinaluan.com:8080/media/api/',
+	WwwBaseUrl: 'http://live.chinaluan.com:8080/media/www/',
+	DownloadBaseUrl: 'http://live.chinaluan.com:8080/media/download/',
 	CategoryList: 'categories.do',
     ArticleList: 'newsJsonList.do',
     ArticleDetail: 'newsJsonDetailView.do',
     ServiceList:'services.do',
     Login: 'login.do',
-    AddComment:  'addComment.do',
+    AddComment: 'addComment.do',
     AddArticle: 'addArticle.do',
-    Upload: 'upload.do'
+    Upload: 'upload.do',
+    WechatShareDetail: 'index.html#/tab/detail',
+    AddGood: 'addGood.do',
+    AddShareTimes: 'addShareTimes.do',
+    GetNewVersion: 'getNewVersion.do',
+    GetAppId: 'registerApp.do',
+    Ads: 'ads.do'
+})
+//微信登录授权信息
+.constant('WechatLoginAuthInfo', {
+	AppId: 'wx77a7c47a36036e8d',
+	Secret: 'dde417de3f1aeeb9a2ab4844f0cad808',
+	GrantType: 'authorization_code',
+	AccessTokenBaseUrl: 'https://api.weixin.qq.com/sns/oauth2/access_token',
+	UserInfoBaseUrl : 'https://api.weixin.qq.com/sns/userinfo'
 })
 //摄像头选项
 .constant('CameraOptions', {
-	quality: 100,  //相片质量0-100
-	destinationType: 1, //类型：DATA_URL= 0，返回作为 base64 編碼字串。 FILE_URI=1，返回影像档的 URI。NATIVE_URI=2，返回图像本机URI (例如，資產庫)
-	sourceType: 2, //从哪里选择图片：PHOTOLIBRARY=0，相机拍照=1，SAVEDPHOTOALBUM=2。0和1其实都是本地图库
-	allowEdit: true, //在选择之前允许修改截图
-	encodingType: 1,//保存的图片格式： JPEG = 0, PNG = 1
-	targetWidth: 200,//照片宽度
-	targetHeight: 200, //照片高度
-	mediaType: 2, //可选媒体类型：圖片=0，只允许选择图片將返回指定DestinationType的参数。 視頻格式=1，允许选择视频，最终返回 FILE_URI。ALLMEDIA= 2，允许所有媒体类型的选择。
-	cameraDirection: 0, //枪后摄像头类型：Back= 0,Front-facing = 1
-	saveToPhotoAlbum: true //保存进手机相册
+	quality: 100,
+	destinationType: 1, 
+	sourceType: 2,
+	allowEdit: true,
+	encodingType: 0,
+	targetWidth: 200,
+	targetHeight: 200,
+	mediaType: 2,
+	cameraDirection: 0,
+	saveToPhotoAlbum: true
 })
+//支持的MIME类型
 .constant('MimeTypes', {
 	jpg: 'image/jpeg',
+	png: 'image/png',
 	wav: 'audio/x-wav',
 	mp3: 'audio/mpeg',
-	mp4: 'video/mpeg'
+	mp4: 'video/mp4'
 })
-//首页、服务和我的页面对应的状态栏颜色
+//首页、直播和我的页面对应的状态栏颜色
 .constant('StatusBarColor',{
 	ColorOfHome: '#DDDDDD',
-	ColorOfServices: '#FF9999',
+	ColorOfServices: '#6CAFDF',
     ColorOfAccount: '#14C1F3'
+})
+//APP选项
+.constant('AppOptions', {
+	ApkFileNamePrefix: 'luanNews'
 });

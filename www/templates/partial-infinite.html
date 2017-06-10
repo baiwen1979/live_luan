@@ -1,6 +1,6 @@
-<div ng-if="!category.vm.hasMore">
+<div class="infinite-scroll" ng-if="!category.vm.hasMore">
   <p ng-if="category.vm.items.length > 0" class="item item-divider item-icon-left dark">
-    <i class="icon ion-android-sad"></i>对不起,没有了!
+    <i class="icon ion-android-sad"></i><span>对不起,没有了!</span>
   </p>
 </div>
 <ion-infinite-scroll ng-if="category.vm.hasMore && category.vm.pageCount > 0" on-infinite="loadArticles($index)" distance="1%">

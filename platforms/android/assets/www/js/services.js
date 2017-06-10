@@ -76,45 +76,64 @@ angular.module('app.services', ['ngResource', 'app.constants'])
 	};
 }])
 
-.factory('Util', function($http, $ionicLoading, $ionicPopup, $ionicActionSheet, $ionicHistory, $timeout, Model, MimeTypes) {
+.factory('Util', function($http, $resource, $ionicLoading, $ionicPopup, 
+	$ionicActionSheet, $ionicHistory, $timeout, 
+	$cordovaAppVersion, $cordovaFileTransfer, $cordovaFileOpener2,
+	Model, MimeTypes, ResourceUrls, WechatLoginAuthInfo, AppOptions) {
 
 	var categories;
 	var templates;
 	var services;
-	var wechatIsInstall = function (succ, fail){
-		Wechat.isInstalled(succ, fail);
+	var wechatIsInstall = function (succ, fail) {
+		if (window.Wechat) {
+			Wechat.isInstalled(succ, fail);
+		}
+		else {
+			$ionicPopup.alert({
+				title: '无法分享',
+				template: '您的平台不支持微信分享',
+				okText: '好吧'
+			});
+		}
 	};
 	var WechatShare = function (scene, detail){
+		
+		var thumbUrl = ResourceUrls.WwwBaseUrl + 'img/player.png';
 		//取出第一张图片的URl
-		var thumbUrl = detail.content.match(/http[^\"'>]+.(jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG)/i);
+		if (detail.content) {
+		    thumbUrl = detail.content.match(/http[^\"'>]+.(jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG)/i)[0];
+		}
 		wechatIsInstall(function (installed) {
 			if(!installed){
 				$ionicPopup.alert({
-					title:'无法分享',
-					template:'请先安装微信',
-					okText:'我知道了'
+					title: '无法分享',
+					template: '请先安装微信',
+					okText: '我知道了'
 				});
 				return;
 			}
+			$ionicLoading.show({template: '请稍候...', duration:4000});
+
 			Wechat.share({
-				message:{
-					title:detail.title,
-					description:'分享自直播潞安',
-					thumb:thumbUrl?thumbUrl[0]:'',
-					media:{
-						type:Wechat.Type.WEBPAGE,
-						webpageUrl:'https://jyfiaueng.github.io/FindColor/'
+				message: {
+					title: detail.title,
+					description: '分享自直播潞安',
+					thumb: thumbUrl,
+					media: {
+						type: Wechat.Type.WEBPAGE,
+						webpageUrl: ResourceUrls.WwwBaseUrl + ResourceUrls.WechatShareDetail + '/' + detail.id
 					}
 				},
 				scene: scene
 			}, function () {
+				$ionicLoading.hide();
 				$ionicPopup.alert({
-					title:'分享成功',
-					template:'感谢您的支持',
-					okText:'关闭'
+					title: '分享成功',
+					template: '感谢您的支持',
+					okText: '关闭'
 				});
 			}, function (reason) {
-
+				$ionicLoading.hide();
 			});
 		}, function (reason) {
 			var popup = $ionicPopup.show({
@@ -127,13 +146,6 @@ angular.module('app.services', ['ngResource', 'app.constants'])
 		});
 	};
 
-	var wechatInfo = {
-		appid:'wx77a7c47a36036e8d',
-		secret:'dde417de3f1aeeb9a2ab4844f0cad808',
-		grant_type:'authorization_code'
-	};
-	var access_tokenBaseUtl = 'https://api.weixin.qq.com/sns/oauth2/access_token?';
-	var userinfoBaseUrl = 'https://api.weixin.qq.com/sns/userinfo?';
 	var wechatLogin = function (callback){
 		wechatIsInstall(function (installed){
 			if(!installed){
@@ -144,56 +156,68 @@ angular.module('app.services', ['ngResource', 'app.constants'])
 				});
 				return;
 			}
-			var scope = "snsapi_userinfo",
-				state = "_" + (+new Date());
+			var scope = "snsapi_userinfo",state = "_" + new Date();
+
+			$ionicLoading.show({template: '请稍候...'});
+
 			Wechat.auth(scope, state, function (response) {
 				var code = response.code;
-				var url = access_tokenBaseUtl+
-						'appid='+wechatInfo.appid+
-						'&secret='+wechatInfo.secret+
-						'&code='+code+
-						'&grant_type='+wechatInfo.grant_type;
+				var url = WechatLoginAuthInfo.AccessTokenBaseUrl +
+						'?appid=' + WechatLoginAuthInfo.AppId +
+						'&secret=' + WechatLoginAuthInfo.Secret +
+						'&code=' + code +
+						'&grant_type=' + WechatLoginAuthInfo.GrantType;
 				$http({
 					method:'get',
 					url:url
 				}).success(function (data){
+					$ionicLoading.hide();
 					if(!data.access_token){
 						$ionicPopup.alert({
-							title:'登录失败',
-							template:'',
-							okText:'ok'
+							title: '登录失败',
+							template: '未获得访问令牌',
+							okText: '好吧'
 						});
 						return;
 					}
 					$http({
-						method:'get',
-						url:userinfoBaseUrl+'access_token='+data.access_token+'&openid='+data.openid
-					}).success(function (info){
+						method: 'get',
+						url: WechatLoginAuthInfo.UserInfoBaseUrl + 
+						'?access_token=' + data.access_token + 
+						'&openid=' + data.openid
+					})
+					.success(function (info) {
+						$ionicLoading.hide();
 						callback(info);
-					}).error(function (data){
+					})
+					.error(function (data){
+						$ionicLoading.hide();
 						$ionicPopup.alert({
-							title:'失败',
-							template:'获取用户信息出错',
-							okText:'ok'
+							title: '登录失败',
+							template: '获取用户信息出错',
+							okText: '好吧'
 						});
 					});
 				}).error(function (data){
+					$ionicLoading.hide();
 					$ionicPopup.alert({
-						title:'登录失败',
-						template:'',
-						okText:'ok'
+						title: '登录失败',
+						template: '原因：' + data,
+						okText: '好吧'
 					});
 				});
 			}, function (reason) {
+				$ionicLoading.hide();
 				$ionicPopup.alert({
-					title:'',
-					template:reason,
+					title:'登录失败',
+					template: '原因：' + reason,
 					okText:'ok'
 				});
 			});
 		}, function (reason){
+			$ionicLoading.hide();
 			var popup = $ionicPopup.show({
-				title: '无法登录',
+				title: '登录失败',
 				template: reason
 			});
 			$timeout(function() {
@@ -257,7 +281,7 @@ angular.module('app.services', ['ngResource', 'app.constants'])
 
 		WechatShare: WechatShare,
 
-		wechatLogin:wechatLogin,
+		wechatLogin: wechatLogin,
 
 		share: function(detail) {
 			var self = this;
@@ -280,8 +304,117 @@ angular.module('app.services', ['ngResource', 'app.constants'])
 			});
 		},
 
+		voteArticle: function(id) {
+			var voteUrl = ResourceUrls.ApiBaseUrl + ResourceUrls.AddGood;
+			voteUrl += '?aid=' + id;
+			$resource(voteUrl).get(function(res) {
+				if (res.result == 'ok') {
+					var articleVotes = localStorage.getItem('articleVotes');
+					if (articleVotes) {
+						articleVotes = angular.fromJson(articleVotes);
+					}
+					else {
+						articleVotes = [];
+					}
+					articleVotes.push(id);
+					localStorage.setItem('articleVotes', angular.toJson(articleVotes)); 
+				}
+			});
+		},
+
+		addShareTimes: function(id) {
+			var actionUrl = ResourceUrls.ApiBaseUrl + ResourceUrls.AddShareTimes;
+			actionUrl += '?aid=' + id;
+			$resource(actionUrl).get(function(res) {
+				if (res && res.result == 'ok') {
+					console.log('文章：' + id + '被分享！');
+				}
+			});
+		},
+
 		goBack: function(){
 			$ionicHistory.goBack();
+		},
+
+		getVersion: function() {
+			var res = $resource(ResourceUrls.ApiBaseUrl + ResourceUrls.GetNewVersion);
+			return res.get().$promise;
+		},
+
+		getAds: function() {
+			var res = $resource(ResourceUrls.ApiBaseUrl + ResourceUrls.Ads);
+			var promise = res.get().$promise;
+			return promise.then(function(res) {
+				return res.data;
+			});
+		},
+
+		getAppId: function() {
+			var res = $resource(ResourceUrls.ApiBaseUrl + ResourceUrls.GetAppId);
+			var promise = res.get().$promise;
+			return promise.then(function(res) {
+				return res.appId;
+			});
+		},
+
+		showUpdateConfirm: function(version) {
+			var me = this;
+			var confirmPopup = $ionicPopup.confirm({
+				title: '新版本发布，是否升级？',
+				template: version.description,
+				cancelText: '取消',
+				okText: '现在升级'
+			});
+
+			confirmPopup.then(function(res){
+				if (res) {
+					$ionicLoading.show({
+						template: '正在下载更新：0%'
+					});
+
+					var fileName = AppOptions.ApkFileNamePrefix + '-' + version.appVersion + '.apk';
+					var url = ResourceUrls.DownloadBaseUrl + fileName;
+					var targetPath = cordova.file.externalDataDirectory + fileName;
+					var trustHosts = true;
+                	var options = {};
+                	$cordovaFileTransfer.download(url,targetPath,options,trustHosts)
+                	.then(function(result) {
+                    	$cordovaFileOpener2.open(targetPath,'application/vnd.android.package-archive')
+                    	.then(function(){
+                    		//success
+                    	}, function(){
+                    		//error
+                    		me.showAlert('打开文件失败','无法打开文件');
+                    	});
+                    		
+                    	$ionicLoading.hide();
+
+                	}, function(err) {
+                    	me.showAlert('下载失败', err);
+                	}, function(progress) {
+                    	$timeout(function() {
+	                        var downloadProgress = (progress.loaded / progress.total) * 100;
+	                        $ionicLoading.show({
+	                            template: "正在下载更新：" + Math.floor(downloadProgress) + "%"
+	                        });
+	                        if (downloadProgress > 99) {
+	                            $ionicLoading.hide();
+	                        }
+                        })
+                    });
+                }
+			});
+		},
+
+		checkUpdate: function() {
+			var me = this;
+			this.getVersion().then(function(data) {
+				$cordovaAppVersion.getVersionNumber().then(function(version){
+					if (version < data.appVersion) {
+						me.showUpdateConfirm(data);
+					}
+				});
+			});
 		},
 
 		setStatusBarHexColor: function(hexColorString) {

@@ -3,92 +3,13 @@
 		<div class="buttons">
 			<button class="button button-clear button-assertive icon ion-ios-arrow-left" ng-click="goBack()"></button>
 		</div>
-		<h1 class="title">登录</h1>
+		<h1 class="title">{{isLogin? '登录状态':'登录'}}</h1>
 	</ion-header-bar>
-
-
-	<ion-content  ng-if="isLogin == true">
-		<div id="userpng">
-			<img ng-src="{{userinfo.avatar}}"/>
-		</div>
-		<ul class="list">
-			<li class="item">
-				昵称 : {{userinfo.username}}
-			</li>
-			<li class="item">
-				性别 : {{userinfo.sex===1?'男':'女'}}
-			</li>
-			<li class="item">
-				语言 : {{userinfo.language}}
-			</li>
-			<li class="item">
-				城市 : {{userinfo.city}}
-			</li>
-			<li class="item">
-				国家 : {{userinfo.country}}
-			</li>
-		</ul>
-		<div class="padding">
-			<input value="退出登录" type="button" class="button-assertive button button-block" ng-click="logoff()"/>
-		</div>
-	</ion-content>
-
-
-	<ion-content class="positive" ng-if="isLogin == false">
-		<div class="card">
-			<div class="item">
-				<div id="userpng">
-					<img ng-src="img/user.png"/>
-				</div>
-				<form name="userForm">
-					<div class="list list-inset border1px">
-						<label class="item item-input">
-							<i class="icon ion-ios-person-outline placeholder-icon"></i>
-							<input type="text" placeholder="用户名/邮箱/手机号" name="userName" ng-model="user.username" required maxlength="30" />
-						</label>
-					</div>
-					<div class="list list-inset border1px">
-						<label class="item item-input">
-							<i class="icon ion-ios-locked-outline placeholder-icon"></i>
-							<input type="password" placeholder="密码" name="password" ng-model="user.password" required maxlength="30" />
-						</label>
-					</div>
-					<div class="list-inset forgetPassword">
-						<a href="#/tab/forgetPassword"  class="assertive">忘记密码</a>
-					</div>
-					<div class="padding">
-						<input value="登录" type="button" class="button-assertive button button-block" ng-click="submit()"/>
-					</div>
-				</form>
-				
-				<div>
-					<a class="assertive" href="#/tab/register">
-						没有帐号？快速注册>>
-					</a>
-				</div>
-				
-			</div>
-		</div>
-		
-		<div class="card">
-			<div class="item">
-				<div id="loginType">
-					<!-- <div ng-click="QQLogin()">
-						<img src="img/qq.png" alt="qq">
-						<p>QQ</p>
-					</div> -->
-					<div ng-click="wechatLogin()">
-						<img src="img/wechat.png" alt="weChat">
-						<p>微信</p>
-					</div>
-					<!-- <div ng-click="sinaLogin()">
-						<img src="img/sina.png" alt="sina">
-						<p>新浪微博</p>
-					</div> -->
-				</div>
-				<p>第三方帐号登陆</p>
-			</div>
-		</div>
+	<ion-content >
+		<ng-include ng-if="isLogin" src="'templates/partial-userInfo.html'">
+		</ng-include>
+		<ng-include ng-if="!isLogin" src="'templates/partial-loginForm.html'">
+		</ng-include>
 	</ion-content>
 
 </ion-view>

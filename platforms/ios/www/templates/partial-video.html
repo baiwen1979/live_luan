@@ -1,11 +1,14 @@
 <div id="video-player">
   <video controls>
-    <source ng-src="{{detail.srcUrl}}" type="video/mp4" />
+    <source ng-src="{{detail.srcUrl}}"/>
     <!--
     <source src="media/sample.ogg" type="video/ogg"/>
     <source src="media/sample.webm" type="video/webm"/>
     -->
-    <span>HTML5 Video NOT Supported</span>
+    <span>您的系统不支持HTML5</span>
 
   </video>
+  <!--
+  <a class="button button-full button-positive" href="{{detail.srcUrl}}">使用本地播放器打开</a>
+  -->
 </div>

@@ -14,14 +14,14 @@
   </ion-slide-box>
 
   <ion-list>
-    <ion-item class="item item-thumbnail-left" ng-repeat="item in category.vm.items" ng-if="item.as!='slider'" type="item-text-wrap" href="#/tab/detail/{{item.id}}">
+    <ion-item class="item item-thumbnail-left" ng-repeat="item in category.vm.items" ng-if="item.as!='slider'" type="item-text-wrap" ng-href="#/tab/detail/{{item.id}}">
       <img class="thumbnail round-rect" ng-src="{{item.thumbnail}}">
       <span ng-if="item.type=='video'" class="player-icon"></span>
       <!--音频图标-->
       <span class="{{item.type}}"></span>
       <h2 class="title">{{item.title}}</h2>
       <p class="time">{{item.publishTime | date:'yyyy-MM-dd' | timeHommization}}</p>
-      <p class="comments">{{item.commentCount}}评</p>
+      <p class="comments">{{item.hot}}读</p>
     </ion-item>
   </ion-list>
 

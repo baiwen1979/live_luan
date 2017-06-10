@@ -1,11 +1,11 @@
 <ion-item class="item" id="shareAndHot">
-  <div ng-click="shareSESSION(detail)">
+  <div ng-click="shareSession(detail)">
     <p>微信好友</p>
   </div>
-  <div ng-click="shareTIMELINE(detail)">
+  <div ng-click="shareTimeline(detail)">
     <p>微信朋友圈</p>
   </div>
-  <div ng-class="{'hot':true, 'redHot':hot}" ng-click="clickhot(detail)">
-    <p>{{hotCount}}</p>
+  <div ng-class="{'hot':true, 'redHot':hot}" ng-click="likeArticle(detail)">
+    <p>{{detail.good}}</p>
   </div>
 </ion-item>

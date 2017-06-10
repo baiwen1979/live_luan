@@ -75,6 +75,14 @@
                         {
                             "xml": "<feature name=\"Canvas2ImagePlugin\"><param name=\"ios-package\" value=\"Canvas2ImagePlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"AppVersion\"><param name=\"ios-package\" value=\"AppVersion\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FileOpener2\"><param name=\"ios-package\" value=\"FileOpener2\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -168,6 +176,12 @@
             "PACKAGE_NAME": "com.chinaluan.news"
         },
         "org.devgeeks.Canvas2ImagePlugin": {
+            "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-app-version": {
+            "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-file-opener2": {
             "PACKAGE_NAME": "com.chinaluan.news"
         }
     },
@@ -494,6 +508,22 @@
             "clobbers": [
                 "window.canvas2ImagePlugin"
             ]
+        },
+        {
+            "id": "cordova-plugin-app-version.AppVersionPlugin",
+            "file": "plugins/cordova-plugin-app-version/www/AppVersionPlugin.js",
+            "pluginId": "cordova-plugin-app-version",
+            "clobbers": [
+                "cordova.getAppVersion"
+            ]
+        },
+        {
+            "id": "cordova-plugin-file-opener2.FileOpener2",
+            "file": "plugins/cordova-plugin-file-opener2/www/plugins.FileOpener2.js",
+            "pluginId": "cordova-plugin-file-opener2",
+            "clobbers": [
+                "cordova.plugins.fileOpener2"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -511,6 +541,8 @@
         "ionic-plugin-keyboard": "2.2.1",
         "cordova-plugin-x-toast": "2.5.2",
         "cordova-plugin-wechat": "1.4.0",
-        "org.devgeeks.Canvas2ImagePlugin": "0.6.0"
+        "org.devgeeks.Canvas2ImagePlugin": "0.6.0",
+        "cordova-plugin-app-version": "0.1.9",
+        "cordova-plugin-file-opener2": "2.0.19"
     }
 }

@@ -67,6 +67,14 @@
                         {
                             "xml": "<feature name=\"Canvas2ImagePlugin\"><param name=\"android-package\" value=\"org.devgeeks.Canvas2ImagePlugin.Canvas2ImagePlugin\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"AppVersion\"><param name=\"android-package\" value=\"uk.co.whiteoctober.cordova.AppVersion\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FileOpener2\"><param name=\"android-package\" value=\"io.github.pwlin.cordova.plugins.fileopener2.FileOpener2\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -84,6 +92,10 @@
                         },
                         {
                             "xml": "<activity android:exported=\"true\" android:label=\"@string/launcher_name\" android:launchMode=\"singleTop\" android:name=\".wxapi.WXPayEntryActivity\"><intent-filter><action android:name=\"android.intent.action.VIEW\" /><category android:name=\"android.intent.category.DEFAULT\" /><data android:scheme=\"wx77a7c47a36036e8d\" /></intent-filter></activity>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<provider android:authorities=\"${applicationId}.opener.provider\" android:exported=\"false\" android:grantUriPermissions=\"true\" android:name=\"io.github.pwlin.cordova.plugins.fileopener2.FileProvider\"><meta-data android:name=\"android.support.FILE_PROVIDER_PATHS\" android:resource=\"@xml/opener_paths\" /></provider>",
                             "count": 1
                         }
                     ],
@@ -112,6 +124,10 @@
                         },
                         {
                             "xml": "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />",
                             "count": 1
                         }
                     ]
@@ -164,6 +180,12 @@
             "PACKAGE_NAME": "com.chinaluan.news"
         },
         "org.devgeeks.Canvas2ImagePlugin": {
+            "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-app-version": {
+            "PACKAGE_NAME": "com.chinaluan.news"
+        },
+        "cordova-plugin-file-opener2": {
             "PACKAGE_NAME": "com.chinaluan.news"
         }
     },
@@ -474,6 +496,22 @@
             "clobbers": [
                 "window.canvas2ImagePlugin"
             ]
+        },
+        {
+            "file": "plugins/cordova-plugin-app-version/www/AppVersionPlugin.js",
+            "id": "cordova-plugin-app-version.AppVersionPlugin",
+            "pluginId": "cordova-plugin-app-version",
+            "clobbers": [
+                "cordova.getAppVersion"
+            ]
+        },
+        {
+            "file": "plugins/cordova-plugin-file-opener2/www/plugins.FileOpener2.js",
+            "id": "cordova-plugin-file-opener2.FileOpener2",
+            "pluginId": "cordova-plugin-file-opener2",
+            "clobbers": [
+                "cordova.plugins.fileOpener2"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -491,6 +529,8 @@
         "ionic-plugin-keyboard": "2.2.1",
         "cordova-plugin-x-toast": "2.5.2",
         "cordova-plugin-wechat": "1.4.0",
-        "org.devgeeks.Canvas2ImagePlugin": "0.6.0"
+        "org.devgeeks.Canvas2ImagePlugin": "0.6.0",
+        "cordova-plugin-app-version": "0.1.9",
+        "cordova-plugin-file-opener2": "2.0.19"
     }
 }

@@ -1,0 +1,25 @@
+<div>
+	<div id="userpng">
+		<img ng-src="{{userinfo.avatar}}"/>
+	</div>
+	<ul class="list">
+		<li class="item">
+			<label>昵称 :</label><span>{{userinfo.username}}</span>
+		</li>
+		<li class="item">
+			<label>性别 :</label><span>{{userinfo.sex===1? '男':'女'}}</span>
+		</li>
+		<li class="item">
+			<label>语言 :</label><span>{{userinfo.language}}</span>
+		</li>
+		<li class="item">
+			<label>城市 :</label><span>{{userinfo.city}}</span>
+		</li>
+		<li class="item">
+			<label>国家 :</label><span>{{userinfo.country}}</span>
+		</li>
+	</ul>
+	<div class="padding">
+		<input value="退出登录" type="button" class="button-assertive button button-block" ng-click="logoff()"/>
+	</div>
+</div>

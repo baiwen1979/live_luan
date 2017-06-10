@@ -6,7 +6,7 @@
       <span>{{detail.source}}</span>
     </p>
   </div>
-  <div ng-bind-html="detail.content">
+  <div ng-bind-html="detail.content" ng-click="openModal(detail.content, $event)">
   </div>
   <ng-include src="'templates/partial-ShareAndHot.html'" ></ng-include>
   <ng-include src="'templates/partial-comments.html'" ></ng-include>
