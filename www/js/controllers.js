@@ -72,6 +72,34 @@ angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 		}
 	}
 
+	// 首屏广告相关
+	function showAds() {
+		Util.getAds().then(function(ads) {
+			$scope.ads = ads;
+			//console.log($scope.ads.length);
+			$scope.advHide = false;
+			$rootScope.hideTabs = true;
+			$scope.advTime = $scope.ads.length;
+
+			$scope.hideAdv = function (){
+				$scope.advHide = true;
+				$rootScope.hideTabs = false;
+			};
+
+			$scope.ctrlTime = function (index){
+				$scope.advTime--;
+				if($scope.advTime <= 1){
+					$timeout($scope.hideAdv, 2000);
+					$timeout(checkUpdate, 3000);
+				}
+			};
+
+			if (ads.length == 1) {
+				$timeout($scope.ctrlTime, 2000);
+			}
+		});
+	}
+
 	$scope.offline = false;
 
 	//load Articles for the category specified by categoryIndex
@@ -157,6 +185,13 @@ angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 	initCategoryVMs();
 	registerApp();
 
+	if (ionic.Platform.isAndroid()) {
+		showAds();
+	}
+	else {
+		$timeout(showAds, 2800);
+	}
+
 	$scope.initCategoryVMs = initCategoryVMs;
 	$ionicSlideBoxDelegate.enableSlide(true);
 
@@ -222,33 +257,6 @@ angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 			}
 		}
 	});
-
-	// 首屏广告相关
-	Util.getAds().then(function(ads) {
-		$scope.ads = ads;
-		//console.log($scope.ads.length);
-		$scope.advHide = false;
-		$rootScope.hideTabs = true;
-		$scope.advTime = $scope.ads.length;
-
-		$scope.hideAdv = function (){
-			$scope.advHide = true;
-			$rootScope.hideTabs = false;
-		};
-
-		$scope.ctrlTime = function (index){
-			$scope.advTime--;
-			if($scope.advTime <= 1){
-				$timeout($scope.hideAdv, 2000);
-				$timeout(checkUpdate, 3000);
-			}
-		};
-
-		if (ads.length == 1) {
-			$timeout($scope.ctrlTime, 2000);
-		}
-	});
-
 
 })
 
@@ -538,7 +546,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 
 .controller('LoginCtrl', function($rootScope, $scope, $ionicLoading, $stateParams, $ionicHistory, $http, 
 	$location, $ionicPopup, $timeout, Util, Storage, ResourceUrls) {
-
+	$scope.user = {};
 	$scope.goBack = Util.goBack;
 	$scope.$on('$ionicView.enter', function() {
 		if(localStorage.getItem('userInfo')){
@@ -602,12 +610,14 @@ angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 	};
 
 	$scope.submit = function(){
+		/*
 		$ionicPopup.alert({
 			title:'提示',
 			template:'请点击微信授权登录',
 			okText:'ok'
 		});
-		/*if($scope.user.username && $scope.user.password){
+		*/
+		if($scope.user.username && $scope.user.password){
 			$http({
 				method:'post',
 				url:ResourceUrls.ApiBaseUrl + ResourceUrls.Login,
@@ -642,7 +652,7 @@ angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 		}
 		else {
 			Util.showAlert('无法登录', '请填写完整的登录信息！');
-		}*/
+		}
 	};
 
 	//$rootScope.hideTabs = true;

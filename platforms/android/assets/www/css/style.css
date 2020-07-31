@@ -410,9 +410,11 @@ h2.title {
 	width: 100%;
 }
 
+/*
 #audio-player {
 	position: fixed;
 }
+*/
 
 #audio-player audio {
 	width: 100%;
@@ -1074,10 +1076,6 @@ img {
 	background-color: #ddd;
 }
 
-#s2 {
-	margin-top: 5px;
-}
-
 #s2 .box {
 	width: 100%;
 	position: relative;
@@ -1110,6 +1108,13 @@ img {
     margin-top: 50%;
 }
 
+.platform-ios #ad-services.has-header {
+	top: 180px;
+}
+
+#ad-services.has-header {
+	top: 160px;
+}
 
 #s2 .slider-pager {
     text-align: right;

@@ -107,7 +107,7 @@ angular.module('app.services', ['ngResource', 'app.constants'])
 			if(!installed){
 				$ionicPopup.alert({
 					title: '无法分享',
-					template: '请先安装微信',
+					template: '您的手机没有安装微信',
 					okText: '我知道了'
 				});
 				return;
@@ -151,7 +151,7 @@ angular.module('app.services', ['ngResource', 'app.constants'])
 			if(!installed){
 				$ionicPopup.alert({
 					title:'无法登陆',
-					template:'请先安装微信',
+					template:'您的手机没有安装微信',
 					okText:'我知道了'
 				});
 				return;

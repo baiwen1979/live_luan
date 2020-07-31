@@ -174,7 +174,7 @@
 
 .platform-ios #tab-home {
 	border-top: 1px solid #ddd;
-	top: 20px;
+	/*top: 20px;*/
 }
 
 [nav-view-transition="ios"][name="tab-home"] {
@@ -410,9 +410,11 @@ h2.title {
 	width: 100%;
 }
 
+/*
 #audio-player {
 	position: fixed;
 }
+*/
 
 #audio-player audio {
 	width: 100%;
@@ -710,10 +712,10 @@ iframe.full {
 
 #tab-login #userpng{
 	text-align: center;
-	height: 60px;
+	height: 50px;
 	border-radius: 50%;
-	margin-top: 60px;
-	margin-bottom: 40px;
+	margin-top: 10px;
+	margin-bottom: 20px;
 }
 
 #tab-login div{
@@ -1074,10 +1076,6 @@ img {
 	background-color: #ddd;
 }
 
-#s2 {
-	margin-top: 5px;
-}
-
 #s2 .box {
 	width: 100%;
 	position: relative;
@@ -1110,6 +1108,13 @@ img {
     margin-top: 50%;
 }
 
+.platform-ios #ad-services.has-header {
+	top: 180px;
+}
+
+#ad-services.has-header {
+	top: 160px;
+}
 
 #s2 .slider-pager {
     text-align: right;

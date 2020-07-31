@@ -72,6 +72,34 @@ angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 		}
 	}
 
+	// 首屏广告相关
+	function showAds() {
+		Util.getAds().then(function(ads) {
+			$scope.ads = ads;
+			//console.log($scope.ads.length);
+			$scope.advHide = false;
+			$rootScope.hideTabs = true;
+			$scope.advTime = $scope.ads.length;
+
+			$scope.hideAdv = function (){
+				$scope.advHide = true;
+				$rootScope.hideTabs = false;
+			};
+
+			$scope.ctrlTime = function (index){
+				$scope.advTime--;
+				if($scope.advTime <= 1){
+					$timeout($scope.hideAdv, 2000);
+					$timeout(checkUpdate, 3000);
+				}
+			};
+
+			if (ads.length == 1) {
+				$timeout($scope.ctrlTime, 2000);
+			}
+		});
+	}
+
 	$scope.offline = false;
 
 	//load Articles for the category specified by categoryIndex
@@ -157,6 +185,13 @@ angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 	initCategoryVMs();
 	registerApp();
 
+	if (ionic.Platform.isAndroid()) {
+		showAds();
+	}
+	else {
+		$timeout(showAds, 2800);
+	}
+
 	$scope.initCategoryVMs = initCategoryVMs;
 	$ionicSlideBoxDelegate.enableSlide(true);
 
@@ -222,33 +257,6 @@ angular.module('app.controllers', ['ngCordova', 'app.constants', 'underscore'])
 			}
 		}
 	});
-
-	// 首屏广告相关
-	Util.getAds().then(function(ads) {
-		$scope.ads = ads;
-		//console.log($scope.ads.length);
-		$scope.advHide = false;
-		$rootScope.hideTabs = true;
-		$scope.advTime = $scope.ads.length;
-
-		$scope.hideAdv = function (){
-			$scope.advHide = true;
-			$rootScope.hideTabs = false;
-		};
-
-		$scope.ctrlTime = function (index){
-			$scope.advTime--;
-			if($scope.advTime <= 1){
-				$timeout($scope.hideAdv, 2000);
-				$timeout(checkUpdate, 3000);
-			}
-		};
-
-		if (ads.length == 1) {
-			$timeout($scope.ctrlTime, 2000);
-		}
-	});
-
 
 })
 

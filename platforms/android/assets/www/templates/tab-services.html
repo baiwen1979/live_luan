@@ -8,27 +8,27 @@
   <div id="s1" class="bar-header">
     <a href="#tab/service/{{groups.s1[0].id}}"><img src="img/live.png" /></a>
   </div>
+  <ion-content id="ad-services" class="has-header">
+    <ion-slide-box ng-if="groups.s2" id="s2" does-continue="true" auto-play="true">
+      <ion-slide ng-repeat="item in groups.s2">
+        <div class="box">
+          <a ng-href="#/tab/service/{{item.id}}">
+            <img ng-src="{{item.icon}}">
+          </a>
+          <!--<p class="title">{{item.label}}</p>-->
+        </div>
+      </ion-slide>
+    </ion-slide-box>
 
-  <ion-slide-box ng-if="groups.s2" id="s2" does-continue="true" auto-play="true">
-    <ion-slide ng-repeat="item in groups.s2">
-      <div class="box">
-        <a ng-href="#/tab/service/{{item.id}}">
-          <img ng-src="{{item.icon}}">
-        </a>
-        <!--<p class="title">{{item.label}}</p>-->
-      </div>
-    </ion-slide>
-  </ion-slide-box>
-
-  <div id="s3" ng-if="groups.s3" class="services-list">
-    <ul>
-      <li ng-repeat="item in groups.s3">
-        <a ng-href="#/tab/service/{{item.id}}">
-          <img ng-src="{{item.icon}}" />
-          <p>{{item.label}}</p>
-        </a>
-      </li>
-    </ul>
-  </div>
-  </div>
+    <div id="s3" ng-if="groups.s3" class="services-list">
+      <ul>
+        <li ng-repeat="item in groups.s3">
+          <a ng-href="#/tab/service/{{item.id}}">
+            <img ng-src="{{item.icon}}" />
+            <p>{{item.label}}</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </ion-content>
 </ion-view>

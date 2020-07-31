@@ -553,6 +553,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chinaluan.newscenter;
 				PRODUCT_NAME = "直播潞安";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -579,6 +580,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chinaluan.newscenter;
 				PRODUCT_NAME = "直播潞安";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
