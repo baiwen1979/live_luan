@@ -1,63 +1,22 @@
-潞安新闻中心客户端:直播潞安
-=====================
+直播潞安 - 潞安新闻中心手机客户端APP
+==============================
 
 ### app描述
-		直播潞安：潞安集团的手机新闻客户端
+    直播潞安：潞安集团的手机新闻客户端
 
 ### 功能简介
-		新闻查看；
-		新闻评论；
-		新闻收藏；
-		用户发表文章；
-		用户进行文件上传；
-		栏目排序；
-		分享；
-		文章内图片查看下载；
-		字体修改；
-
+- 新闻查看
+- 新闻评论
+- 新闻收藏
+- 用户发表文章
+- 用户进行文件上传
+- 栏目排序
+- 微信分享  
+- 微信授权登录
+- 文章内图片查看下载
+- 字体修改  
+- 首页广告  
+- 视频直播  
+- 版本更新支持
 ### 实现方式
-		使用 ionic1 实现。
-
-### 结构
-![文件结构](https://github.com/Baiwen1979/luan_news/blob/master/docs/文件结构.png)
-
-### 最终效果
-![1](https://github.com/Baiwen1979/luan_news/blob/master/docs/8.jpg)
-![2](https://github.com/Baiwen1979/luan_news/blob/master/docs/9.jpg)
-![3](https://github.com/Baiwen1979/luan_news/blob/master/docs/10.jpg)
-![4](https://github.com/Baiwen1979/luan_news/blob/master/docs/11.jpg)
-![5](https://github.com/Baiwen1979/luan_news/blob/master/docs/12.jpg)
-![6](https://github.com/Baiwen1979/luan_news/blob/master/docs/13.jpg)
-![7](https://github.com/Baiwen1979/luan_news/blob/master/docs/14.png)
-![8](https://github.com/Baiwen1979/luan_news/blob/master/docs/15.png)
-
-### 比较总结
-		最开始为了快速开发使用APICloud，发现效果不好，后来改为ionic。
-		开发过程中遇到最棘手的问题是手机端文件上传的功能，由于其基础测试环境不是手机，
-		而ionic又没有像APICloud一样方便的连接手机的功能，只能在虚拟机上测试，仅仅生
-		成Android安装包就至少上百次，每一点小的改动都要进行apk安装、测试、调整。
-
-		下面是APICloud和ionic的对比：
-			ionic
-				门槛高，需要angularjs基础
-				命令行界面使用
-				真机测试不方便
-				代码量小，复用度很高
-				使用路由切换页面便于集中控制
-				代码结构清晰分明
-				插件少，质量上乘
-				文档还可以，找的不费劲，大部分问题都可以百度或google
-				基于MVC模式
-				安装包小（4M）
-			APICloud
-				代码量大
-				可复用性底
-				无法使用路由，只能依靠页面的逻辑关系进行切换
-				上手快，门槛低
-				插件多，但是质量参差不齐
-				速度略慢
-				文档不清晰，查看难
-				没有提供相配套的css框架，需要结合jquery Mobel
-				生成的安装包大（17M）
-				具有wifi真机测试，超好用
-				部分插件收费
+    使用 angular + ionic1 实现
